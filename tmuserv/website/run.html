@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>天幕实时监控平台</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta http-equiv="Cache-Control" content="no-cache">
+        <meta http-equiv="Expires" content="0">
+
+        <link id="bs-css" href="./frontend/lib/css/bootstrap.min.css" rel="stylesheet">
+        <link href='./frontend/lib/css/common.css' rel='stylesheet'>
+
+        <link rel="shortcut icon" href="./frontend/lib/images/favicon.ico">
+    </head>
+
+    <body class="app">
+        <!-- topbar starts -->
+        <div class="navbar navbar-default" role="navigation" ui-view="headerContainer">
+        </div>
+        <!-- topbar ends -->
+        <!-- body starts -->
+        <div class="ch-container">
+            <div class="row">
+                <!-- left menu starts -->
+                <div class="col-sm-2 col-lg-2" ui-view="sidebarContainer">
+                </div>
+                <!-- left menu ends -->
+                <!-- content starts -->
+                <div id="content" class="col-lg-10 col-sm-10">
+                    <!-- crumb starts -->
+                    <div ui-view="crumbContainer"></div>
+                    <!-- crumb ends -->
+                    <div ui-view="mainContainer"></div>
+                </div>
+                <!-- content ends -->
+            </div>
+            <!--/#content.col-md-0-->
+        </div>
+        <!--/fluid-row-->
+        <footer></footer>
+        <div ab-loading="poplayer"></div>
+        <script type="text/javascript" src="./frontend/lib/js/jquery-2.0.3.min.js"></script>
+        <script type="text/javascript" src="./frontend/lib/js/angular.min.js"></script>
+        <script type="text/javascript" src="./frontend/lib/js/angular-plugs.js"></script>
+        <script type="text/javascript">
+        window.ProjectName = 'TMU';
+        window.ProjectVersion = '1.1.0';
+        $(function() {
+            $.getScript = function(url, cb, cache) {
+                cache = cache || true;
+                cb = cb || function() {};
+                var ajax = $.ajax({
+                    url: url,
+                    data: {
+                        _v: window.ProjectVersion
+                    },
+                    dataType: 'script',
+                    cache: cache
+                });
+                ajax.done(cb);
+            };
+            $.getScript("./frontend/config/app.config.js", function() {
+                $.getScript("./frontend/config/route.config.js");
+            });
+        });
+        </script>
+    </body>
+
+</html>

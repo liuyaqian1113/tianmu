@@ -1,0 +1,28 @@
+<div class="sur-right" id="theme" style="position: relative;">
+    <div class="canvas-toolsbar">
+        <a class="btn btn-default" href="#/theme/category">新增主题分类</a>
+        <a class="btn btn-default" href="#/theme/add">创建主题</a>
+    </div>
+    <div class="table-responsive" id="table-list">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>风格主题key</th>
+                    <th>主题名称</th>
+                    <th>所属分类</th>
+                    <th>最后更新</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="list in theme.themeList">
+                    <td>{{list.themeId}}</td>
+                    <td>{{list.themeName}}</td>
+                    <td>{{list.themeCategory}}</td>
+                    <td>{{list.updatetime}}</td>
+                    <td><a class="btn btn-default" href="#/scene/{{list.themeId}}">默认场景模板</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

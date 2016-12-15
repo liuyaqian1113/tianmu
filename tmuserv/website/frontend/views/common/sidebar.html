@@ -1,0 +1,14 @@
+<div class="sidebar-nav">
+    <div class="nav-canvas">
+        <div class="nav-sm nav nav-stacked"></div>
+        <ul class="nav nav-pills nav-stacked main-menu">
+                <li ng-repeat="item in items" ng-class="getMenuClass(item)">
+                    <span ng-if="item.type == 'header'" href="{{item.url}}"> {{item.name}}</span>
+                    <a ng-if="item.type != 'header'" href="{{item.url}}" ng-click="setActive(item)"><i class="{{item.icons}}"></i><span> {{item.name}}</span></a>
+                    <ul class="nav nav-pills nav-stacked" ng-if="item.subs" ng-show="item.active">
+                        <li ng-repeat="sub in item.subs" ng-class="{true: 'active'}[sub.active]" ng-click="setActive(sub)"><a ng-href="{{sub.url}}">{{sub.name}}</a></li>
+                    </ul>
+                </li>
+        </ul>
+    </div>
+</div>

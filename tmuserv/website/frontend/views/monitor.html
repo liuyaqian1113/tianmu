@@ -1,0 +1,12 @@
+<div class="sur-right" id="monitor" style="position: relative;">
+    <div class="canvas-toolsbar">
+        <button type="button" class="canvas-save" ng-click="canvas.save()"> 保存 </button>
+        <button type="button" class="canvas-setStage" ng-click="canvas.normalStage()"> 普通展现 </button>
+        <button type="button" class="canvas-setStage" ng-click="canvas.largeStage()"> 大屏展现 </button>
+        <button type="button" class="canvas-addNode" ng-click="canvas.addNode()"> 添加节点 </button>
+        <button type="button" class="canvas-addNode" ng-click="canvas.addEcharts('line')"> 添加折线图 </button>
+        <button type="button" class="canvas-addNode" ng-click="canvas.addEcharts('bar')"> 添加柱状图 </button>
+    </div>
+    <div id="canvasContainer" canvas="canvasConf">
+    </div>
+</div>
