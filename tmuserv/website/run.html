@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en">
-
     <head>
         <meta charset="UTF-8">
         <title>天幕实时监控平台</title>
@@ -9,39 +8,41 @@
         <meta http-equiv="Cache-Control" content="no-cache">
         <meta http-equiv="Expires" content="0">
 
+        <link id="bs-css" href="./frontend/lib/css/jquery-ui.min.css" rel="stylesheet">
         <link id="bs-css" href="./frontend/lib/css/bootstrap.min.css" rel="stylesheet">
+        <link id="bs-css" href="./frontend/lib/css/font-awesome.min.css" rel="stylesheet">
         <link href='./frontend/lib/css/common.css' rel='stylesheet'>
 
         <link rel="shortcut icon" href="./frontend/lib/images/favicon.ico">
     </head>
 
-    <body class="app">
-        <!-- topbar starts -->
-        <div class="navbar navbar-default" role="navigation" ui-view="headerContainer">
-        </div>
-        <!-- topbar ends -->
-        <!-- body starts -->
-        <div class="ch-container">
-            <div class="row">
-                <!-- left menu starts -->
-                <div class="col-sm-2 col-lg-2" ui-view="sidebarContainer">
-                </div>
-                <!-- left menu ends -->
-                <!-- content starts -->
-                <div id="content" class="col-lg-10 col-sm-10">
-                    <!-- crumb starts -->
-                    <div ui-view="crumbContainer"></div>
-                    <!-- crumb ends -->
-                    <div ui-view="mainContainer"></div>
-                </div>
-                <!-- content ends -->
+    <body>
+        <!-- begin #page-container -->
+        <div id="page-container">
+            <!-- begin #header -->
+            <div id="header" class="header navbar navbar-default navbar-fixed-top" ui-view="headerContainer"></div>
+            <!-- begin #sidebar -->
+            <div id="sidebar" class="sidebar" ui-view="sidebarContainer"></div>
+            <div class="sidebar-bg"></div>
+            <!-- end #sidebar -->
+            <!-- begin #content -->
+            <div id="content" class="content">
+                <!-- begin breadcrumb -->
+                <div id="breadcrumb" ui-view="crumbContainer"></div>
+                <!-- end breadcrumb -->
+                <div id="content-body" ui-view="mainContainer"></div>
             </div>
-            <!--/#content.col-md-0-->
+            <!-- end #content -->
+
+            <!-- begin scroll to top btn -->
+            <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+            <!-- end scroll to top btn -->
         </div>
-        <!--/fluid-row-->
+        <!-- end page container -->
         <footer></footer>
         <div ab-loading="poplayer"></div>
         <script type="text/javascript" src="./frontend/lib/js/jquery-2.0.3.min.js"></script>
+        <script type="text/javascript" src="./frontend/lib/js/jquery-ui.min.js"></script>
         <script type="text/javascript" src="./frontend/lib/js/angular.min.js"></script>
         <script type="text/javascript" src="./frontend/lib/js/angular-plugs.js"></script>
         <script type="text/javascript">

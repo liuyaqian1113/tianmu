@@ -67,7 +67,7 @@ route_module.factory('permissionService', function ($q, $rootScope, CONFIG) {
         request: function (config) {
             var deferred = $q.defer();
             config.headers['X-Requested-With'] = 'xmlhttprequest';
-            if (!!CONFIG.noCache) {
+            if (!!CONFIG.noCache && config.headers.Accept === 'text/html') {
                 if (config.method === 'GET') {
                     if (!config.params) {
                         config.params = {};
@@ -80,7 +80,8 @@ route_module.factory('permissionService', function ($q, $rootScope, CONFIG) {
                     }
                     config.data._v = CONFIG.version;
                 }
-            }!!CONFIG.debuger && console.log('request:', config);
+            }
+            !!CONFIG.debuger && console.log('request:', config);
             return config || deferred.promise;
         },
         // success -> don't intercept
@@ -154,7 +155,8 @@ route_module.factory('permissionService', function ($q, $rootScope, CONFIG) {
                         'controller/header_controller.js',
                         'controller/crumb_controller.js',
                         'controller/sidebar_controller.js',
-                        'lib/js/bootstrap.min.js'
+                       // 'lib/js/bootstrap.min.js',
+                        'directives/sidebar.js'
                     ]);
                 }]
             },
@@ -183,7 +185,8 @@ route_module.factory('permissionService', function ($q, $rootScope, CONFIG) {
                     deps: ['$rootScope', '$ocLazyLoad', function ($rootScope, $ocLazyLoad) {
                         return $ocLazyLoad.load([
                             'theme/default/css/index.css',
-                            'controller/index_controller.js'
+                            'controller/index_controller.js',
+                            'directives/ng-sortable.js'
                         ]);
                     }]
                 },
@@ -197,7 +200,7 @@ route_module.factory('permissionService', function ($q, $rootScope, CONFIG) {
             // 主题配置
             theme: {
                 name: 'theme',
-                url: '/theme',
+                url: '/report/theme',
                 parent: common,
                 resolve: {
                     deps: ['$rootScope', '$ocLazyLoad', function ($rootScope, $ocLazyLoad) {
@@ -345,6 +348,29 @@ route_module.factory('permissionService', function ($q, $rootScope, CONFIG) {
                     'mainContainer@': {
                         templateUrl: CONFIG.webRoot + 'views/tables.html',
                         controller: 'tables_controller'
+                    }
+                }
+            },
+            // 菜单配置
+            menu: {
+                name: 'menu',
+                url: '/manager/menu',
+                parent: common,
+                resolve: {
+                    deps: ['$rootScope', '$ocLazyLoad', function ($rootScope, $ocLazyLoad) {
+                        return $ocLazyLoad.load([
+                            'theme/default/css/menu.css',
+                           // 'lib/js/ui-bootstrap-tpls-0.11.0.min.js',
+                            'controller/menu_controller.js',
+                            'directives/ng-sortable.js',
+                            'directives/editMenu.js'
+                        ]);
+                    }]
+                },
+                views: {
+                    'mainContainer@': {
+                        templateUrl: CONFIG.webRoot + 'views/menu.html',
+                        controller: 'menu_controller'
                     }
                 }
             }

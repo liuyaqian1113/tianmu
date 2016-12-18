@@ -1,84 +1,66 @@
 /**
  * @file sidebar_controller the file
  */
-"use strict"
 angular.module(window.ProjectName)
-    .controller('sidebar_controller', function ($rootScope, $scope, $state, CONFIG) {
+    .controller('sidebar_controller', function ($rootScope, $scope, $state, CONFIG, fetchService, $timeout) {
         var api = CONFIG.api[$state.current.name];
-        $scope.items = [
-            {
-                type: 'header',
-                name: 'MAIN'
-            }, {
-                type: 'menu',
-                name: '首页',
-                icons: 'glyphicon glyphicon-home',
-                url: '#/index',
-                active: true
-            }, {
-                type: 'header',
-                name: '可视化配置'
-            }, {
-                type: 'menu',
-                name: '表格配置',
-                icons: 'glyphicon glyphicon-align-justify',
-                url: '#/tables',
-                active: false
-            }, {
-                type: 'menus',
-                name: '大屏配置',
-                icons: 'glyphicon glyphicon-plus',
-                url: 'javascript:;',
-                active: false,
-                subs: [
-                    {
-                        name: '主题配置',
-                        url: '#/theme',
-                        active: false
-                }]
-            }
-        ];
-        $scope.showStates = function (item) {
-            item.active = !item.active;
-        };
-        $scope.getMenuClass = function (item) {
-            if (!item) {
-                return;
-            }
-            var style = '';
-            switch (item.type) {
-                case 'header':
-                    style = 'nav-header';
-                    break;
-                case 'menu':
-                    if (!!item.active) {
-                        style = 'active';
-                    }
-                    break;
-                case 'menus':
-                    style = 'accordion';
-                    if (!!item.active) {
-                        style += ' active';
-                    }
-                    break;
-            }
-            return style;
-        };
-        $scope.setActive = function (item) {
-            if (typeof item === 'object') {
-                item = item.url;
-            }
-            angular.forEach($scope.items, function (o, i) {
-                o.url && (o.active = (item.replace(/#|\//g, '') === o.url.replace(/#|\//g, '')));
-                angular.forEach(o.subs, function (v, k) {
-                    var flag = (item.replace(/#|\//g, '') === v.url.replace(/#|\//g, ''));
-                    v.active = flag;
-                    if (!!flag) {
-                        o.url && (o.active = flag);
+        $rootScope.menuItems = [];
+        var updateItems = function (list, item) {
+            if (!list || !item) {
+                return null;
+            };
+            var sourceItems = angular.copy(list);
+            var id = item.pid;
+            function getObj (data) {
+                var _thisObj = arguments.callee;
+                if (!data) {
+                    return sourceItems;
+                }
+                angular.forEach(data, function (v, k) {
+                    if (v.id - 0 === id - 0) {
+                        if (!v.subs) {
+                            v.subs = [];
+                        }
+                        v.subs.push(item);
+                        return;
+                    } else {
+                        _thisObj(v.subs);
                     }
                 });
-            });
+                return sourceItems;
+            }
+            var node = getObj(sourceItems);
+            return sourceItems;
         };
-        $scope.setActive($state.current.url);
+        var formatDatas = function (data) {
+            var items = [];
+            angular.forEach(data, function (v) {
+                delete v.updatetime;
+                delete v.editor;
+                if (v.pid - 0 === 0) {
+                    items.push(v);
+                } else {
+                    items = updateItems(items, v);
+                }
+            });
+            return items;
+        };
+        fetchService.get({
+            url: CONFIG.api.common.getMenus,
+            data: {}
+        }).then(function (ret) {
+            ret = !!ret.length ? ret[0].data : ret.data;
+            if (ret.status - 0 === 0) {
+                var data = formatDatas(ret.data);
+                $timeout(function () {
+                    $rootScope.menuItems = data || [];
+                    !!data.length && $scope.$root.$broadcast('Menus:resetHover', data);
+                    console.log(data);
+
+                })
+            }
+           // $scope.$root.menuItems = ret.data;
+          //  scope.$root.$broadcast('Menus:resetHover', ret.data);
+        });
     });
 

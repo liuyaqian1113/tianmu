@@ -1,0 +1,80 @@
+<!-- begin page-header -->
+<h1 class="page-header">菜单管理</h1>
+<!-- end page-header -->
+<!-- begin row -->
+<div class="row">
+    <!-- begin col-12 -->
+    <div class="col-md-4">
+        <!-- begin sidebar nav -->
+        <ul class="nav" sidebar="sortable" ng-sortable edit-menu>
+        </ul>
+        <!-- end sidebar nav -->
+    </div>
+    <!-- end col-12 -->
+</div>
+<div id="menu-tools" ng-show="toolStatus" ng-style="styles" edit-menu-tools="menus.menuConfig"></div>
+<script type="text/ng-template" id="menuToolsEdit.html">
+    <div class="modal-header">
+        <h3 class="modal-title">{{modalTitle}}</h3>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" name="menuForm">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">&nbsp;</label>
+                <div class="col-sm-10">
+                    <input type="hidden" class="form-control" ng-model="menus.id">
+                    <input type="hidden" class="form-control" ng-model="menus.hasSub">
+                    <input type="hidden" class="form-control" ng-model="menus.order">
+                    <input type="hidden" class="form-control" ng-model="menus.type">
+                    <input type="hidden" class="form-control" ng-model="menus.pid">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">菜单名称</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" placeholder="菜单名称" required ng-model="menus.name">
+                    <p class="help-block"></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">菜单URL</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" placeholder="菜单链接" ng-model="menus.url" ng-disabled="menus.url == 'javascript:;'">
+                    <p class="help-block"></p>
+                </div>
+            </div>
+            <div class="form-group" ng-if="menus.type != 'nav-group'">
+                <label class="col-sm-2 control-label">菜单图标</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" placeholder="菜单图标的classname" ng-model="menus.icons">
+                    <p class="help-block"></p>
+                </div>
+            </div>
+            <div class="form-group" ng-if="menus.editable">
+                <label class="col-sm-2 control-label">菜单权限</label>
+                <div class="col-sm-10">
+                    <div class="radio">
+                        <label title="允许业务线管理员配置, 业务线成员可见">
+                            <input type="radio" name="editable" value="2" ng-model="menus.editable" ng-checked="menus.editable == 2"> 私有菜单
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label title="系统菜单, 只有超级管理员才允许配置, 所有成员可见">
+                            <input type="radio" name="editable" value="1" ng-model="menus.editable" ng-checked="menus.editable == 1"> 系统菜单
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">&nbsp;</label>
+                <div class="col-sm-10">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-disabled="menuForm.$invalid" ng-click="ok()"> 保存</button>
+        <button class="btn btn-warning" ng-click="cancel()">退出</button>
+    </div>
+</script>
+<!-- end row -->

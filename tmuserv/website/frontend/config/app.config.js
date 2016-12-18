@@ -1,6 +1,6 @@
 '@file: app.config';
 'use strict';
-angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.lazyLoad']).constant('CONFIG', {
+angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.lazyLoad', 'ui.bootstrap']).constant('CONFIG', {
     debuger: false, // 是否开启debugger模式
     noCache: true,
     version: window.ProjectVersion || '1.0.1',
@@ -34,6 +34,47 @@ angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.laz
         });
         return flag;
     },
+    bindData: function (act, data, fn) {
+        var _this = this;
+        return this.$scope.$on('Data:' + act, function (event, args) {
+            if (!!fn) {
+                if (!_this._setData) {
+                    _this._setData = {};
+                }
+                _this._setData[act] = fn;
+            }
+            if (args && args.data) {
+             // data.pop();
+            }
+            (args.callback) && args.callback(data);
+        });
+    },
+    getData: function (act) {
+        var me = this;
+        var fn = function () {
+            var args = {};
+            var _this = this;
+            this._data = {};
+            this.then = function (a) {
+                // 可以复制给一个变量然后delete _this._data[act];
+                var _ret = _this._data[act];
+               // delete _this._data[act];
+                return a(_ret);
+            };
+            args.callback = function (data) {
+                _this._data[act] = data;
+            };
+            me.$scope.$emit('Data:' + act, args);
+        };
+        var ret = new fn();
+        return ret;
+    },
+    setData: function (act, data) {
+        if (!this._setData || !this._setData[act]) {
+            return null;
+        }
+        return this._setData[act](data);
+    },
     getToken: function () {
         var date = new Date().getMilliseconds();
         var hash = Math.floor(Math.random() * 100000 + 1);
@@ -65,7 +106,9 @@ angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.laz
         login: 'http://' + location.host + '/searchboxbi/api/login'
     },
     api: {
-        common: {},
+        common: {
+            getMenus: 'api/tmu/menu/getMenus'
+        },
         index: { //首页
             list: 'api/list'
         },
@@ -87,6 +130,11 @@ angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.laz
         scene: {
             getCategory: 'api/tmu/theme/getCategory',
             getThemeConf: 'api/tmu/scene/getThemeConfig'
+        },
+        menu: {
+            save: 'api/tmu/menu/save',
+            getById: 'api/tmu/menu/getById',
+            delete: 'api/tmu/menu/delete'
         }
     }
 }).filter('transferHtml', function ($sce) {
@@ -94,6 +142,7 @@ angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.laz
         return $sce.trustAsHtml(html);
     }
 }).run(function ($rootScope, $ocLazyLoad, $state, CONFIG) {
+    CONFIG.$scope = $rootScope;
     CONFIG.USERINFOS = {
         uname: typeof USERINFOS !== 'undefined' ? USERINFOS.user : 'user01',
         permission: ['all']
@@ -215,12 +264,14 @@ angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.laz
         return prjstart();
     }
 
+  //      <script type="text/javascript" src="./frontend/lib/js/ui-bootstrap-tpls-0.11.0.min.js"></script>
     function prjstart(args) {
         return loadJsCss([
             './frontend/modules/common/loading/loading.css',
             './frontend/modules/common/loading/loading.js',
             './frontend/service/fetch.js',
-            './frontend/lib/js/echarts3.js'
+            './frontend/lib/js/echarts3.js',
+            './frontend/lib/js/ui-bootstrap-tpls-0.11.0.min.js'
         ], function () {
             args = args || {};
             window.USERINFOS = {

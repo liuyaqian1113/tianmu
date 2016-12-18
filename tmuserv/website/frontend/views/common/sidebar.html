@@ -1,14 +1,24 @@
-<div class="sidebar-nav">
-    <div class="nav-canvas">
-        <div class="nav-sm nav nav-stacked"></div>
-        <ul class="nav nav-pills nav-stacked main-menu">
-                <li ng-repeat="item in items" ng-class="getMenuClass(item)">
-                    <span ng-if="item.type == 'header'" href="{{item.url}}"> {{item.name}}</span>
-                    <a ng-if="item.type != 'header'" href="{{item.url}}" ng-click="setActive(item)"><i class="{{item.icons}}"></i><span> {{item.name}}</span></a>
-                    <ul class="nav nav-pills nav-stacked" ng-if="item.subs" ng-show="item.active">
-                        <li ng-repeat="sub in item.subs" ng-class="{true: 'active'}[sub.active]" ng-click="setActive(sub)"><a ng-href="{{sub.url}}">{{sub.name}}</a></li>
-                    </ul>
-                </li>
-        </ul>
-    </div>
+<!-- begin sidebar scrollbar -->
+<div data-scrollbar="true" data-height="100%">
+    <!-- begin sidebar user -->
+    <ul class="nav">
+        <li class="nav-profile">
+            <div class="image">
+                <a href="javascript:;"><img src="./frontend/theme/blue/images/user-13.jpg" alt="" /></a>
+            </div>
+            <div class="info">
+                Sean Ngu
+                <small>Front end developer</small>
+            </div>
+        </li>
+    </ul>
+    <!-- end sidebar user -->
+    <!-- begin sidebar nav -->
+    <ul class="nav" sidebar>
+        <!-- begin sidebar minify button -->
+        <li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
+        <!-- end sidebar minify button -->
+    </ul>
+    <!-- end sidebar nav -->
 </div>
+<!-- end sidebar scrollbar -->
