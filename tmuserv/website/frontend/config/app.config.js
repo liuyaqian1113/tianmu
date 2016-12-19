@@ -132,9 +132,10 @@ angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.laz
             getThemeConf: 'api/tmu/scene/getThemeConfig'
         },
         menu: {
-            save: 'api/tmu/menu/save',
-            getById: 'api/tmu/menu/getById',
-            delete: 'api/tmu/menu/delete'
+            save: 'api/tmu/menu/saveMenu',
+            getById: 'api/tmu/menu/getMenuById',
+            delete: 'api/tmu/menu/deleteMenu',
+            update: 'api/tmu/menu/updateMenu'
         }
     }
 }).filter('transferHtml', function ($sce) {

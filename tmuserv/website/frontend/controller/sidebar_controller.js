@@ -11,16 +11,16 @@ angular.module(window.ProjectName)
             };
             var sourceItems = angular.copy(list);
             var id = item.pid;
-            function getObj (data) {
+            function getDataObj (data) {
                 var _thisObj = arguments.callee;
                 if (!data) {
                     return sourceItems;
                 }
                 angular.forEach(data, function (v, k) {
+                    if (!v.subs) {
+                        v.subs = [];
+                    }
                     if (v.id - 0 === id - 0) {
-                        if (!v.subs) {
-                            v.subs = [];
-                        }
                         v.subs.push(item);
                         return;
                     } else {
@@ -29,7 +29,7 @@ angular.module(window.ProjectName)
                 });
                 return sourceItems;
             }
-            var node = getObj(sourceItems);
+            var node = getDataObj(sourceItems);
             return sourceItems;
         };
         var formatDatas = function (data) {
@@ -37,6 +37,9 @@ angular.module(window.ProjectName)
             angular.forEach(data, function (v) {
                 delete v.updatetime;
                 delete v.editor;
+                if (!v.subs) {
+                    v.subs = [];
+                }
                 if (v.pid - 0 === 0) {
                     items.push(v);
                 } else {

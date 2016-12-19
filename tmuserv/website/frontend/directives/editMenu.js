@@ -1,5 +1,5 @@
 /**
- * Created by liekkas.zeng on 2015/1/7.
+ * Created by panjian01 on 2016/12/16.
  */
 angular.module(window.ProjectName)
     .controller('ModalInstanceCtrl', function ($scope, $modalInstance, opts) { //依赖于modalInstance
@@ -12,11 +12,7 @@ angular.module(window.ProjectName)
         var level = data.type;
         data.editable = '';
         if (type === 'child') { // 创建子菜单
-            if (data.type === 'nav-group') {
-            } else if (data.type === 'has-sub') {
-                data.subs = [];
-            } else if (data.type === 'last-sub') {
-            }
+            data.subs = [];
             level = 'last-sub';
             delete data.editable;
             data.id = '';
@@ -28,12 +24,11 @@ angular.module(window.ProjectName)
         } else if (type === 'siblings') { // 创建同级菜单
             if (data.type === 'nav-group') {
                 data.editable = 2;
-                data.subs = [];
             } else if (data.type === 'has-sub') {
                 level = 'last-sub';
-                data.subs = [];
             } else if (data.type === 'last-sub') {
             } 
+            data.subs = [];
             data.id = '';
             data.pid = opts.data.pid || 0;
             data.name = '同级菜单';
@@ -43,10 +38,11 @@ angular.module(window.ProjectName)
         } else if (type === 'edit') { //编辑菜单
             console.log(data);
         }
+        data.action = type;
         $scope.menus = data;
         $scope.modalTitle = opts.title;
         $scope.ok = function(){  
-            $modalInstance.close($scope.menus, type); //关闭并返回当前选项
+            $modalInstance.close($scope.menus); //关闭并返回当前选项
         };
         $scope.cancel = function(){
             $modalInstance.dismiss('cancel'); // 退出
@@ -62,14 +58,11 @@ angular.module(window.ProjectName)
             ',
             controller: function ($scope) {
                 this.toolsList = [
-                    {name: 'siblings', title: '创建同级菜单', url: '', icon: 'icon-trash'},
-                    {name: 'child', title: '创建子菜单', url: '', icon: 'icon-trash'},
-                    {name: 'edit', title: '编辑此菜单', url: '', icon: 'icon-edit'},
-                    {name: 'delete', title: '删除此菜单', url: '', icon: 'icon-remove-sign'}
+                    {name: 'siblings', title: '创建同级菜单', url: '', icon: 'icon-arrow-left'},
+                    {name: 'child', title: '创建子菜单', url: '', icon: 'icon-arrow-down'},
+                    {name: 'edit', title: '编辑此菜单', url: '', icon: 'icon-pencil'},
+                    {name: 'delete', title: '删除此菜单', url: '', icon: 'icon-remove'}
                 ];
-              //  CONFIG.bindData('toolsList', this.toolsList, function (data) {
-               //     this.toolsList = data;
-              //  });
             },
             controllerAs: 'tools',
             link: function (scope, element, attrs) {
@@ -77,53 +70,87 @@ angular.module(window.ProjectName)
                 var config = scope.$eval(attrs.editMenuTools);
                 var currentData = null;
                 var toolsType = null;
-                var dataMaps = function (id, newData) {
+                /**
+                    根据id获取对应的数据对象
+                    @return
+                    source   整个儿menu对象
+                    parent   对应数据对象的父对象
+                    item  对应的数据对象
+                    index 对应数据对象在当前层级的序号
+                    siblings  对应数据对象的同级对象个数
+                */
+                var getDataById = function (id) {
                     items = scope.$root.menuItems;
                     if (!items) {
                         return null;
                     };
-                    var sourceItems = items;
-                    var nod = null;
-                    function getObj (data) {
+                    var result = {};
+                    function getDataObj (data) {
                         var _thisObj = arguments.callee;
                         angular.forEach(data, function (v, k) {
                             if (v.id - 0 === id - 0) {
-                                if (!!newData && !!toolsType) {
-                                    switch (toolsType) {
-                                        case 'child':
-                                            if (!data[k].subs) {
-                                                data[k].subs = [];
-                                            }
-                                            if (data[k].type === 'last-sub') {
-                                                data[k].type = 'has-sub';
-                                                !data[k].icons && (data[k].icons = 'fa fa-plus');
-                                                data[k].hasSub = true;
-                                            }
-                                            data[k].subs.push(newData);
-                                            break;
-                                        case 'siblings':
-                                            data.splice(k + 1, 0, newData);
-                                            break;
-                                        case 'edit':
-                                            data[k] = angular.extend(v, newData, true);
-                                           // data.splice(k, 1, newData);
-                                            break;
-                                    }
-                                    return nod = sourceItems;
-                                } else {
-                                    return nod = v;
-                                }
+                                return result = {
+                                    source: items,
+                                    parent: data,
+                                    item: v,
+                                    index: k,
+                                    siblings: data.length
+                                };
                             } else {
                                 _thisObj(v.subs);
                             }
                         });
-                        return nod;
+                        return result;
                     }
-                    var node = getObj(sourceItems);
+                    var node = getDataObj(items);
                     return node;
                 };
-                var updateMenu = function (data, type) {
+                var dataMaps = function (id, newData) {
+                    if (!id) {
+                        return null;
+                    };
+                    var sourceData = getDataById(id);
+                    if (!sourceData) {
+                        return null;
+                    }
+                    var parent = sourceData.parent;
+                    var item = sourceData.item;
+                    var index = sourceData.index;
+                    var siblings = sourceData.siblings;
+                    if (!!newData && !!toolsType) {
+                        switch (toolsType) {
+                            case 'child':
+                                if (!item.subs) {
+                                    item.subs = [];
+                                }
+                                if (item.type === 'last-sub') {
+                                    item.type = 'has-sub';
+                                    !item.icons && (item.icons = 'icon-plus');
+                                }
+                                item.subs.push(newData);
+                                break;
+                            case 'siblings':
+                                parent.splice(index + 1, 0, newData);
+                                break;
+                            case 'edit':
+                                item = angular.extend(item, newData, true);
+                                break;
+                            case 'delete':
+                                parent.splice(index, 1);
+                                siblings--;
+                                if (siblings.length === 0 && parent.type === 'has-sub') {
+                                    parent.type === 'last-sub';
+                                }
+                                break;
+                        }
+                        return sourceData.source;
+                    } else {
+                        return item;
+                    }
+                };
+                var updateMenu = function (data) {
                     var node = scope.$parent.currentMenuNode;
+                    var act  = data.action;
                     var type = data.type;
                     if (!!CONFIG.isEmptyObj(data) || !config) {
                         return $rootScope.poplayer = {
@@ -135,9 +162,10 @@ angular.module(window.ProjectName)
                     var putData = angular.copy(data);
                     delete putData.subs;
                     delete putData.hasSub;
+                    delete putData.action;
                     fetchService.get({
                         type: 'post',
-                        url: type === 'delete' ? config.delete : type === 'edit' ? config.update : config.save,
+                        url: act === 'delete' ? config.delete : act === 'edit' ? config.update : config.save,
                         data: putData
                     }).then(function (ret) {
                         var result = !!ret.length ? ret[0].data : ret.data;
@@ -151,10 +179,12 @@ angular.module(window.ProjectName)
                             type: 'succ',
                             content: '操作成功',
                             redirect: function () {
-                                var newItems = dataMaps(currentData.id, result.data[0]);
-                                console.log(newItems);
-                                scope.$emit('Sidebar:updateMenu', newItems);
-                                scope.$parent.$broadcast('Sortable:updateEvent', newItems);
+                                var setData = (act === 'edit' || act === 'delete') ? putData : result.data[0];
+                                console.log(setData);
+                                if (!!setData) {
+                                    var newItems = dataMaps(currentData.id, setData);
+                                    scope.$emit('Sidebar:updateMenu', newItems);
+                                }
                             }
                         };
                     });
@@ -166,7 +196,7 @@ angular.module(window.ProjectName)
                     if (!cfg) {
                         cfg = {};
                     }
-                    cfg.items = items;
+                    cfg.items = scope.$root.menuItems;
                     var modalInstance = $modal.open({
                         animation: false,
                         templateUrl: cfg.url || 'menuToolsEdit.html',  //指向上面创建的视图
@@ -179,10 +209,10 @@ angular.module(window.ProjectName)
                         }
                     });
                     modalInstance.opened.then(function ($scope) {// 模态窗口打开之后执行的函数  
-                        console.log($scope);  
+                      //  console.log(arguments);  
                     });
-                    modalInstance.result.then(function (data, type) { //点击确定回调函数
-                        updateMenu(data, type);
+                    modalInstance.result.then(function (data) { //点击确定回调函数
+                        updateMenu(data);
                        // CONFIG.getData('sidebar', data);
                     },function(){
                        
@@ -203,8 +233,11 @@ angular.module(window.ProjectName)
                         if (!!node) {
                             var id = node.attr('data-id');
                             currentData = dataMaps(id);
-                            if (!currentData || toolsType === 'delete') {
-                                return;
+                            if (!currentData) {
+                                return $rootScope.poplayer = {
+                                    type: 'error',
+                                    content: '请先选择菜单'
+                                };
                             }
                         } else {
                             currentData = {
@@ -215,12 +248,28 @@ angular.module(window.ProjectName)
                                 editable: 2
                             };
                         }
-                        modalOpen({
-                            data: currentData,
-                            title: btn.attr('title'),
-                            type: toolsType,
-                            size: ''
-                        });
+                        switch (toolsType) {
+                            case 'delete': //删除菜单
+                                if (!!currentData.subs && currentData.subs.length > 0) {
+                                    return $rootScope.poplayer = {
+                                        type: 'error',
+                                        content: '请先移除子菜单'
+                                    };
+                                }
+                                currentData.action = toolsType;
+                                updateMenu(currentData);
+                                break;
+                            case 'siblings': // 同级菜单
+                            case 'child': // 子菜单
+                            case 'edit': // 编辑菜单
+                                modalOpen({
+                                    data: currentData,
+                                    title: btn.attr('title'),
+                                    type: toolsType,
+                                    size: ''
+                                });
+                                break;
+                        }
                     });
                 });
             }
@@ -229,14 +278,46 @@ angular.module(window.ProjectName)
     .directive('editMenu', function ($timeout, CONFIG) {
         return {
             scope: true,
-          //  require: '?^sidebar',
+          //  require: '?^editMenuTools',
             restrict: 'A',
             link: function (scope, element, attrs) {
                 var oDom = $(element);
+                var oTools = oDom.siblings('#menu-tools');
                 oDom.unbind().click('a', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
                 });
+                var getSelector = function (node) {
+                    if (!node || !node.length) {
+                        return null;
+                    }
+                    var selectors = [];
+                    var oId = node.attr('id');
+                    if (oId) {
+                        oId = '#' + node.attr('id');
+                    }
+                    oId && selectors.push(oId);
+                    var oClass = node.attr('class');
+                    if (oClass) {
+                        oClass = oClass.split(' ');
+                        oClass = oClass.map(function (o) {
+                            if (!!o && o !== null && o !== 'ng-scope') {
+                            console.log(o)
+                                selectors.push(o);
+                            }
+                        });
+                    }
+                    console.log(selectors);
+                    return selectors;
+                };
+                var checkContain = function (container, node) {
+                    var flag = false;
+                    var hasCont = $(node).closest(container);
+                    if (hasCont) {
+                        flag = true;
+                    }
+                    return flag;
+                };
                 function setHover() {
                     var oEdit = oDom.find('a');
                     var menuOffset = oDom.offset();
@@ -258,7 +339,12 @@ angular.module(window.ProjectName)
                         !scope.$parent.toolStatus && (scope.$parent.toolStatus = true);
                         scope.$parent.$apply();
                     }, function (e) {
-
+                        var toEl = e.toElement;
+                        var isContain = checkContain('#menu-tools, .nav', toEl);
+                        if (!isContain) {
+                            !!scope.$parent.toolStatus && (scope.$parent.toolStatus = false);
+                        }
+                       // if (!!checkContainer(oDom.add(oTools), toEl))
                     });
 
                 }

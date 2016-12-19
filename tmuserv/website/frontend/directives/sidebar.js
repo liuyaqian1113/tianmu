@@ -11,11 +11,11 @@ angular.module(window.ProjectName)
                     <a ng-href="{{item.href}}" ng-if="item.permission" data-id="{{item.id}}" class="sort-handle nav-header source">{{item.name}}</a>\
                     <ul ng-if="(item.subs && item.subs.length > 0) && item.permission" class="root-menu">\
                         <li ng-repeat="tm in item.subs" ng-class="{\'has-sub active\': (tm.subs && tm.subs.length > 0) && tm.active, \'has-sub\': (tm.subs && tm.subs.length > 0) && tm.active != true, \'active\': tm.active}" ng-if="tm.permission" class="sort-handle">\
-                            <a ng-if="!tm.subs && tm.type == \'last-sub\' && tm.permission" ng-href="{{tm.url}}" data-id="{{tm.id}}" class="source">\
+                            <a ng-if="(!tm.subs || (!!tm.subs && !tm.subs.length)) && tm.permission" ng-href="{{tm.url}}" data-id="{{tm.id}}" class="source">\
                                 <i class="{{tm.icons}}"></i>\
                                 <span ng-bind="tm.name"></span>\
                             </a>\
-                            <a ng-if="((tm.subs && tm.subs.length > 0) || tm.type === \'has-sub\') && tm.permission" href="javascript:;" data-id="{{tm.id}}" class="source">\
+                            <a ng-if="(tm.subs && tm.subs.length > 0) && tm.permission" href="javascript:;" data-id="{{tm.id}}" class="source">\
                                 <b class="caret pull-right"></b>\
                                 <i class="{{tm.icons}}"></i>\
                                 <span>{{tm.name}}</span>\
@@ -27,12 +27,10 @@ angular.module(window.ProjectName)
                 </li>\
             ',
             controller: function ($scope) {
-                console.log(fetchService); // \f067
                 $templateCache.put('sidebarTree', '\
                     <li ng-repeat="sub in tm.subs" ng-class="{\'has-sub active\': (sub.subs && sub.subs.length > 0) && sub.active, \'has-sub\': (sub.subs && sub.subs.length > 0) && sub.active != true, \'active\': (!sub.subs || (sub.subs && sub.subs.length == 0)) && sub.active, \'expand\': status == \'sortable\'}" ng-if="sub.permission" class="sort-handle ">\
                         <a ng-if="(!sub.subs || (sub.subs && sub.subs.length == 0)) && sub.permission" data-id="{{sub.id}}" href="{{sub.url}}" class="source">{{sub.name}}</a>\
-                        <a ng-if="(sub.subs && sub.subs.length > 0) && sub.permission && sub.type == \'has-sub\'" href="javascript:;" data-id="{{sub.id}}" class="source">\
-                            <b class="caret pull-right"></b>\
+                        <a ng-if="(sub.subs && sub.subs.length > 0) && sub.permission" href="javascript:;" data-id="{{sub.id}}" class="source">\
                             <span>{{sub.name}}</span>\
                         </a>\
                         <ul ng-if="(sub.subs && sub.subs.length > 0)" class="sub-menu" ng-if="sub.permission" ng-style="{\'display\': status == \'sortable\' ? \'block\': \'none\'}" ng-include="\'sidebarTree\'"  ng-init="tm=sub"></ul>\
@@ -161,6 +159,7 @@ angular.module(window.ProjectName)
                     });
                     scope.$root.$on('Sidebar:updateMenu', function (event, data) {
                         if (!!data) {
+                            console.log('Sidebar:updateMenu');
                             $timeout(function () {
                                 scope.$root.menuItems = data;
                             });

@@ -9,7 +9,8 @@ var obj2Arr = function (obj, type) {
     }
     var arr = {
         key: [],
-        val: []
+        val: [],
+        source: obj
     };
     for (var o in obj) {
         if (!o.hasOwnProperty(o) && !/^(\$|\_)/i.test(o)) {
@@ -80,7 +81,7 @@ router.get('/tmu/theme/themeList', function (req, res, next) {
 菜单操作
 */
 
-router.post('/tmu/menu/save', function (req, res, next) {
+router.post('/tmu/menu/saveMenu', function (req, res, next) {
     var args = req.body || req.query || req.params;
     if (!!args && args.id === '') {
         delete args.id;
@@ -101,11 +102,23 @@ router.post('/tmu/menu/save', function (req, res, next) {
        // return json(res, 0, result);
     });
 });
-router.post('/tmu/menu/update', function (req, res, next) {
+router.post('/tmu/menu/updateMenu', function (req, res, next) {
     var args = req.body || req.query || req.params;
     args = obj2Arr(args, 'post');
     console.log(args, '========update');
     sql.set('updateMenu', args, function (status, result) {
+        if (!!status) {
+            return json(res, 1, result || '数据库操作失败');
+        }
+       return json(res, 0, result);
+    });
+});
+// 删除菜单, 假如为系统菜单则需要超级管理员权限认证
+router.post('/tmu/menu/deleteMenu', function (req, res, next) {
+    var args = req.body || req.query || req.params;
+    args = obj2Arr(args, 'post');
+    console.log(args, '========delete\n');
+    sql.set('deleteMenu', args, function (status, result) {
         if (!!status) {
             return json(res, 1, result || '数据库操作失败');
         }

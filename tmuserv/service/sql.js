@@ -13,9 +13,24 @@ var sql = {
     saveMenu: function (key, val) {
         return 'INSERT INTO tmu_menus('+ key.join(',') +') VALUES('+ val.join(',') +')'
     },
-    updateMenu: 'UPDATE tmu_menus SET name=?, url=?, icons=? WHERE id=?'
-    // themeList: 'SELECT themeId,themeName,updatetime FROM tmu_theme LEFT OUTER JOIN tmu_category on tmu_theme.themeCategoryId = tmu_category.id'
-    // INSERT INTO tmu_category(name) VALUES(?) ON DUPLICATE KEY UPDATE name=?'
+    updateMenu: 'UPDATE tmu_menus SET name=?, url=?, icons=? WHERE id=?',
+    deleteMenu: 'DELETE FROM tmu_menus WHERE id=?'
+};
+var keyOrder = {
+    updateMenu: ['name', 'url', 'icons', 'id'],
+    deleteMenu: ['id']
+};
+var filterData = function (args, arr) {
+    var ary = [];
+    for (var i = 0,l=arr.length;i<l;i++) {
+        var key = arr[i];
+        if (typeof args[key] === 'undefined') {
+            console.log(key + ': 缺少参数值');
+            continue;
+        }
+        ary.push(args[key]);
+    }
+    return ary;
 };
 var controller = {
     set: function (action, args, cb) {
@@ -35,12 +50,15 @@ var controller = {
             var key = [],
                 val = [],
                 dummy = [];
-            if (args instanceof Object) {
+            if (!!keyOrder[action]) {
+                key = keyOrder[action];
+                val = filterData(args.source, key);
+            } else if (args instanceof Object) {
                 key = args.key;
                 val = args.val;
-                for(var i = 0, l = val.length; i < l; i++) {
-                    dummy.push('?');
-                }
+            }
+            for(var i = 0, l = val.length; i < l; i++) {
+                dummy.push('?');
             }
             var act = typeof sql[action] === 'string' ?  sql[action] : sql[action](key, dummy);
             console.log(act, key.join(','), val.join(','), '====准备入库');
