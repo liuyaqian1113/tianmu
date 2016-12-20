@@ -8,7 +8,7 @@
         <meta http-equiv="Cache-Control" content="no-cache">
         <meta http-equiv="Expires" content="0">
 
-        <link id="bs-css" href="./frontend/lib/css/jquery-ui.min.css" rel="stylesheet">
+        <!--<link id="bs-css" href="./frontend/lib/css/jquery-ui.min.css" rel="stylesheet">-->
         <link id="bs-css" href="./frontend/lib/css/bootstrap.min.css" rel="stylesheet">
         <link id="bs-css" href="./frontend/lib/css/font-awesome.min.css" rel="stylesheet">
         <link href='./frontend/lib/css/common.css' rel='stylesheet'>
@@ -18,7 +18,7 @@
 
     <body>
         <!-- begin #page-container -->
-        <div id="page-container">
+        <div id="page-container" class="{{$state.current.name}}">
             <!-- begin #header -->
             <div id="header" class="header navbar navbar-default navbar-fixed-top" ui-view="headerContainer"></div>
             <!-- begin #sidebar -->

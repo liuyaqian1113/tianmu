@@ -11,7 +11,9 @@ angular.module(window.ProjectName).controller('index_controller',
             $('#myModal').modal('show');
         });
         $scope.sortableConf = {
-            dom: '',
-            handler: '.panel-heading'
+            config: [
+             //   {dom: 'this', items: '.panel', handle: '.panel-heading', connectWith: ''},
+                {dom: '.sortable-row', items: '.panel', handle: '.panel-heading', connectWith: '.sortable-row'}
+            ]
         };
     });

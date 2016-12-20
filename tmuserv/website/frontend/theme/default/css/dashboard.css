@@ -1,0 +1,8 @@
+
+.btn-nonebg {
+    background-image: none !important;
+    color: #666;
+}
+.btn-nonebg:hover {
+    color: #fff;
+}

@@ -2,7 +2,7 @@
  * Created by panjian01 on 2016/12/16.
  */
 angular.module(window.ProjectName)
-    .controller('ModalInstanceCtrl', function ($scope, $modalInstance, opts) { //依赖于modalInstance
+    .controller('MenuModalInstanceCtrl', function ($scope, $modalInstance, opts) { //依赖于modalInstance
         $scope.items = opts.items;
         $scope.selected = {
             item : $scope.items[0]
@@ -200,7 +200,7 @@ angular.module(window.ProjectName)
                     var modalInstance = $modal.open({
                         animation: false,
                         templateUrl: cfg.url || 'menuToolsEdit.html',  //指向上面创建的视图
-                        controller : cfg.ctrl || 'ModalInstanceCtrl',// 初始化模态范围
+                        controller : cfg.ctrl || 'MenuModalInstanceCtrl',// 初始化模态范围
                         size : cfg.size, //大小配置
                         resolve : {
                             opts : function(){

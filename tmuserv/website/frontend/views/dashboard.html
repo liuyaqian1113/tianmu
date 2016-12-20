@@ -1,0 +1,44 @@
+<!-- begin page-header -->
+<h1 class="page-header">聚合页 <small>实时监控聚合展现</small></h1>
+<!-- end page-header -->
+<script type="text/ng-template" id="tmpl/tables.html">
+    <!-- begin col-6 -->
+    <div class="sortable-row col-md-{{panel.cols}}" ng-repeat="panel in tablesPanel">
+        <!-- begin panel -->
+        <div class="panel panel-inverse">
+            <div class="panel-heading">
+                <div class="panel-heading-btn" ng-if="tablesModel == 'edit'">
+                    <a href="javascript:;" class="btn btn-xs btn-nonebg" ng-click="tablesRemove()" title="编辑表格"><i class="icon-edit"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-nonebg" ng-click="tablesAddCols(panel)" title="增加宽度"><i class="icon-resize-horizontal"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-nonebg" ng-click="tablesMinusCols(panel)" title="减少宽度"><i class="icon-resize-small"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-nonebg" ng-click="tablesRemove(panel)" title="移出聚合页"><i class="icon-trash"></i></a>
+                </div>
+                <h4 class="panel-title">{{panel.tables.title}}</h4>
+            </div>
+            <div class="panel-body">
+                <table class="table table-striped">
+                    <thead ng-repeat="header in panel.tables.headers">
+                        <tr>
+                            <th ng-repeat="head in header" rows="{{head.rows}}" cols="{{head.cols}}">{{head.text}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="bodys in panel.tables.bodys">
+                            <td ng-repeat="body in bodys" rows="{{body.rows}}" cols="{{body.cols}}">{{body.text}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="panel-footer">
+                <ng-pages totalitems="{{panel.total}}" listsizes="5" itemsperpage="{{panel.perpage}}">
+                </ng-pages>
+            </div>
+        </div>
+        <!-- end panel -->
+    </div>
+    <!-- end col-6 -->
+</script>
+<!-- begin row -->
+<div class="row" ng-sortable="sortableConf" ng-tables="tablesConf">
+</div>
+<!-- end row -->

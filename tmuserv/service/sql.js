@@ -1,20 +1,20 @@
 var db = require('../service/db');
 var mysql = db.mysql();
 var sql = {
-    saveCategory: 'INSERT INTO tmu_category(name,updatetime) SELECT `name` FROM DUAL WHERE NOT EXISTS(SELECT `name` FROM tmu_category WHERE name=?) VALUES(?,?)',
-    getCategory: 'SELECT id,name FROM tmu_category ORDER BY id',
+    saveCategory: 'INSERT INTO tmu_theme_category(name,updatetime) SELECT `name` FROM DUAL WHERE NOT EXISTS(SELECT `name` FROM tmu_theme_category WHERE name=?) VALUES(?,?)',
+    getCategory: 'SELECT id,name FROM tmu_theme_category ORDER BY id',
     saveTheme: function (key, val) {
         return 'INSERT INTO tmu_theme('+ key +') VALUES('+ val +')'
     },
-    themeList: 'SELECT themeId,themeName,updatetime,(SELECT name FROM tmu_category WHERE id=tmu_theme.themeCategoryId) AS themeCategory FROM tmu_theme',
+    themeList: 'SELECT themeId,themeName,updatetime,(SELECT name FROM tmu_theme_category WHERE id=tmu_theme.themeCategoryId) AS themeCategory FROM tmu_theme',
     getThemeConfig: 'SELECT * FROM tmu_theme WHERE themeId = ?',
-    getMenuById: 'SELECT * FROM tmu_menus WHERE id = ?',
-    getMenus: 'SELECT * FROM tmu_menus ORDER BY id',
+    getMenuById: 'SELECT * FROM tmu_sys_menus WHERE id = ?',
+    getMenus: 'SELECT * FROM tmu_sys_menus ORDER BY id',
     saveMenu: function (key, val) {
-        return 'INSERT INTO tmu_menus('+ key.join(',') +') VALUES('+ val.join(',') +')'
+        return 'INSERT INTO tmu_sys_menus('+ key.join(',') +') VALUES('+ val.join(',') +')'
     },
-    updateMenu: 'UPDATE tmu_menus SET name=?, url=?, icons=? WHERE id=?',
-    deleteMenu: 'DELETE FROM tmu_menus WHERE id=?'
+    updateMenu: 'UPDATE tmu_sys_menus SET name=?, url=?, icons=? WHERE id=?',
+    deleteMenu: 'DELETE FROM tmu_sys_menus WHERE id=?'
 };
 var keyOrder = {
     updateMenu: ['name', 'url', 'icons', 'id'],

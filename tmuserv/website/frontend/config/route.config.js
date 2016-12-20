@@ -330,16 +330,43 @@ route_module.factory('permissionService', function ($q, $rootScope, CONFIG) {
                     }
                 }
             },
+            // dashboard配置
+            dashboard: {
+                name: 'dashboard',
+                url: '/report/dashboard',
+                parent: common,
+                resolve: {
+                    deps: ['$rootScope', '$ocLazyLoad', function ($rootScope, $ocLazyLoad) {
+                        return $ocLazyLoad.load([
+                            'theme/default/css/dashboard.css',
+                            'controller/dashboard_controller.js',
+                            'directives/ng-pages.js',
+                            'directives/ng-tables.js',
+                            'directives/ng-sortable.js',
+                            'directives/ng-echarts.js'
+                        ]);
+                    }]
+                },
+                views: {
+                    'mainContainer@': {
+                        templateUrl: CONFIG.webRoot + 'views/dashboard.html',
+                        controller: 'dashboard_controller'
+                    }
+                }
+            },
             // 表格配置
             tables: {
                 name: 'tables',
-                url: '/tables',
+                url: '/report/tables',
                 parent: common,
                 resolve: {
                     deps: ['$rootScope', '$ocLazyLoad', function ($rootScope, $ocLazyLoad) {
                         return $ocLazyLoad.load([
                             'theme/default/css/tables.css',
                             'controller/tables_controller.js',
+                            'directives/ng-pages.js',
+                            'directives/ng-tables.js',
+                            'directives/ng-sortable.js',
                             'directives/ng-echarts.js'
                         ]);
                     }]

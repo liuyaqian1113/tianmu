@@ -2960,6 +2960,13 @@ label {
     padding: 10px;
     border: none
 }
+.tables .navbar-toggle {
+    display: block !important;
+    background-color: #2D353C;
+}
+.tables .navbar-default .navbar-toggle .icon-bar {
+    background: #fff;
+}
 
 .navbar-toggle.pull-left {
     margin-left: 15px;
@@ -2970,9 +2977,15 @@ label {
     background: #333
 }
 
-.navbar-toggle:focus,
+.navbar-toggle:focus {
+    /*background: 0 0!important;*/
+    background: #2D353C !important;
+    opacity: 1 !important;
+    filter: alpha(opacity=1) !important;
+}
 .navbar-toggle:hover {
-    background: 0 0!important;
+    /*background: 0 0!important;*/
+    background: #2D353C !important;
     opacity: .6;
     filter: alpha(opacity=60)
 }
@@ -3111,7 +3124,7 @@ label {
     bottom: 0;
     padding-top: 54px;
     background: #2d353c;
-    z-index: 1010;
+    z-index: 11;
     -webkit-transform: translateZ(0)
 }
 
@@ -3122,7 +3135,18 @@ label {
     left: 0;
     bottom: 0;
     width: 220px;
-    z-index: 1000
+    z-index: 10
+}
+
+.tables .sidebar,
+.tables .sidebar-bg {
+    left: -220px;
+    -webkit-transition: left ease-in-out .3s;
+    transition: left ease-in-out .3s;
+}
+.tables.page-sidebar-toggled .sidebar,
+.tables.page-sidebar-toggled .sidebar-bg {
+    left: 0;
 }
 
 .nav>li:after,
@@ -3169,8 +3193,9 @@ label {
 }
 
 .nav>li>a.nav-header {
-    background: none;
-    padding: 5px 20px 0;
+    color: #fff;
+    background: #00acac;
+    padding: 10px 20px;
 }
 .nav>li.active>a,
 .nav>li.active>a:focus,
@@ -3218,7 +3243,7 @@ label {
 
 .nav .root-menu {
     list-style-type: none;
-    padding: 10px 0;
+    padding: 0;
     margin: 0;
     position: relative;
 }
@@ -3331,7 +3356,7 @@ label {
 
 .nav>li.nav-group {
     margin: 0;
-    padding: 10px 0 0;
+    padding: 0;
     line-height: 20px;
     font-size: 12px;
     color: #6d7983
@@ -3581,9 +3606,17 @@ label {
 
 .content {
     margin-left: 220px;
-    padding: 54px 25px
+    padding: 54px 25px;
+    -webkit-transition: margin ease-in-out .3s;
+    transition: margin ease-in-out .3s;
 }
-
+/*.dashboard .content {
+    margin-left: 0;
+}
+.dashboard.page-sidebar-toggled .content {
+    margin-left: 220px;
+}
+*/
 .content.content-full-width {
     padding: 0
 }
@@ -4581,7 +4614,8 @@ legend {
 }
 
 .panel-heading-btn {
-    float: right
+    float: right;
+    cursor: default;
 }
 
 .panel-heading-btn>a {
@@ -4679,7 +4713,8 @@ legend {
 }
 
 .panel-body {
-    padding: 15px
+    padding: 15px;
+    overflow-x: auto;
 }
 
 .panel-body.no-border {
@@ -11365,4 +11400,11 @@ Website: http://www.seantheme.com/color-admin-v1.8/admin/
     background: url(../images/logo.png) no-repeat 5px 5px;
     padding-left: 50px;
     font-weight: bold;
+}
+
+.ui-sortable .col-md-12,
+.ui-sortable .col-md-6,
+.ui-sortable .col-md-4,
+.ui-sortable .col-md-3 {
+    min-height: 100px;
 }

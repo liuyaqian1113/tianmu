@@ -1,0 +1,38 @@
+#tables-manager {
+    width: 220px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    padding-top: 54px;
+    background: #2d353c;
+    z-index: 3;
+    -webkit-transform: translateZ(0);
+}
+#tables-props {
+    width: 220px;
+    position: absolute;
+    right: -220px;
+    top: 0;
+    bottom: 0;
+    padding-top: 54px;
+    background: #2d353c;
+    z-index: 3;
+    -webkit-transform: translateZ(0);
+    -webkit-transition: right ease-in-out .3s;
+    transition: right ease-in-out .3s;
+}
+#tables-props form label {
+    color: #cfcfcf;
+}
+#tables-props form .control-label,
+#tables-props form .col-sm-12 {
+    width: auto !important;
+    float: none !important;
+}
+.showprops #tables-props {
+    right: 0;
+}
+.showprops .content {
+    margin-right: 220px;
+}
