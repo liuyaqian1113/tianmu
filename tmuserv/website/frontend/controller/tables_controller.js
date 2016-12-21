@@ -16,21 +16,24 @@ angular.module(window.ProjectName).controller('tables_controller',
         };
         var tablesFactory = {
             table: function () {
+                var type = 'table';
+                var key = type + '_' + Math.floor(Math.random() * 1000000 + 1);
                 return {
                     id: 1,
-                    key: 'tables_' + Math.floor(Math.random() * 1000000 + 1),
+                    key: key,
+                    type: type,
                     cols: 12,
                     order: $scope.tablesPanel.length + 1,
                     api: 'api://',
                     title: '表格名称',
                     tables: {
                         headers: [
-                            [
-                                {text: 'id', cols: 1, rows: 1},
-                                {text: 'name', cols: 1, rows: 1},
-                                {text: 'email', cols: 1, rows: 1}
-                            ]
-                        ],
+                            /*[
+                                {text: 'id', cols: 1, rows: 1, hasOrder: false, hasdrag: false, key: key + '_0_0'},
+                                {text: 'name', cols: 1, rows: 1, hasOrder: false, hasdrag: false, key: key + '_0_1'},
+                                {text: 'email', cols: 1, rows: 1, hasOrder: false, hasdrag: false, key: key + '_0_2'}
+                            ]*/
+                        ]/*,
                         bodys: [
                             [
                                 {text: 1, cols: 1, rows: 1},
@@ -47,7 +50,7 @@ angular.module(window.ProjectName).controller('tables_controller',
                                 {text: 'Harvinder Singh', cols: 1, rows: 1},
                                 {text: 'harvinder@hotamil', cols: 1, rows: 1}
                             ]
-                        ]
+                        ]*/
                     },
                     showpage: 0,
                     perpage: 10,

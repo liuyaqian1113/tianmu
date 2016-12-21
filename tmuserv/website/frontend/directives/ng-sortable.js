@@ -14,7 +14,7 @@ angular.module(window.ProjectName)
                 $timeout(function () {
                     var sConf = [];
                     var setSortable = function  () {
-                        if (angular.isArray(config.config)) {
+                        if (config && angular.isArray(config.config)) {
                             angular.forEach(config.config, function (v) {
                                 switch (v.dom) {
                                     case 'this':
@@ -62,7 +62,7 @@ angular.module(window.ProjectName)
                     scope.$on('Sortable:updateEvent', function (event, data) {
                         if (!!data) {
                             console.log(data);
-                          //  refreshSortable();
+                            refreshSortable();
                         }
                     });
                 }, 500);

@@ -36,3 +36,24 @@
 .showprops .content {
     margin-right: 220px;
 }
+.tables .panel-body .table thead {
+    border: 1px dashed #ccc;
+}
+.tables .panel-body .table thead:hover {
+    background-color: #fafafa;
+}
+.tables .panel-body .table thead th {
+    border: none!important;
+}
+#tableTools {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 5px;
+    margin: 0;
+    background: #efe;
+    border-radius: 5px 5px 0 0;
+    border: 1px dashed #ccc;
+    border-bottom: none;
+}

@@ -2712,7 +2712,8 @@ body {
     background: #d9e0e7;
     font-size: 12px;
     font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif, Microsoft Yahei;
-    color: #707478
+    color: #707478;
+    overflow-x: hidden;
 }
 
 .ie8 body {
@@ -4714,7 +4715,6 @@ legend {
 
 .panel-body {
     padding: 15px;
-    overflow-x: auto;
 }
 
 .panel-body.no-border {

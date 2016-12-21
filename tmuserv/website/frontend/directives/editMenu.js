@@ -17,7 +17,7 @@ angular.module(window.ProjectName)
             delete data.editable;
             data.id = '';
             data.url = '';
-            data.pid = opts.data.id | 0;
+            data.pid = opts.data.id || 0;
             data.name = '子菜单';
             data.type = level;
             data.icons = '';
