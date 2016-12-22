@@ -5,6 +5,8 @@ Source Server         : 大屏可视化平台
 Source Server Version : 50611
 Source Host           : localhost:3306
 Source Database       : bd_tianmu_visual_platform
+/Applications/XAMPP/xamppfiles/htdocs/kent/project/tianmu/tmuserv/document
+CREATE DATABASE `bd_tianmu_visual_platform` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 Target Server Type    : MYSQL
 Target Server Version : 50611
