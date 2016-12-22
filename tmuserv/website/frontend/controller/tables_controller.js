@@ -7,7 +7,9 @@ angular.module(window.ProjectName).controller('tables_controller',
         var api = CONFIG.api[$state.current.name];
         $scope.sortableConf = {
             config: [
-                {dom: 'this', items: '.sortable-row', handle: '.panel-heading', connectWith: '.sortable-row', cancel: '.panel-heading-btn'}
+                {dom: 'this', items: '.sortable-row', handle: '.panel-heading', connectWith: '.sortable-row', cancel: '.panel-heading-btn'},
+                {dom: '.table', items: '.thead', handle: '.thead-tools', connectWith: ''},
+                {dom: '.table .tr', items: '.th', handle: '', connectWith: ''}
                // {dom: '.sortable-row', items: '.panel', handle: '.panel-heading', connectWith: '.sortable-row'}
             ]
         };

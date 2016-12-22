@@ -36,19 +36,72 @@
 .showprops .content {
     margin-right: 220px;
 }
-.tables .panel-body .table thead {
-    border: 1px dashed #ccc;
+.tables .panel-body .table {
+    display: table;
 }
-.tables .panel-body .table thead:hover {
+.tables .panel-body .table .thead {
+    border: 1px dashed #ccc;
+    margin: 40px 0 -1px;
+    position: relative;
+    min-height: 30px;
+}
+.tables .panel-body .table .tbody {
+}
+.tables .panel-body .table .thead .thead-tools {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: -30px;
+    padding: 5px;
+    margin: 0;
+    background: #efe;
+    border-radius: 5px 5px 0 0;
+    border: 1px dashed #ccc;
+    border-bottom: none;
+}
+.tables .panel-body .table .thead:hover {
     background-color: #fafafa;
 }
-.tables .panel-body .table thead th {
-    border: none!important;
+
+.tables .panel-body .table .tr {
+    display: box;
+    display:-webkit-box;
+    box-orient:horizontal;
+    -webkit-box-orient:horizontal;
+    box-align: center;
+    -webkit-box-align: center;
+    margin: 0 -1px 0 0;
+    padding: 0;
+}
+.tables .panel-body .table .th,
+.tables .panel-body .table .td {
+    list-style: none;
+    display: flex;
+    box-flex:1;
+    -webkit-box-flex:1;
+    padding: 0;
+    border-right: 1px dashed #ccc;
+    min-height: 30px;
+    position: relative;
+}
+.tables .panel-body .table .th .context,
+.tables .panel-body .table .td .context {
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 7px;
+    font-weight: 700;
+    text-align: center;
+}
+.tables .panel-body .table .th:hover,
+.tables .panel-body .table .td:hover {
+    background: #efe;
 }
 #tableTools {
     display: none;
     position: absolute;
-    left: 0;
+    left: -1px;
     top: 0;
     padding: 5px;
     margin: 0;

@@ -120,12 +120,6 @@ angular.module(window.ProjectName)
                         });
                     }
                 };
-                scope.sortableConf = {
-                    config: [
-                        {dom: 'this', items: 'thead', handle: 'thead', connectWith: ''}
-                       // {dom: 'thead', items: 'th', handle: 'th', connectWith: ''}
-                    ]
-                };
                 var currentNumber = 0;
                 scope.tablesAddHeader = function (panel, type) {
                     var oPanels = scope.tablesPanel;
@@ -153,9 +147,9 @@ angular.module(window.ProjectName)
                         case 'cols': //新增列
                             break;
                     }
-                    console.log(panel, scope.tablesModel);
+                    scope.$emit('Sortable:updateEvent', true);
                 };
-                var getDataById = function (id, source) {
+                var getDataById = function (id, source, destroy) {
                     var oSource = source || scope.tablesPanel;
                     if (!oSource) {
                         return null;
@@ -173,6 +167,10 @@ angular.module(window.ProjectName)
                                     siblings: data.length
                                 };
                             } else {
+                                if (angular.isArray(v) && !v.length && !!destroy) {
+                                    data.splice(k, 1);
+                                   // continue;
+                                }
                                 if (!angular.isArray(v) && !v instanceof Object) {
                                     return v;
                                 }
@@ -184,27 +182,74 @@ angular.module(window.ProjectName)
                     var node = getDataObj(oSource);
                     return node;
                 };
+                scope.deleteHeaderCols = function (e, thData) {
+                    var oEl = $(e.target || e.srcElement);
+                    var oHead = oEl.closest('.thead');
+                    if (!!confirm('确定删除表头?')) {
+                        var oPanels = scope.tablesPanel;
+                        $timeout(function () {
+                            var index = oHead.index();
+                            oHead.remove();
+                            angular.isArray(thData) && thData.splice(index, 1);
+                        });
+                    }
+
+                };
                 scope.headerTools = function (e, colsData) {
                     var eType = e.type;
                     var oTh = $(e.target || e.srcElement);
-                    var oHead = oTh.closest('thead');
+                    var oHead = oTh.closest('.thead');
                     var oTools = $('#tableTools');
                     var oPanels = scope.tablesPanel;
                     var offset = {
                         top: oHead.offset().top - oTools.height() - 10,
-                        left: oTh.offset().left
+                        left: oTh.offset().left - 1
                     };
                     oTools.css(offset).show();
                     oTools.unbind().on('click', 'li', function (e) {
+                        var el = $(e.target || e.srcElement).closest('li.btn');
+                        console.log(colsData, oPanels);
                         var dataMap = getDataById(colsData.key, oPanels);
-                        console.log(colsData, dataMap, oPanels);
-                        var rowsData = {text: '新增项', cols: 1, rows: 1, hasOrder: false, hasDrag: false, key: oPanels.key + '_' + oHead.index() + '_' + oHead.children().length};
-                        $timeout(function () {
-                            dataMap.parent.push(rowsData);
-                            scope.$emit('Sortable:updateEvent', oPanels)
-                        });
-
+                        switch(el.attr('data-id')) {
+                            case 'addCols':
+                                var rowsData = {text: '新增项', cols: 1, rows: 1, hasOrder: false, hasDrag: false, key: dataMap.parent.key + '_' + oHead.index() + '_' + oHead.children().length};
+                                $timeout(function () {
+                                    dataMap.parent.push(rowsData);
+                                    scope.$emit('Sortable:updateEvent', true);
+                                });
+                                break;
+                            case 'addFlex':
+                                if (colsData.cols >= dataMap.siblings - 1) {
+                                    return colsData.cols = dataMap.siblings - 1;
+                                }
+                                $timeout(function () {
+                                    colsData.cols = colsData.cols + 1;
+                                });
+                                break;
+                            case 'minusFlex':
+                                if (colsData.cols <= 1) {
+                                    return colsData.cols = 1;
+                                }
+                                $timeout(function () {
+                                    colsData.cols = colsData.cols - 1;
+                                });
+                                break;
+                            case 'deleteRows':
+                               // var dataMap = getDataById(colsData.key, oPanels);
+                                
+                                break;
+                        }
                     });
+                };
+                scope.enableColsTitle = function (e, data) {
+                    var el = $(e.target || e.srcElement);
+                    el = el.closest('.th');
+                    el.prop('contenteditable', true);
+                };
+                scope.disableColsTitle = function (e, data) {
+                    var el = $(e.target || e.srcElement);
+                    el = el.closest('.th');
+                    el.removeProp('contenteditable');
                 };
             }
         }

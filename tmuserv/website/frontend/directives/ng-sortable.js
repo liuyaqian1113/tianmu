@@ -18,27 +18,28 @@ angular.module(window.ProjectName)
                             angular.forEach(config.config, function (v) {
                                 switch (v.dom) {
                                     case 'this':
-                                        v.dom = oDom;
+                                        v.element = oDom;
                                         break;
                                     default:
-                                        v.dom = oDom.find(v.dom);
+                                        v.element = oDom.find(v.dom);
                                         break;
                                 }
-                                if (v.dom && v.dom.length) {
+                                if (v.element && v.element.length) {
                                     sConf.push(v);
                                     bindSorable(v);
                                 }
+                                console.log(config.config, sConf, v);
                             });
                         }
                     };
                     function bindSorable (opts) {
-                        opts.dom.sortable({
+                        opts.element.sortable({
                             cursor: 'move',
                             connectWith: opts.connectWith || '',
                             dropOnEmpty: true,
                             handle: opts.handle || '',
                             cancel: opts.cancel || '',
-                            helper: 'clone',
+                         //   helper: 'clone',
                             items: opts.items || "> li",
                             tolerance: "pointer",
                             zIndex: 9999,
@@ -50,8 +51,9 @@ angular.module(window.ProjectName)
                     };
                     var refreshSortable = function () {
                         angular.forEach(sConf, function (v) {
-                            v.dom.sortable('destroy');
+                            v.element.sortable('destroy');
                         });
+                        sConf = [];
                         setSortable();
                     };
                     setSortable();
