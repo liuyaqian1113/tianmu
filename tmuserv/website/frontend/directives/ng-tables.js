@@ -234,9 +234,12 @@ angular.module(window.ProjectName)
                                     colsData.cols = colsData.cols - 1;
                                 });
                                 break;
-                            case 'deleteRows':
-                               // var dataMap = getDataById(colsData.key, oPanels);
-                                
+                            case 'deleteCols':
+                                if (!!confirm('确定删除表格项【'+ dataMap.item.text +'】?')) {
+                                    $timeout(function () {
+                                        angular.isArray(dataMap.parent) && dataMap.parent.splice(dataMap.index, 1);
+                                    });
+                                }
                                 break;
                         }
                     });
