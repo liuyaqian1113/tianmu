@@ -108,13 +108,13 @@ angular.module(window.ProjectName)
                         {text: 'email', cols: 1, rows: 1, hasOrder: false, hasdrag: false, key: key + '_0_2'}
                     ]*/
                     switch (type) {
-                        case 'rows': //新增行
+                        case 'rows': // 新增行
                             var rows = [
-                                //{text: '新增表头'+(++currentNumber), cols: 1, rows: 1, hasOrder: false, hasDrag: false, key: panel.key + '_'+ headers.length +'_0'}
+                                // {text: '新增表头'+(++currentNumber), cols: 1, rows: 1, hasOrder: false, hasDrag: false, key: panel.key + '_'+ headers.length +'_0'}
                             ];
                             headers.push(rows);
                             break;
-                        case 'cols': //新增列
+                        case 'cols': // 新增列
                             break;
                     }
                     scope.$emit('Sortable:updateEvent', true);
@@ -170,9 +170,16 @@ angular.module(window.ProjectName)
                     var oHead = el.closest('.thead');
                     var oPanels = source || scope.tablesPanel;
                     var dataMap = getDataById(data.key, oPanels);
-                    switch(el.attr('data-id')) {
+                    switch (el.attr('data-id')) {
                         case 'addCols':
-                            var rowsData = {text: '新增项', cols: 1, rows: 1, hasOrder: false, hasDrag: false, key: (dataMap.parent.key || source.key) + '_' + oHead.index() + '_' + oHead.children().length};
+                            var rowsData = {
+                                    text: '新增项',
+                                    cols: 1,
+                                    rows: 1,
+                                    hasOrder: false,
+                                    hasDrag: false,
+                                    key: (dataMap.parent.key || source.key) + '_' + oHead.index() + '_' + oHead.children().length
+                            };
                             $timeout(function () {
                                 data.push(rowsData);
                                 scope.$emit('Sortable:updateEvent', true);
@@ -201,7 +208,7 @@ angular.module(window.ProjectName)
                             });
                             break;
                         case 'deleteCols':
-                            if (!!confirm('确定删除表格项【'+ dataMap.item.text +'】?')) {
+                            if (!!confirm('确定删除表格项【' + dataMap.item.text + '】? ')) {
                                 $timeout(function () {
                                     angular.isArray(dataMap.parent) && dataMap.parent.splice(dataMap.index, 1);
                                 });
