@@ -7,8 +7,7 @@ angular.module(window.ProjectName)
             scope: true,
             restrict: 'A',
             templateUrl: 'tmpl/tables.html',
-            controller: function ($scope) {
-            },
+            controller: function ($scope) {},
             controllerAs: 'tableManager',
             link: function (scope, element, attrs, ctrl) {
                 var tableConf = scope.$eval(attrs.ngTables);
@@ -29,12 +28,11 @@ angular.module(window.ProjectName)
                     showpage: 0,
                     api: ''
                 };
-
-                pScope.ok = function(){
+                pScope.ok = function () {
                     pScope.dataConfig.showpage = pScope.dataConfig.showpage - 0;
                     scope.sourceData = angular.extend(scope.sourceData, pScope.dataConfig);
                 };
-                pScope.cancel = function(){
+                pScope.cancel = function () {
                     pageContainer.removeClass('showprops');
                 };
                 scope.tablesProps = function (oTab) {
@@ -81,7 +79,7 @@ angular.module(window.ProjectName)
                 };
                 scope.tablesRemove = function (tab) {
                     var key = tab.key;
-                    if (confirm('\n\n确定移除表格 【'+ tab.title +'】?\n\n\n')) {
+                    if (confirm('\n\n确定移除表格 【' + tab.title + '】?\n\n\n')) {
                         angular.forEach(scope.tablesPanel, function (v, k) {
                             if (key === v.key) {
                                 scope.tablesPanel.splice(k, 1);
@@ -100,7 +98,6 @@ angular.module(window.ProjectName)
                         }
                     }
                     var headers = panel.tables.headers;
-
                     /*
                     [
                         {text: 'id', cols: 1, rows: 1, hasOrder: false, hasdrag: false, key: key + '_0_0'},
@@ -125,7 +122,8 @@ angular.module(window.ProjectName)
                         return null;
                     };
                     var result = {};
-                    function getDataObj (data) {
+
+                    function getDataObj(data) {
                         var _thisObj = arguments.callee;
                         angular.forEach(data, function (v, k) {
                             if (v.id - 0 === id - 0 || v.key === id) {
@@ -139,7 +137,7 @@ angular.module(window.ProjectName)
                             } else {
                                 if (angular.isArray(v) && !v.length && !!destroy) {
                                     data.splice(k, 1);
-                                   // continue;
+                                    // continue;
                                 }
                                 if (!angular.isArray(v) && !v instanceof Object) {
                                     return v;
@@ -163,22 +161,22 @@ angular.module(window.ProjectName)
                             angular.isArray(thData) && thData.splice(index, 1);
                         });
                     }
-
                 };
                 scope.toolsCtrl = function (e, data, source) {
-                    var el = $(e.target || e.srcElement).closest('li.btn');
+                    var el = $(e.target || e.srcElement)
+                        .closest('li.btn');
                     var oHead = el.closest('.thead');
                     var oPanels = source || scope.tablesPanel;
                     var dataMap = getDataById(data.key, oPanels);
                     switch (el.attr('data-id')) {
                         case 'addCols':
                             var rowsData = {
-                                    text: '新增项',
-                                    cols: 1,
-                                    rows: 1,
-                                    hasOrder: false,
-                                    hasDrag: false,
-                                    key: (dataMap.parent.key || source.key) + '_' + oHead.index() + '_' + oHead.children().length
+                                text: '新增项',
+                                cols: 1,
+                                rows: 1,
+                                hasOrder: false,
+                                hasDrag: false,
+                                key: source.key + '_' + oHead.index() + '_' + oHead.children().length
                             };
                             $timeout(function () {
                                 data.push(rowsData);
@@ -227,7 +225,7 @@ angular.module(window.ProjectName)
                     el.removeProp('contenteditable');
                 };
                 scope.addHeaderCols = function (e, data, source) {
-                    return  scope.toolsCtrl(e, data, source);
+                    return scope.toolsCtrl(e, data, source);
                 };
             }
         }
