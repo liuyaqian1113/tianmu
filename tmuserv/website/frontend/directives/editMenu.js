@@ -321,6 +321,7 @@ angular.module(window.ProjectName)
                 function setHover() {
                     var oEdit = oDom.find('a');
                     var menuOffset = oDom.offset();
+                    var oTools = $('#menu-tools');
                     oEdit.unbind().hover(function (e) {
                         var toolSize = scope.$parent.toolSize || {};
                         var dom = $(e.target || e.srcElement);
@@ -330,7 +331,7 @@ angular.module(window.ProjectName)
                         var size = {
                             width: dom.width(),
                             height: dom.height()
-                        }
+                        };
                         scope.$parent.styles = {
                             'left': offset.left + size.width - (toolSize.width || 0) / 2 + 'px',
                             'top': offset.top + size.height - (toolSize.height || 0) + 'px'
@@ -338,12 +339,9 @@ angular.module(window.ProjectName)
                         scope.$parent.currentMenuNode = dom;
                         !scope.$parent.toolStatus && (scope.$parent.toolStatus = true);
                         scope.$parent.$apply();
+                        oTools.stop(true, true).fadeIn();
                     }, function (e) {
-                        var toEl = e.toElement;
-                        var isContain = checkContain('#menu-tools, .nav', toEl);
-                        if (!isContain) {
-                            !!scope.$parent.toolStatus && (scope.$parent.toolStatus = false);
-                        }
+                        oTools.stop(true, true).fadeOut(1000);
                        // if (!!checkContainer(oDom.add(oTools), toEl))
                     });
 

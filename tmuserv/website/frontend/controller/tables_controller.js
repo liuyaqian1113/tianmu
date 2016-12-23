@@ -8,8 +8,8 @@ angular.module(window.ProjectName).controller('tables_controller',
         $scope.sortableConf = {
             config: [
                 {dom: 'this', items: '.sortable-row', handle: '.panel-heading', connectWith: '.sortable-row', cancel: '.panel-heading-btn'},
-                {dom: '.table', items: '.thead', handle: '.thead-tools', connectWith: ''},
-                {dom: '.table .tr', items: '.th', handle: '', connectWith: ''}
+                {dom: '.table', items: '.thead', handle: '.rowsTools-drag', connectWith: ''},
+                {dom: '.table .tr', items: '.th', handle: '.colsTools-drag', connectWith: ''}
                // {dom: '.sortable-row', items: '.panel', handle: '.panel-heading', connectWith: '.sortable-row'}
             ]
         };

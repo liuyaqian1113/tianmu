@@ -10,7 +10,6 @@ angular.module(window.ProjectName)
             link: function (scope, element, attrs) {
                 var oDom = $(element);
                 var config = scope.$eval(attrs.ngSortable);
-                console.log(oDom, config);
                 $timeout(function () {
                     var sConf = [];
                     var setSortable = function  () {
@@ -28,7 +27,7 @@ angular.module(window.ProjectName)
                                     sConf.push(v);
                                     bindSorable(v);
                                 }
-                                console.log(config.config, sConf, v);
+                              //  console.log(config.config, sConf, v);
                             });
                         }
                     };
@@ -50,9 +49,9 @@ angular.module(window.ProjectName)
                         console.log(e, ui);
                     };
                     var refreshSortable = function () {
-                        angular.forEach(sConf, function (v) {
-                            v.element.sortable('destroy');
-                        });
+                       // angular.forEach(sConf, function (v) {
+                         //   v.element.sortable('destroy');
+                      //  });
                         sConf = [];
                         setSortable();
                     };
@@ -63,11 +62,11 @@ angular.module(window.ProjectName)
                    // });
                     scope.$on('Sortable:updateEvent', function (event, data) {
                         if (!!data) {
-                            console.log(data);
+                          //  console.log(data);
                             refreshSortable();
                         }
                     });
-                }, 500);
+                });
             }
         }
     });

@@ -22,12 +22,22 @@
                 <div class="table table-striped">
                     <div class="thead" ng-repeat="header in panel.tables.headers">
                         <div class="tr">
-                            <div class="th" ng-repeat="head in header" rows="{{head.rows}}" cols="{{head.cols}}" ng-mouseover="headerTools($event, head)" ng-mouseout="headerTools($event, head)" ng-dblclick="enableColsTitle($event, head)" ng-blur="disableColsTitle($event, head)" style="-webkit-box-flex: {{head.cols||1}}">
+                            <div class="th" ng-repeat="head in header" rows="{{head.rows}}" cols="{{head.cols}}" style="-webkit-box-flex: {{head.cols||1}}">
                                 <span class="context">{{head.text}}</span>
+                                <ul class="panel-headers-tools" ng-if="tablesModel == 'edit'" ng-click="toolsCtrl($event, head, panel)">
+                                    <!--<li class="btn btn-xs btn-nonebg" data-id="splitCols" title="拆分表格项"><i class="icon-cut"></i></li>
+                                    <li class="btn btn-xs btn-nonebg" data-id="mergeCols" title="合并表格项"><i class="icon-link"></i></li>-->
+                                    <li class="btn btn-xs btn-nonebg colsTools-drag" title="排序" style="cursor:move;"><i class="icon-move"></i></li>
+                                    <li class="btn btn-xs btn-nonebg" data-id="addFlex" title="增加宽度"><i class="icon-resize-horizontal"></i></li>
+                                    <li class="btn btn-xs btn-nonebg" data-id="minusFlex" title="减少宽度"><i class="icon-resize-small"></i></li>
+                                    <li class="btn btn-xs btn-nonebg" data-id="deleteCols" title="删除表格项"><i class="icon-trash"></i></li>
+                                </ul>
                             </div>
                         </div>
                         <ul class="thead-tools" ng-if="tablesModel == 'edit'">
-                            <li class="btn btn-xs btn-danger" ng-click="deleteHeaderCols($event, panel.tables.headers)" title="删除行"><i class="icon-remove"></i></li>
+                            <li class="btn btn-xs btn-circle btn-default rowsTools-drag" title="排序" style="cursor:move;"><i class="icon-move"></i></li>
+                            <li class="btn btn-xs btn-circle btn-success" data-id="addCols" ng-click="addHeaderCols($event, header, panel)" title="新增表格项"><i class="icon-plus"></i></li>
+                            <li class="btn btn-xs btn-circle btn-danger" data-id="deleteRows" ng-click="deleteHeaderCols($event, panel.tables.headers, panel)" title="删除行"><i class="icon-remove"></i></li>
                         </ul>
                     </div>
                     <div class="tbody">
@@ -119,14 +129,3 @@
         </div>
     </form>
 </div>
-<div ng-columns-tools="tablesConf"></div>
-<script type="text/ng-template" id="tmpl/headersTools.html">
-<ul id="tableTools" class="panel-headers-tools" ng-if="tablesModel == 'edit'">
-    <li class="btn btn-xs btn-nonebg" data-id="addCols" title="新增表格项"><i class="icon-plus"></i></li>
-    <li class="btn btn-xs btn-nonebg" data-id="splitCols" title="拆分表格项"><i class="icon-cut"></i></li>
-    <li class="btn btn-xs btn-nonebg" data-id="mergeCols" title="合并表格项"><i class="icon-link"></i></li>
-    <li class="btn btn-xs btn-nonebg" data-id="addFlex" title="增加宽度"><i class="icon-resize-horizontal"></i></li>
-    <li class="btn btn-xs btn-nonebg" data-id="minusFlex" title="减少宽度"><i class="icon-resize-small"></i></li>
-    <li class="btn btn-xs btn-nonebg" data-id="deleteCols" title="删除表格项"><i class="icon-trash"></i></li>
-</ul>
-</script>

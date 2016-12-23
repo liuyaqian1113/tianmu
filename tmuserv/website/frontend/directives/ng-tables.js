@@ -2,42 +2,12 @@
  * Created by panjian01 on 2016/12/21.
  */
 angular.module(window.ProjectName)
-    .directive('ngColumnsTools', function ($timeout, $modal, CONFIG) {
-        return {
-            scope: true,
-            restrict: 'A',
-            replace: true,
-            templateUrl: 'tmpl/headersTools.html',
-            link: function (scope, element, attrs) {
-                scope.toolsConf = scope.$eval(attrs.ngColumnsTools);
-                scope.tablesModel = scope.toolsConf.model;
-                scope.toolsConf.oTools = $(element);
-                scope.toolsConf.currentColmns = [];
-
-            }
-        };
-    })
     .directive('ngTables', function ($timeout, $modal, CONFIG) {
         return {
             scope: true,
             restrict: 'A',
             templateUrl: 'tmpl/tables.html',
             controller: function ($scope) {
-                this.talbeTools = [
-                    {name: 'addCols', title: '新增表格项', url: '', icon: 'icon-plus'},
-                    {name: 'splitCols', title: '拆分表格项', url: '', icon: 'icon-columns'},
-                    {name: 'mergeCols', title: '合并表格项', url: '', icon: 'icon-link'},
-                    {name: 'delete', title: '删除表格头', url: '', icon: 'icon-remove'}
-                ];
-                this.tableToolsTmpl = '\
-                    <ul id="tableTools" class="panel-headers-tools" ng-if="tablesModel == \'edit\'">\
-                        <li class="btn btn-xs btn-nonebg" data-id="addCols" ng-click="headersAddCols(header)" title="新增表格项"><i class="icon-plus"></i></li>\
-                        <li class="btn btn-xs btn-nonebg" data-id="splitCols" ng-click="headersSplitCols(header)" title="拆分表格项"><i class="icon-cut"></i></li>\
-                        <li class="btn btn-xs btn-nonebg" data-id="mergeCols" ng-click="heardersMergeCols(header)" title="合并表格项"><i class="icon-link"></i></li>\
-                        <li class="btn btn-xs btn-nonebg" data-id="deleteRows" ng-click="heardersRemove(header)" title="删除表格行"><i class="icon-trash"></i></li>\
-                    </ul>\
-                ';
-
             },
             controllerAs: 'tableManager',
             link: function (scope, element, attrs, ctrl) {
@@ -140,7 +110,7 @@ angular.module(window.ProjectName)
                     switch (type) {
                         case 'rows': //新增行
                             var rows = [
-                                {text: '新增表头'+(++currentNumber), cols: 1, rows: 1, hasOrder: false, hasDrag: false, key: panel.key + '_'+ headers.length +'_0'}
+                                //{text: '新增表头'+(++currentNumber), cols: 1, rows: 1, hasOrder: false, hasDrag: false, key: panel.key + '_'+ headers.length +'_0'}
                             ];
                             headers.push(rows);
                             break;
@@ -195,54 +165,49 @@ angular.module(window.ProjectName)
                     }
 
                 };
-                scope.headerTools = function (e, colsData) {
-                    var eType = e.type;
-                    var oTh = $(e.target || e.srcElement);
-                    var oHead = oTh.closest('.thead');
-                    var oTools = $('#tableTools');
-                    var oPanels = scope.tablesPanel;
-                    var offset = {
-                        top: oHead.offset().top - oTools.height() - 10,
-                        left: oTh.offset().left - 1
-                    };
-                    oTools.css(offset).show();
-                    oTools.unbind().on('click', 'li', function (e) {
-                        var el = $(e.target || e.srcElement).closest('li.btn');
-                        console.log(colsData, oPanels);
-                        var dataMap = getDataById(colsData.key, oPanels);
-                        switch(el.attr('data-id')) {
-                            case 'addCols':
-                                var rowsData = {text: '新增项', cols: 1, rows: 1, hasOrder: false, hasDrag: false, key: dataMap.parent.key + '_' + oHead.index() + '_' + oHead.children().length};
+                scope.toolsCtrl = function (e, data, source) {
+                    var el = $(e.target || e.srcElement).closest('li.btn');
+                    var oHead = el.closest('.thead');
+                    var oPanels = source || scope.tablesPanel;
+                    var dataMap = getDataById(data.key, oPanels);
+                    switch(el.attr('data-id')) {
+                        case 'addCols':
+                            var rowsData = {text: '新增项', cols: 1, rows: 1, hasOrder: false, hasDrag: false, key: (dataMap.parent.key || source.key) + '_' + oHead.index() + '_' + oHead.children().length};
+                            $timeout(function () {
+                                data.push(rowsData);
+                                scope.$emit('Sortable:updateEvent', true);
+                            });
+                            break;
+                        case 'addFlex':
+                            if (dataMap.siblings <= 1) {
+                                return;
+                            }
+                            if (data.cols >= 12) {
+                                return data.cols = 12;
+                            }
+                            $timeout(function () {
+                                data.cols = data.cols + 1;
+                            });
+                            break;
+                        case 'minusFlex':
+                            if (dataMap.siblings <= 1) {
+                                return;
+                            }
+                            if (data.cols <= 1) {
+                                return data.cols = 1;
+                            }
+                            $timeout(function () {
+                                data.cols = data.cols - 1;
+                            });
+                            break;
+                        case 'deleteCols':
+                            if (!!confirm('确定删除表格项【'+ dataMap.item.text +'】?')) {
                                 $timeout(function () {
-                                    dataMap.parent.push(rowsData);
-                                    scope.$emit('Sortable:updateEvent', true);
+                                    angular.isArray(dataMap.parent) && dataMap.parent.splice(dataMap.index, 1);
                                 });
-                                break;
-                            case 'addFlex':
-                                if (colsData.cols >= dataMap.siblings - 1) {
-                                    return colsData.cols = dataMap.siblings - 1;
-                                }
-                                $timeout(function () {
-                                    colsData.cols = colsData.cols + 1;
-                                });
-                                break;
-                            case 'minusFlex':
-                                if (colsData.cols <= 1) {
-                                    return colsData.cols = 1;
-                                }
-                                $timeout(function () {
-                                    colsData.cols = colsData.cols - 1;
-                                });
-                                break;
-                            case 'deleteCols':
-                                if (!!confirm('确定删除表格项【'+ dataMap.item.text +'】?')) {
-                                    $timeout(function () {
-                                        angular.isArray(dataMap.parent) && dataMap.parent.splice(dataMap.index, 1);
-                                    });
-                                }
-                                break;
-                        }
-                    });
+                            }
+                            break;
+                    }
                 };
                 scope.enableColsTitle = function (e, data) {
                     var el = $(e.target || e.srcElement);
@@ -253,6 +218,9 @@ angular.module(window.ProjectName)
                     var el = $(e.target || e.srcElement);
                     el = el.closest('.th');
                     el.removeProp('contenteditable');
+                };
+                scope.addHeaderCols = function (e, data, source) {
+                    return  scope.toolsCtrl(e, data, source);
                 };
             }
         }

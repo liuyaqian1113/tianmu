@@ -54,7 +54,7 @@
     top: -32px;
     padding: 5px;
     margin: 0;
-    background: #efe;
+    background: #fff;
     border-radius: 5px 5px 0 0;
     border: 1px dashed #ccc;
     border-bottom: none;
@@ -98,15 +98,20 @@
 .tables .panel-body .table .td:hover {
     background: #efe;
 }
-#tableTools {
+.tables .panel-body .table .th .panel-headers-tools {
     display: none;
     position: absolute;
-    left: -1px;
-    top: 0;
+    right: -1px;
+    top: -100%;
     padding: 5px;
-    margin: 0;
+    margin: -3px 0 0 -20px;
     background: #efe;
     border-radius: 5px 5px 0 0;
     border: 1px dashed #ccc;
     border-bottom: none;
+    min-width: 113px;
+}
+.tables .panel-body .table .th:hover .panel-headers-tools {
+    display: block;
+    background-color: #efe;
 }
