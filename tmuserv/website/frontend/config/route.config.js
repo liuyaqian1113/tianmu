@@ -378,6 +378,46 @@ route_module.factory('permissionService', function ($q, $rootScope, CONFIG) {
                     }
                 }
             },
+            // 用户管理
+            user: {
+                name: 'user',
+                url: '/power/user',
+                parent: common,
+                resolve: {
+                    deps: ['$rootScope', '$ocLazyLoad', function ($rootScope, $ocLazyLoad) {
+                        return $ocLazyLoad.load([
+                            'theme/default/css/user.css',
+                            'controller/user_controller.js'
+                        ]);
+                    }]
+                },
+                views: {
+                    'mainContainer@': {
+                        templateUrl: CONFIG.webRoot + 'views/user.html',
+                        controller: 'user_controller'
+                    }
+                }
+            },
+            // 权限配置
+            author: {
+                name: 'author',
+                url: '/power/author',
+                parent: common,
+                resolve: {
+                    deps: ['$rootScope', '$ocLazyLoad', function ($rootScope, $ocLazyLoad) {
+                        return $ocLazyLoad.load([
+                            'theme/default/css/author.css',
+                            'controller/author_controller.js'
+                        ]);
+                    }]
+                },
+                views: {
+                    'mainContainer@': {
+                        templateUrl: CONFIG.webRoot + 'views/author.html',
+                        controller: 'author_controller'
+                    }
+                }
+            },
             // 菜单配置
             menu: {
                 name: 'menu',

@@ -5,9 +5,18 @@
     top: 0;
     bottom: 0;
     padding-top: 54px;
-    background: #2d353c;
+    background: #FFF;
     z-index: 3;
     -webkit-transform: translateZ(0);
+}
+
+#tables-manager .nav .nav-header h5 {
+    text-align: center;
+    background: #EFF3F4;
+    height: 40px;
+    line-height: 40px;
+    margin-top: 2px;
+    font-family: "微软雅黑";
 }
 #tables-props {
     width: 220px;
