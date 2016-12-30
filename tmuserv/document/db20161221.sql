@@ -173,6 +173,18 @@ CREATE TABLE `tmu_sys_user` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+INSERT INTO `tmu_sys_user` VALUES ('1', 'panjian01', '', '','100','');
+INSERT INTO `tmu_sys_user` VALUES ('2', 'v_tianbin', '', '','10','');
+INSERT INTO `tmu_sys_user` VALUES ('3', 'v_liuyanqian', '', '','20','');
+INSERT INTO `tmu_sys_user` VALUES ('4', 'v_jiangzewen', '', '','10','');
+INSERT INTO `tmu_sys_user` VALUES ('5', 'v_liting', '', '','10','');
+INSERT INTO `tmu_sys_user` VALUES ('6', 'v_xinhao', '', '','20','');
+INSERT INTO `tmu_sys_user` VALUES ('7', 'v_wanghu', '', '','10','');
+INSERT INTO `tmu_sys_user` VALUES ('8', 'jiaojiao', '', '','100','');
+INSERT INTO `tmu_sys_user` VALUES ('9', 'baoge', '', '','100','');
+
+
+
 -- ----------------------------
 -- Records of tmu_sys_user
 -- ----------------------------

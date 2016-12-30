@@ -1,23 +1,102 @@
-<div class="user">
-    <form class="form-horizontal" role="form">
-        <div class="form-group"></div>
-        <div class="form-group">
-            <label for="lastname" class="col-sm-2 control-label">用户名</label>
-            <div class="col-sm-6">
-                <input type="text" class="form-control" id="lastname" 
-                   placeholder="请输入姓"></div>
-        </div>
-        <div class="form-group">
-            <label for="lastname" class="col-sm-2 control-label">权限</label>
-            <label class="checkbox-inline">
-                <input type="radio" name="optionsRadiosinline" id="optionsRadios3" value="option1" checked>admin</label>
-            <label class="checkbox-inline">
-                <input type="radio" name="optionsRadiosinline" id="optionsRadios4"  value="option2">选项 2</label>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default">登录</button>
-            </div>
-        </div>
-    </form>
+<div class="panel panel-default"></div>
+<div class="panel panel-default">
+    <div class="panel-heading">用户管理</div>
 </div>
+<table class="table table-bordered" style="background: #fff">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>用户名</th>
+            <th>权限配置</th>
+            <th>删除用户</th>
+        </tr>
+    </thead>
+    <tbody ng-repeat="v in user.tabJson track by $index">
+        <tr id="{{v.id}}">
+            <td>{{v.id}}</td>
+            <td>{{v.name}}</td>
+            <td>
+                <select name="{{v.name}}" evid="1" id="tabSelect{{$index}}" ng-change="user.tabSelectChange({{$index}})" ng-model="user.myTabSelectValue[$index]" class="form-control">
+                    <option evid="{{v.id}}" value="10">普通用户</option>
+                    <option evid="{{v.id}}" value="20">业务线管理员</option>
+                    <option evid="{{v.id}}" value="100">超级管理员</option>
+                </select>
+            </td>
+            <td>
+                <button ng-click="user.tablesDele($event)" type="submit" class="btn btn-default">删除</button>
+            </td>
+        </tr>
+        <!--             <tr id="2">
+        <td>2</td>
+        <td>v_tianbin</td>
+        <td>
+            <select class="form-control">
+                <option value=""></option>
+                <option value="">普通用户</option>
+                <option value="">业务线管理员</option>
+                <option value="">超级管理员</option>
+            </select>
+        </td>
+        <td>
+            <button ng-click="user.tablesDele($event)" type="submit" class="btn btn-default">删除</button>
+        </td>
+    </tr>
+    <tr id="3">
+        <td>3</td>
+        <td>v_liuyanqian</td>
+        <td>
+            <select class="form-control">
+                <option value=""></option>
+                <option value="">普通用户</option>
+                <option value="">业务线管理员</option>
+                <option value="">超级管理员</option>
+            </select>
+        </td>
+        <td>
+            <button ng-click="user.tablesDele($event)" type="submit" class="btn btn-default">删除</button>
+        </td>
+    </tr>
+    <tr id="4">
+        <td>4</td>
+        <td>v_jiangzewen</td>
+        <td>
+            <select class="form-control">
+                <option value=""></option>
+                <option value="">普通用户</option>
+                <option value="">业务线管理员</option>
+                <option value="">超级管理员</option>
+            </select>
+        </td>
+        <td>
+            <button ng-click="user.tablesDele($event)" type="submit" class="btn btn-default">删除</button>
+        </td>
+    </tr>
+    -->
+</tbody>
+</table>
+<div class="panel panel-default">
+<div class="panel-heading">新增用户</div>
+</div>
+
+<form class="form-horizontal" role="form">
+<div class="form-group">
+    <label for="firstname" class="col-sm-2 control-label">用户名</label>
+    <div class="col-sm-7">
+        <input type="text" class="form-control" id="firstname" 
+                   placeholder="请输入用户名"></div>
+</div>
+<div class="form-group">
+    <label for="lastname" class="col-sm-2 control-label">权限</label>
+    <div class="col-sm-7">
+        <label class="checkbox-inline">
+            <input type="radio" name="optionsRadiosinline" id="optionsRadios3" value="option1" checked>admin</label>
+        <label class="checkbox-inline">
+            <input type="radio" name="optionsRadiosinline" id="optionsRadios4"  value="option2">normal</label>
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-default">确定</button>
+    </div>
+</div>
+</form>
