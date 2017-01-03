@@ -1,10 +1,12 @@
-input[type="radio"], input[type="checkbox"] {
+input[type="radio"],
+input[type="checkbox"] {
     margin: 2px 10px 0;
     margin-top: 1px \9;
     line-height: normal;
     position: relative;
     top: 3px;
 }
+
 .radio-inline,
 .checkbox-inline {
     display: inline-block;
@@ -14,6 +16,7 @@ input[type="radio"], input[type="checkbox"] {
     vertical-align: middle;
     cursor: pointer;
 }
+
 .user-cen {
     text-align: right;
     line-height: 30px;
