@@ -18,7 +18,7 @@ var sql = {
     getUser: 'SELECT * FROM tmu_sys_user',
     deleteUser: 'DELETE FROM tmu_sys_user WHERE id=?',
     updateUser: function (key, val, ret) {
-        return 'UPDATE tmu_sys_user SET level='+ ret[1] +' WHERE id='+ret[0];
+        return 'UPDATE tmu_sys_user SET level = '+ ret[1] +' WHERE id = '+ret[0];
     }
 };
 var keyOrder = {
