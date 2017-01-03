@@ -11,7 +11,7 @@ angular.module(window.ProjectName)
                 {
                     dom: 'this',
                     items: '.components',
-                    handle: '.colsTools-drag',
+                    handle: '.cols-tools-drag',
                     connectWith: '.components',
                     cancel: 'input,select'
                 }

@@ -989,7 +989,8 @@ Animate.css - http://daneden.me/animate
     }
 }
 
-.fadeInDown {
+.fadeInDown,
+.fade-in-down {
     -webkit-animation-name: fadeInDown;
     animation-name: fadeInDown
 }
@@ -1055,7 +1056,8 @@ Animate.css - http://daneden.me/animate
     }
 }
 
-.fadeInLeft {
+.fadeInLeft,
+.fade-in-left {
     -webkit-animation-name: fadeInLeft;
     animation-name: fadeInLeft
 }
