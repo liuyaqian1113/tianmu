@@ -2,59 +2,23 @@
  * Created by panjian01 on 2016/12/21.
  */
 angular.module(window.ProjectName)
-    .directive('ngTables', ['$timeout', '$modal', 'CONFIG', 'fetchService', 'PY',
+    .directive('sfTable', ['$timeout', '$modal', 'CONFIG', 'fetchService', 'PY',
         function ($timeout, $modal, CONFIG, fetchService, py) {
             return {
                 scope: true,
-                restrict: 'A',
-                templateUrl: 'tmpl/tables.html',
+                require: '?^sfTables',
+                restrict: 'AE',
+                templateUrl: CONFIG.webRoot + 'modules/common/tables/table.html',
                 link: function (scope, element, attrs, ctrl) {
-                    var tableConf = scope.$eval(attrs.ngTables);
+                    var tableConf = scope.$eval(attrs.sfTable);
                     var oElement = $(element);
                     scope.tablesModel = tableConf.model || 'edit';
                     var pScope = scope.$parent;
                     var pageContainer = $('#page-container');
                     scope.sourceData = {};
                     scope.previewData = {};
-                    pScope.ok = function () {
-                        pScope.propsData.api = 'http://cq02-mco-sumeru475.cq02.baidu.com:8083/aunceladmin/singlestattable';
-                        scope.sourceData = angular.extend(scope.sourceData, pScope.propsData);
-                        var api = $.trim(scope.sourceData.api);
-                        console.log(scope.sourceData);
-                        if (!scope.sourceData.tables.headers.length) {
-                            return scope.$root.poplayer = {
-                                type: 'error',
-                                content: '请先添加表头'
-                            };
-                        }
-                        if (api !== '' && !!/^http(s)?:\/\//i.test(api)) {
-                            fetchService.remote({
-                                url: api,
-                                type: 'get',
-                                data: {
-                                    type: 1,
-                                    end_date: '20161031',
-                                    event: {"exposure":["DEF_ALL_PV","DEF_ALL_UV"],"liveusers":["LIVE_RATE","LIVE_UV"]},
-                                    exp_id: 106,
-                                    start_date: '20160923'
-                                }
-                            })
-                            .then(function (ret) {
-                                ret = !!ret.length ? ret[0].data: ret.data;
-                                if (ret.status - 0 === 0 || ret.errno - 0 === 0) {
-                                    var data = ret.data;
-                                    data.shift();
-                                    renderTable (data, scope.sourceData);
-                                }
-                            });
-                        }
-                    };
-                    pScope.cancel = function () {
-                        pageContainer.removeClass('showprops');
-                    };
-
-
                     function renderTable (data, source) {
+                        scope.sourceData = angular.extend(scope.sourceData, source);
                         var fields = data;
                         if (!scope.previewData[source.key]) {
                             scope.previewData[source.key] = {};
@@ -68,14 +32,16 @@ angular.module(window.ProjectName)
                         scope.previewData[source.key].bodys = fields;
                     }
                     function setProps(data) {
-                        var cls = 'showprops';
-                        if (pageContainer.hasClass(cls) && data.key === scope.sourceData.key) { //隐藏属性面板
-                            pageContainer.removeClass(cls);
-                        } else {
-                            pageContainer.addClass(cls);
-                            scope.sourceData = data;
-                            pScope.propsData = angular.extend(angular.copy(data), scope.sourceData, true);
-                        }
+                        scope.$root.$broadcast('Props:setTemplate', {type: 'table', url: CONFIG.webRoot + 'modules/common/tables/props-table.html', data: data});
+                        $timeout(function () {
+                            var cls = 'showprops';
+                            if (pageContainer.hasClass(cls) && data.key === scope.sourceData.key) { //隐藏属性面板
+                                pageContainer.removeClass(cls);
+                            } else {
+                                pageContainer.addClass(cls);
+                                scope.sourceData = data;
+                            }
+                        }, 100);
                     }
                     /**
                     表格操作
@@ -85,8 +51,7 @@ angular.module(window.ProjectName)
                     oParent 操作数据对象的上级数据对象
                     */
                     scope.toolsCtrl = function (e, data, source, oParent) {
-                        var el = $(e.target || e.srcElement)
-                            .closest('li.btn');
+                        var el = $(e.target || e.srcElement).closest('li.btn');
                         var oHead = el.closest('.thead');
                         var oSource = source || scope.tablesPanel;
                         var dataMap = CONFIG.getDataById(data.key, oSource);
@@ -253,10 +218,15 @@ angular.module(window.ProjectName)
                                     el.text(text);
                                 }
                                 el.css({'background-color': ''});
-                                console.log(rowData);
                                 break;
                         }
                     };
+                    scope.$on('Tables:tablePreview', function (event, data) {
+                        if (!!data) {
+                            console.log(data);
+                            renderTable(data.data, data.source);
+                        }
+                    });
                 }
             }
     }]);

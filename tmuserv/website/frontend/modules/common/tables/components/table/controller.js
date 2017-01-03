@@ -1,11 +1,11 @@
 window.sfController = window.sfController || {};
-window.sfController = function (opts) {
+window.sfController.table = function (opts) {
     this.scope = opts.scope;
     this.py = opts.py;
     this.$timeout = opts.$timeout;
     this.CONFIG = opts.CONFIG;
 };
-window.sfController.prototype = {
+window.sfController.table.prototype = {
     bind: function (key) {
         var that = this;
         this[key] && (this.scope[key] = function () {
@@ -100,7 +100,7 @@ window.sfController.prototype = {
                 data.cols = data.cols < 12 ? ++data.cols : 12;
                 break;
             case 'minusWidth': // 减少表格宽度
-                data.cols = data.cols > 2 ? --data.cols : 2;
+                data.cols = data.cols > 4 ? --data.cols : 4;
                 break;
             case 'addFlex': // 增加列宽度比例
                 if (dataMap.siblings <= 1) {
@@ -135,22 +135,19 @@ window.sfController.prototype = {
                 }
                 break;
             case 'preview': // 预览模式
-                if (this.scope.tablesConf.model === 'edit') {
-                    this.scope.tablesConf.model = 'preview';
-                   // this.scope.$root.$broadcast('Tables:setEditModel', {model: 'preview'});
+                if (this.scope.tablesModel === 'edit') {
+                    this.scope.$root.$broadcast('Tables:setEditModel', {model: 'preview'});
                     el.attr('title', '编辑模式')
                         .find('.icon-eye-open')
                         .removeClass('icon-eye-open')
                         .addClass('icon-pencil');
                 } else {
-                    this.scope.tablesConf.model = 'edit';
-                  //  this.scope.$root.$broadcast('Tables:setEditModel', {model: 'edit'});
+                    this.scope.$root.$broadcast('Tables:setEditModel', {model: 'edit'});
                     el.attr('title', '预览模式')
                         .find('.icon-pencil')
                         .removeClass('icon-pencil')
                         .addClass('icon-eye-open');
                 }
-                console.log(this.scope);
                 break;
             case 'addDashboard': // 添加到聚合页
                 if (!data.headers.length || !this.scope.previewData[source.key]) {

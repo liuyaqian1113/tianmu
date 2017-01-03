@@ -11,7 +11,7 @@ angular.module(window.ProjectName)
                 {
                     dom: 'this',
                     items: '.components',
-                    handle: '.cols-tools-drag',
+                    handle: '.colsTools-drag',
                     connectWith: '.components',
                     cancel: 'input,select'
                 }
@@ -29,13 +29,13 @@ angular.module(window.ProjectName)
                 {
                     dom: '.table',
                     items: '.thead',
-                    handle: '.rows-tools-drag',
+                    handle: '.rowsTools-drag',
                     connectWith: ''
                 },
                 {
                     dom: '.table .tr',
                     items: '.th',
-                    handle: '.cols-tools-drag',
+                    handle: '.colsTools-drag',
                     connectWith: ''
                 }
                // {dom: '.sortable-row', items: '.panel', handle: '.panel-heading', connectWith: '.sortable-row'}

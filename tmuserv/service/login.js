@@ -84,7 +84,7 @@ function validateTicket(req, res, next, uuapRes) {
                     // 重定向
                     var params = url.parse(req.originalUrl, true);
                     var query = params.query;
-                    //  global_ticket = query.ticket;
+                  //  global_ticket = query.ticket;
                     // delete query.ticket;
                     console.log('--------user info-------------', userName);
                     if (!!redirType) { // ajax访问
@@ -143,7 +143,7 @@ router.all('*', function (req, res, next) {
             if (pathname === '/login') {
                 return res.redirect('/');
                 // return res.redirect(uuapConfig.protocol + '//' + uuapConfig.hostname + (uuapConfig.port - 0 !== 80 && (':' + uuapConfig.port)) + uuapConfig.login);
-                //  req.body.ticket = ticket;
+              //  req.body.ticket = ticket;
             }
             next();
         }
@@ -173,8 +173,7 @@ router.all('*', function (req, res, next) {
             validateByHttps(req, res, next, urlOps, postData, validateTicket);
         }
     } else {
-        var pathname = url.parse(req.originalUrl)
-            .pathname;
+        var pathname = url.parse(req.originalUrl).pathname;
         var host = req.headers.host;
         service = url.format({
             protocol: req.protocol,

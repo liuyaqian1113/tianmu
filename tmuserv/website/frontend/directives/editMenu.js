@@ -50,10 +50,11 @@ angular.module(window.ProjectName)
     .directive('editMenuTools', function ($rootScope, fetchService, $timeout, $modal, CONFIG) {
         return {
             scope: true,
-            //  require: '?^sidebar',
             restrict: 'A',
             template: '\
-                <a ng-repeat="tool in tools.toolsList" href="{{tool.url}}" data-id="{{tool.name}}" class="{{tool.name}}" title="{{tool.title}}"><i class="{{tool.icon}}"></i></a>\
+                <a ng-repeat="tool in tools.toolsList" href="{{tool.url}}" data-id="{{tool.name}}" class="{{tool.name}}" title="{{tool.title}}">\
+                    <i class="{{tool.icon}}"></i>\
+                </a>\
             ',
             controller: function ($scope) {
                 this.toolsList = [
@@ -89,47 +90,11 @@ angular.module(window.ProjectName)
                 var config = scope.$eval(attrs.editMenuTools);
                 var currentData = null;
                 var toolsType = null;
-                /**
-                    根据id获取对应的数据对象
-                    @return
-                    source   整个儿menu对象
-                    parent   对应数据对象的父对象
-                    item  对应的数据对象
-                    index 对应数据对象在当前层级的序号
-                    siblings  对应数据对象的同级对象个数
-                */
-                var getDataById = function (id) {
-                    items = scope.$root.menuItems;
-                    if (!items) {
-                        return null;
-                    };
-                    var result = {};
-
-                    function getDataObj(data) {
-                        var _thisObj = arguments.callee;
-                        angular.forEach(data, function (v, k) {
-                            if (v.id - 0 === id - 0) {
-                                return result = {
-                                    source: items,
-                                    parent: data,
-                                    item: v,
-                                    index: k,
-                                    siblings: data.length
-                                };
-                            } else {
-                                _thisObj(v.subs);
-                            }
-                        });
-                        return result;
-                    }
-                    var node = getDataObj(items);
-                    return node;
-                };
                 var dataMaps = function (id, newData) {
                     if (!id) {
                         return null;
                     };
-                    var sourceData = getDataById(id);
+                    var sourceData = CONFIG.getDataById(id, scope.$root.menuItems);
                     if (!sourceData) {
                         return null;
                     }
@@ -168,6 +133,7 @@ angular.module(window.ProjectName)
                         return item;
                     }
                 };
+                // 数据提交
                 var updateMenu = function (data) {
                     var node = scope.$parent.currentMenuNode;
                     var act = data.action;
@@ -210,6 +176,7 @@ angular.module(window.ProjectName)
                             };
                         });
                 };
+                // 弹窗对象
                 var modalOpen = function (cfg) { //打开模态 
                     if (!cfg) {
                         cfg = {};
@@ -295,7 +262,6 @@ angular.module(window.ProjectName)
     .directive('editMenu', function ($timeout, CONFIG) {
         return {
             scope: true,
-            //  require: '?^editMenuTools',
             restrict: 'A',
             link: function (scope, element, attrs) {
                 var oDom = $(element);
@@ -305,38 +271,6 @@ angular.module(window.ProjectName)
                         e.preventDefault();
                         e.stopPropagation();
                     });
-                var getSelector = function (node) {
-                    if (!node || !node.length) {
-                        return null;
-                    }
-                    var selectors = [];
-                    var oId = node.attr('id');
-                    if (oId) {
-                        oId = '#' + node.attr('id');
-                    }
-                    oId && selectors.push(oId);
-                    var oClass = node.attr('class');
-                    if (oClass) {
-                        oClass = oClass.split(' ');
-                        oClass = oClass.map(function (o) {
-                            if (!!o && o !== null && o !== 'ng-scope') {
-                                console.log(o)
-                                selectors.push(o);
-                            }
-                        });
-                    }
-                    console.log(selectors);
-                    return selectors;
-                };
-                var checkContain = function (container, node) {
-                    var flag = false;
-                    var hasCont = $(node)
-                        .closest(container);
-                    if (hasCont) {
-                        flag = true;
-                    }
-                    return flag;
-                };
 
                 function setHover() {
                     var oEdit = oDom.find('a');
@@ -363,24 +297,19 @@ angular.module(window.ProjectName)
                             oTools.stop(true, true)
                                 .fadeIn();
                         }, function (e) {
-                            oTools.stop(true, true)
-                                .fadeOut(1000);
+                            // oTools.stop(true, true).fadeOut(1000);
                             // if (!!checkContainer(oDom.add(oTools), toEl))
                         });
+                    scope.$emit('Sortable:updateEvent', true);
                 }
                 $timeout(setHover);
                 scope.$watch(function () {
-                    return oDom.find('a')
-                        .length;
+                    return oDom.find('a').length;
                 }, function (newValue, oldValue) {
-                    if (newValue !== oldValue) {
-                        setHover();
-                    }
+                    (newValue !== oldValue) && setHover();
                 });
                 scope.$on('Menus:resetHover', function (event, data) {
-                    if (!!data) {
-                        setHover();
-                    }
+                    (!!data) && setHover();
                 });
             }
         }

@@ -1,44 +1,47 @@
 <!-- begin page-header -->
-<h1 class="page-header">聚合页 <small>实时监控聚合展现</small></h1>
+<a class="btn btn-sm btn-success" ng-click="saveTables()">保存聚合页</a>
+<h1 class="page-header"><span class="tables-name" ng-blur="editTablesName($event, tablesDataSource.tablesName)" ng-bind="tablesDataSource.tablesName"></span> <small>创建数据报表聚合页</small><a class="btn btn-xs btn-circle btn-success tables-name-editor" href="javascript:" ng-click="editTablesName($event, tablesDataSource.tablesName)" title="编辑鼠标报表聚合页名称"><i class="icon-pencil"></i></a></h1>
 <!-- end page-header -->
 <script type="text/ng-template" id="tmpl/tables.html">
     <!-- begin col-6 -->
-    <div class="sortable-row col-md-{{panel.cols}}" ng-repeat="panel in tablesPanel">
+    <div class="sortable-row col-md-{{panel.cols}}" ng-repeat="panel in tablesDataSource.tablesPanel">
         <!-- begin panel -->
         <div class="panel panel-inverse">
             <div class="panel-heading">
-                <div class="panel-heading-btn" ng-if="tablesModel == 'edit'">
-                    <a href="javascript:;" class="btn btn-xs btn-nonebg" ng-click="tablesRemove()" title="编辑表格"><i class="icon-edit"></i></a>
-                    <a href="javascript:;" class="btn btn-xs btn-nonebg" ng-click="tablesAddCols(panel)" title="增加宽度"><i class="icon-resize-horizontal"></i></a>
-                    <a href="javascript:;" class="btn btn-xs btn-nonebg" ng-click="tablesMinusCols(panel)" title="减少宽度"><i class="icon-resize-small"></i></a>
-                    <a href="javascript:;" class="btn btn-xs btn-nonebg" ng-click="tablesRemove(panel)" title="移出聚合页"><i class="icon-trash"></i></a>
+                <ul class="panel-heading-btn" ng-click="toolsCtrl($event, panel, tablesDataSource.tablesPanel)">
+                    <li class="btn btn-xs btn-nonebg" ng-if="tablesConf.model == 'edit'" data-id="addWidth" title="增加宽度"><i class="icon-resize-horizontal"></i></li>
+                    <li class="btn btn-xs btn-nonebg" ng-if="tablesConf.model == 'edit'" data-id="minusWidth" title="减少宽度"><i class="icon-resize-small"></i></li>
+                    <li class="btn btn-xs btn-nonebg" ng-if="tablesConf.model == 'edit'" data-id="removeTable" title="移除表格"><i class="icon-trash"></i></li>
+                </ul>
+                <h4 class="panel-title">{{panel.title}}</h4>
+            </div>
+            <div class="panel-body" ng-class="tablesConf.model">
+                <div class="table table-striped">
+                    <div class="thead" ng-repeat="header in panel.tables.headers">
+                        <div class="tr">
+                            <div class="th" ng-repeat="head in header" rows="{{head.rows}}" cols="{{head.cols}}" style="-webkit-box-flex: {{head.cols||1}}">
+                                <span class="context">{{head.text}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tbody" ng-if="previewData[panel.key].bodys && previewData[panel.key].bodys.length" ng-class="{'loading': sourceData.api && !previewData[panel.key].bodys}">
+                        <div class="tr" ng-repeat="fields in previewData[panel.key].bodys">
+                            <div class="td" ng-repeat="field in fields | limitTo: (panel.tables.headers[panel.tables.headers.length - 1].length) track by $index" rows="{{panel.tables.headers[panel.tables.headers.length - 1][$index].rows}}" cols="{{panel.tables.headers[panel.tables.headers.length - 1][$index].cols}}" style="-webkit-box-flex: {{panel.tables.headers[panel.tables.headers.length - 1][$index].cols||1}}">
+                                <span class="context">{{field}}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <h4 class="panel-title">{{panel.tables.title}}</h4>
             </div>
-            <div class="panel-body">
-                <table class="table table-striped">
-                    <thead ng-repeat="header in panel.tables.headers">
-                        <tr>
-                            <th ng-repeat="head in header" rows="{{head.rows}}" cols="{{head.cols}}">{{head.text}}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="bodys in panel.tables.bodys">
-                            <td ng-repeat="body in bodys" rows="{{body.rows}}" cols="{{body.cols}}">{{body.text}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="panel-footer">
-                <ng-pages totalitems="{{panel.total}}" listsizes="5" itemsperpage="{{panel.perpage}}">
+            <div class="panel-footer" ng-if="panel.showpage == 1">
+                <ng-pages totalitems="{{previewData[panel.key].total}}" listsizes="5" itemsperpage="{{previewData[panel.key].perpage}}" source="{{previewData[panel.key].tables.bodys}}">
                 </ng-pages>
             </div>
         </div>
-        <!-- end panel -->
+        <!-- end panel; -->
     </div>
     <!-- end col-6 -->
 </script>
 <!-- begin row -->
-<div class="row" ng-sortable="sortableConf" ng-tables="tablesConf">
-</div>
+<div class="row" ng-sortable="sortableConf" ng-tables="tablesConf"></div>
 <!-- end row -->

@@ -12,9 +12,24 @@ angular.module(window.ProjectName)
             getById: api.getById,
             delete: api.delete,
             config: [
-                {dom: 'this', handle: '.sort-handle', connectWith: '', items: '> li'},
-                {dom: '.root-menu', handle: '', connectWith: '.root-menu', items: '> li'},
-                {dom: '.sub-menu', handle: '', connectWith: '.sub-menu', items: '> li'}
+                {
+                    dom: 'this',
+                    handle: '.sort-handle',
+                    connectWith: '',
+                    items: '> li'
+                },
+                {
+                    dom: '.root-menu',
+                    handle: '',
+                    connectWith: '.root-menu',
+                    items: '> li'
+                },
+                {
+                    dom: '.sub-menu',
+                    handle: '',
+                    connectWith: '.sub-menu',
+                    items: '> li'
+                }
             ]
         };
         $scope.toolStatus = true;

@@ -1,5 +1,5 @@
 /**
- * Created by panjian01 on 2017/1/3.
+ * Created by liekkas.zeng on 2015/1/7.
  */
 angular.module(window.ProjectName)
     .directive('ngSortable', function ($timeout, CONFIG) {

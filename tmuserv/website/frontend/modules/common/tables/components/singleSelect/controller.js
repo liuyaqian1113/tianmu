@@ -1,11 +1,11 @@
 window.sfController = window.sfController || {};
-window.sfController = function (opts) {
+window.sfController.singleSelect = function (opts) {
     this.scope = opts.scope;
     this.py = opts.py;
     this.$timeout = opts.$timeout;
     this.CONFIG = opts.CONFIG;
 };
-window.sfController.prototype = {
+window.sfController.singleSelect.prototype = {
     bind: function (key) {
         var that = this;
         this[key] && (this.scope[key] = function () {
@@ -25,6 +25,14 @@ window.sfController.prototype = {
             this.scope.previewData[source.key].currentpage = 1;
         }
         this.scope.previewData[source.key].bodys = fields;
+    },
+    getDefaultProps: function () {
+        return {
+            varname: '',
+            dataOrigin: 'static',
+            api: ''
+
+        };
     },
     setProps: function (data, source) {
         return this.scope.$root.$broadcast('Props:setProps', {
@@ -47,52 +55,6 @@ window.sfController.prototype = {
         var $timeout = this.$timeout;
         var that = this;
         switch (el.attr('data-id')) {
-            case 'addHeaderRows': // 新增表格行
-                if (!data.headers) {
-                    data.headers = [];
-                }
-                var rowsData = {
-                    key: data.key + '_' + oSource.length,
-                    order: data.headers.length + 1,
-                    subs: []
-                };
-                data.headers.push(rowsData);
-                this.scope.$root.$broadcast('Sortable:updateEvent', true);
-                break;
-            case 'addHeaderCols': // 新增表格列
-                var def_name = '请输入列名';
-                var colsData = {
-                    text: def_name,
-                    py: this.py.get(def_name),
-                    cols: 1,
-                    rows: 1,
-                    order: data.subs.length + 1,
-                    hasOrder: false,
-                    hasDrag: false,
-                    key: source.key + '_' + oHead.index() + '_' + data.subs.length
-                };
-                $timeout(function () {
-                    data.subs.push(colsData);
-                    that.scope.$root.$broadcast('Sortable:updateEvent', true);
-                });
-                break;
-            case 'removeCols': // 删除表格列
-                dataMap = this.CONFIG.getDataById(source.key, oSource);
-                if (!!confirm('确定删除表格项【' + dataMap.item.text + '】? ')) {
-                    $timeout(function () {
-                        angular.isArray(dataMap.parent) && dataMap.parent.splice(dataMap.index, 1);
-                    });
-                }
-                break;
-            case 'removeRows':
-                if (!!confirm('确定删除表头?')) {
-                    $timeout(function () {
-                        var index = oHead.index();
-                        // oHead.remove();
-                        (oParent && angular.isArray(oParent)) && oParent.splice(index, 1);
-                    });
-                }
-                break;
             case 'setProps': // 配置表格属性
                 this.setProps(data, oSource);
                 break;
@@ -101,28 +63,6 @@ window.sfController.prototype = {
                 break;
             case 'minusWidth': // 减少表格宽度
                 data.cols = data.cols > 2 ? --data.cols : 2;
-                break;
-            case 'addFlex': // 增加列宽度比例
-                if (dataMap.siblings <= 1) {
-                    return;
-                }
-                if (data.cols >= 12) {
-                    return data.cols = 12;
-                }
-                $timeout(function () {
-                    data.cols = data.cols + 1;
-                });
-                break;
-            case 'minusFlex': // 减少列宽度比例
-                if (dataMap.siblings <= 1) {
-                    return;
-                }
-                if (data.cols <= 1) {
-                    return data.cols = 1;
-                }
-                $timeout(function () {
-                    data.cols = data.cols - 1;
-                });
                 break;
             case 'removeTable': // 移除表格
             case 'removeComponents': // 移除组件
@@ -135,22 +75,19 @@ window.sfController.prototype = {
                 }
                 break;
             case 'preview': // 预览模式
-                if (this.scope.tablesConf.model === 'edit') {
-                    this.scope.tablesConf.model = 'preview';
-                   // this.scope.$root.$broadcast('Tables:setEditModel', {model: 'preview'});
+                if (this.scope.tablesModel === 'edit') {
+                    this.scope.$root.$broadcast('Tables:setEditModel', {model: 'preview'});
                     el.attr('title', '编辑模式')
                         .find('.icon-eye-open')
                         .removeClass('icon-eye-open')
                         .addClass('icon-pencil');
                 } else {
-                    this.scope.tablesConf.model = 'edit';
-                  //  this.scope.$root.$broadcast('Tables:setEditModel', {model: 'edit'});
+                    this.scope.$root.$broadcast('Tables:setEditModel', {model: 'edit'});
                     el.attr('title', '预览模式')
                         .find('.icon-pencil')
                         .removeClass('icon-pencil')
                         .addClass('icon-eye-open');
                 }
-                console.log(this.scope);
                 break;
             case 'addDashboard': // 添加到聚合页
                 if (!data.headers.length || !this.scope.previewData[source.key]) {

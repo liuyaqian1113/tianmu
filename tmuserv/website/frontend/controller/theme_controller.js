@@ -2,8 +2,8 @@
  * @file theme_controller the file
  */
 'use strict';
-angular.module(window.ProjectName).controller('theme_controller',
-    function ($rootScope, $scope, $state, $log, $stateParams, $timeout, $interval, CONFIG, fetchService) {
+angular.module(window.ProjectName)
+    .controller('theme_controller', function ($rootScope, $scope, $state, $log, $stateParams, $timeout, $interval, CONFIG, fetchService) {
         var currentName = $state.current.name;
         var api = CONFIG.api[currentName];
         $scope.theme = {};
@@ -22,7 +22,8 @@ angular.module(window.ProjectName).controller('theme_controller',
                 type: 'post',
                 url: api.save,
                 data: data
-            }).then(function (ret) {
+            })
+            .then(function (ret) {
                 ret = !!ret.length ? ret[0].data : ret.data;
                 $rootScope.poplayer = {
                     type: 'succ',
@@ -42,21 +43,22 @@ angular.module(window.ProjectName).controller('theme_controller',
                     content: '表单数据为空!'
                 };
             }
-           // $rootScope.poplayer.type = 'loading';
+            // $rootScope.poplayer.type = 'loading';
             fetchService.get({
-                type: 'post',
-                url: api.save,
-                data: data
-            }).then(function (ret) {
-                ret = !!ret.length ? ret[0].data : ret.data;
-                $rootScope.poplayer = {
-                    type: 'succ',
-                    content: '风格主题创建成功',
-                    redirect: function () {
-                        return $state.go('theme', {});
-                    }
-                };
-            });
+                    type: 'post',
+                    url: api.save,
+                    data: data
+                })
+                .then(function (ret) {
+                    ret = !!ret.length ? ret[0].data : ret.data;
+                    $rootScope.poplayer = {
+                        type: 'succ',
+                        content: '风格主题创建成功',
+                        redirect: function () {
+                            return $state.go('theme', {});
+                        }
+                    };
+                });
         };
         $scope.theme.category = [];
         $scope.theme.setCategory = function (key, val) {
@@ -68,14 +70,15 @@ angular.module(window.ProjectName).controller('theme_controller',
                 return;
             }
             fetchService.get({
-                url: api.get,
-                data: {}
-            }).then(function (ret) {
-                ret = !!ret.length ? ret[0].data : ret.data;
-                $timeout(function () {
-                    $scope.theme.category = ret.data;
+                    url: api.get,
+                    data: {}
+                })
+                .then(function (ret) {
+                    ret = !!ret.length ? ret[0].data : ret.data;
+                    $timeout(function () {
+                        $scope.theme.category = ret.data;
+                    });
                 });
-            });
         })();
         $scope.theme.themeList = [];
         (function () {
@@ -83,16 +86,17 @@ angular.module(window.ProjectName).controller('theme_controller',
                 return;
             }
             fetchService.get({
-                url: api.list,
-                data: {}
-            }).then(function (ret) {
-                ret = !!ret.length ? ret[0].data : ret.data;
-            console.log(ret);
-                $timeout(function () {
-                    $scope.theme.themeList = ret.data;
-                    console.log(ret, $scope.theme.themeList);
+                    url: api.list,
+                    data: {}
+                })
+                .then(function (ret) {
+                    ret = !!ret.length ? ret[0].data : ret.data;
+                    $timeout(function () {
+                        $scope.theme.themeList = ret.data;
+                        console.log(ret, $scope.theme.themeList);
+                    });
                 });
-            });
         })();
         // $scope.$parent.$broadcast('canvas:setBg');
     });
+

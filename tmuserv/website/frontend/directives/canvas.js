@@ -1,4 +1,4 @@
-'@file: loading';
+'@file: canvas';
 angular.module(ProjectName)
     .directive('canvas', ['$rootScope', '$timeout', '$q', 'fetchService', 'CONFIG', function ($rootScope, $timeout, $q, fetchService, CONFIG) {
         var directive = {
