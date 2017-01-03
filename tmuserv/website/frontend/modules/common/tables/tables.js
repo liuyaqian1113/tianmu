@@ -30,7 +30,7 @@ angular.module(window.ProjectName)
                                 factory.order = scope.tablesDataSource.searchsPanel.length + 1;
                                 var newSource = angular.copy(factory);
                                 // scope.$emit('Tables:createSearchs', newSource);
-                               // scope.$root.$broadcast('Sortable:updateEvent', true);
+                                // scope.$root.$broadcast('Sortable:updateEvent', true);
                                 scope.tablesDataSource.searchsPanel.push(newSource);
                             }
                         }

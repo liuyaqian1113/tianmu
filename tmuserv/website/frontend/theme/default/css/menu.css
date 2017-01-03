@@ -4,6 +4,7 @@
     margin: 10px 0 0 -20px;
     display: none;
 }
+
 #menu-tools a {
     float: left;
     margin-right: 5px;
@@ -16,12 +17,14 @@
     padding: 2px 0 0 4px;
     color: #fff;
 }
+
 #menu-tools a.on {
     border-color: #E43C59;
     color: #E43C59;
     background: #fff;
     opacity: 1;
 }
+
 #menu-tools a:hover {
     opacity: 1;
 }
@@ -32,6 +35,7 @@
     -webkit-animation-timing-function: linear;
     -webkit-animation-iteration-count: 1;
 }
+
 @-webkit-keyframes buzz-out {
     10% {
         -webkit-transform: translateX(3px) rotate(2deg);
@@ -64,6 +68,7 @@
         -webkit-transform: translateX(-1px) rotate(0);
     }
 }
+
 @-webkit-keyframes zoom {
     50% {
         -webkit-transform: scale(1.3, 1.3);

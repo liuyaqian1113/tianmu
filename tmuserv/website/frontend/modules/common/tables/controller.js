@@ -1,3 +1,6 @@
+/**
+ * @file Created by panjian01 on 2017/01/03.
+ */
 window.sfController = window.sfController || {};
 window.sfController = function (opts) {
     this.scope = opts.scope;
@@ -33,14 +36,18 @@ window.sfController.prototype = {
         });
     },
     /**
-    表格操作
-    e  点击对象
-    data   操作数据对象
-    source  操作数据对象的源数据
-    oParent 操作数据对象的上级数据对象
-    */
+     * 统一工具操作 
+     * 
+     * @param {Event Object} e 点击对象 
+     * @param {Object} data 当前操作数据对象 
+     * @param {Object} source 操作数据对象的源数据 
+     * @param {Array} oParent 操作数据对象的上级数据对象
+     * @param {string} options.prefix 控件class前缀，同时将作为main的class之一 
+     * @param {number} options.index 默认激活的标签索引 
+     */
     toolsCtrl: function (e, data, source, oParent) {
-        var el = $(e.target || e.srcElement).closest('li.btn');
+        var el = $(e.target || e.srcElement)
+            .closest('li.btn');
         var oHead = el.closest('.thead');
         var oSource = source || this.scope.tablesPanel;
         var dataMap = this.CONFIG.getDataById(data.key, oSource);
@@ -137,14 +144,14 @@ window.sfController.prototype = {
             case 'preview': // 预览模式
                 if (this.scope.tablesConf.model === 'edit') {
                     this.scope.tablesConf.model = 'preview';
-                   // this.scope.$root.$broadcast('Tables:setEditModel', {model: 'preview'});
+                    // this.scope.$root.$broadcast('Tables:setEditModel', {model: 'preview'});
                     el.attr('title', '编辑模式')
                         .find('.icon-eye-open')
                         .removeClass('icon-eye-open')
                         .addClass('icon-pencil');
                 } else {
                     this.scope.tablesConf.model = 'edit';
-                  //  this.scope.$root.$broadcast('Tables:setEditModel', {model: 'edit'});
+                    //  this.scope.$root.$broadcast('Tables:setEditModel', {model: 'edit'});
                     el.attr('title', '预览模式')
                         .find('.icon-pencil')
                         .removeClass('icon-pencil')

@@ -1,5 +1,5 @@
 /**
- * uuap 配置信息
+ * @file uuap.config 配置信息
  */
 module.exports = {
     protocol: 'http:',

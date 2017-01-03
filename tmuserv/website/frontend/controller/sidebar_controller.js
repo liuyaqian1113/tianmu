@@ -11,7 +11,8 @@ angular.module(window.ProjectName)
             };
             var sourceItems = angular.copy(list);
             var id = item.pid;
-            function getDataObj (data) {
+
+            function getDataObj(data) {
                 var _thisObj = arguments.callee;
                 if (!data) {
                     return sourceItems;
@@ -49,21 +50,21 @@ angular.module(window.ProjectName)
             return items;
         };
         fetchService.get({
-            url: CONFIG.api.common.getMenus,
-            data: {}
-        }).then(function (ret) {
-            ret = !!ret.length ? ret[0].data : ret.data;
-            if (ret.status - 0 === 0) {
-                var data = formatDatas(ret.data);
-                $timeout(function () {
-                    $rootScope.menuItems = data || [];
-                    !!data.length && $scope.$root.$broadcast('Menus:resetHover', data);
-                    console.log(data);
-
-                })
-            }
-           // $scope.$root.menuItems = ret.data;
-          //  scope.$root.$broadcast('Menus:resetHover', ret.data);
-        });
+                url: CONFIG.api.common.getMenus,
+                data: {}
+            })
+            .then(function (ret) {
+                ret = !!ret.length ? ret[0].data : ret.data;
+                if (ret.status - 0 === 0) {
+                    var data = formatDatas(ret.data);
+                    $timeout(function () {
+                        $rootScope.menuItems = data || [];
+                        !!data.length && $scope.$root.$broadcast('Menus:resetHover', data);
+                        console.log(data);
+                    })
+                }
+                // $scope.$root.menuItems = ret.data;
+                //  scope.$root.$broadcast('Menus:resetHover', ret.data);
+            });
     });
 

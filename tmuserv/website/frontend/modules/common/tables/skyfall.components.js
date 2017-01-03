@@ -73,7 +73,7 @@ angular.module("skyfall.components", [])
                             .then(function (ret) {
                                 ret = !!ret.length ? ret[0].data : ret.data;
                                 if (typeof ret === 'string') {
-                                    try{
+                                    try {
                                         ret = $.parseJSON(ret);
                                     } catch (err) {
                                         ret = [];
@@ -93,7 +93,7 @@ angular.module("skyfall.components", [])
             return Base;
         }();
         var Tables = (function (base) {
-        /*    if (!this instanceof Tables) {
+            /*    if (!this instanceof Tables) {
                 return new Tables([].slice.call(arguments, 0));
             }
 */

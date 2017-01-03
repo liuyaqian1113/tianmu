@@ -25,7 +25,7 @@
                         <ul class="panel-headers-tools" ng-if="isEditModel" ng-click="toolsCtrl($event, head, panel)">
                             <!--<li class="btn btn-xs btn-nonebg" data-id="splitCols" title="拆分表格项"><i class="icon-cut"></i></li>
                                     <li class="btn btn-xs btn-nonebg" data-id="mergeCols" title="合并表格项"><i class="icon-link"></i></li>-->
-                            <li class="btn btn-xs btn-nonebg colsTools-drag" title="排序" data-data="head" style="cursor:move;"><i class="icon-move"></i></li>
+                            <li class="btn btn-xs btn-nonebg cols-tools-drag" title="排序" data-data="head" style="cursor:move;"><i class="icon-move"></i></li>
                             <li class="btn btn-xs btn-nonebg" data-id="addFlex" title="增加宽度"><i class="icon-resize-horizontal"></i></li>
                             <li class="btn btn-xs btn-nonebg" data-id="minusFlex" title="减少宽度"><i class="icon-resize-small"></i></li>
                             <li class="btn btn-xs btn-nonebg" data-id="removeCols" title="删除表格项"><i class="icon-trash"></i></li>
@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 <ul class="thead-tools" ng-if="isEditModel" ng-click="toolsCtrl($event, header, panel, panel.headers)">
-                    <li class="btn btn-xs btn-circle btn-default rowsTools-drag" data-id="sortHandle" data-data="header" title="排序" style="cursor:move;"><i class="icon-move"></i></li>
+                    <li class="btn btn-xs btn-circle btn-default rows-tools-drag" data-id="sortHandle" data-data="header" title="排序" style="cursor:move;"><i class="icon-move"></i></li>
                     <li class="btn btn-xs btn-circle btn-success" data-id="addHeaderCols" title="新增表格列"><i class="icon-plus"></i></li>
                     <li class="btn btn-xs btn-circle btn-danger" data-id="removeRows" title="删除行"><i class="icon-remove"></i></li>
                 </ul>

@@ -29,13 +29,13 @@ angular.module(window.ProjectName)
                 {
                     dom: '.table',
                     items: '.thead',
-                    handle: '.rowsTools-drag',
+                    handle: '.rows-tools-drag',
                     connectWith: ''
                 },
                 {
                     dom: '.table .tr',
                     items: '.th',
-                    handle: '.colsTools-drag',
+                    handle: '.cols-tools-drag',
                     connectWith: ''
                 }
                // {dom: '.sortable-row', items: '.panel', handle: '.panel-heading', connectWith: '.sortable-row'}
