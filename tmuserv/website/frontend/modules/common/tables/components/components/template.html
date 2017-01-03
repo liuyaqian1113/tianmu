@@ -1,0 +1,27 @@
+<div class="components-panel {{tablesConf.model}}">
+    <ul class="nav">
+        <li class="nav-header">
+            <h5>查询组件</h5>
+            <ul class="root-menu">
+            <!--  | orderBy: '+order' -->
+                <li class="sort-handle" ng-repeat="search in componentsFactory.searchs">
+                    <a href="javascript:;" class="source" ng-click="createSearchs(search.type)">
+                        <img src="./frontend/theme/default/images/1.jpg" height="31" width="29">
+                        <h6>{{search.title}}</h6>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-header">
+            <h5>图表组件</h5>
+            <ul class="root-menu">
+                <li class="sort-handle" ng-repeat="table in componentsFactory.tables">
+                    <a href="javascript:;" class="source" ng-click="createTables(table.type)">
+                        <img src="./frontend/theme/default/images/1.jpg" height="31" width="29">
+                        <h6>{{table.title}}</h6>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>

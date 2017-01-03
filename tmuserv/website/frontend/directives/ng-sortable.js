@@ -5,14 +5,16 @@ angular.module(window.ProjectName)
     .directive('ngSortable', function ($timeout, CONFIG) {
         return {
             scope: true,
-            require: '?^ngTables',
             restrict: 'A',
             link: function (scope, element, attrs) {
-                var oDom = $(element);
-                var config = scope.$eval(attrs.ngSortable);
+                var destroyList = [];
                 $timeout(function () {
-                    var sConf = [];
-                    var setSortable = function  () {
+                    var oDom = $(element);
+                    if (!oDom.prop('tagName')) {
+                        return;
+                    }
+                    var config = scope.$eval(attrs.ngSortable);
+                    var setSortable = function () {
                         if (config && angular.isArray(config.config)) {
                             angular.forEach(config.config, function (v) {
                                 switch (v.dom) {
@@ -23,49 +25,56 @@ angular.module(window.ProjectName)
                                         v.element = oDom.find(v.dom);
                                         break;
                                 }
-                                if (v.element && v.element.length) {
-                                    sConf.push(v);
-                                    bindSorable(v);
-                                }
-                              //  console.log(config.config, sConf, v);
+                                (v.element && v.element.length) && bindSorable(v);
                             });
                         }
                     };
-                    function bindSorable (opts) {
+
+                    function bindSorable(opts) {
                         opts.element.sortable({
                             cursor: 'move',
                             connectWith: opts.connectWith || '',
                             dropOnEmpty: true,
                             handle: opts.handle || '',
                             cancel: opts.cancel || '',
-                         //   helper: 'clone',
+                            helper: 'clone',
+                        //    forceHelperSize: true,
                             items: opts.items || "> li",
                             tolerance: "pointer",
                             zIndex: 9999,
                             update: updateMenusData
-                        }).disableSelection();
+                        });
+                       // .disableSelection();
                     }
                     var updateMenusData = function (e, ui) {
-                        console.log(e, ui);
+                        var dom = $(e.target || e.srcElement);
+                        var container = $(this);
+                        var item = container.sortable('option').items;
+                        var newOrder = [];
+                        $.each(container.find(item), function (i, v) {
+                            var key = $(this).attr('data-id');
+                            newOrder.push(key);
+                        });
+                        scope.$emit('Tables:setOrder', {order: newOrder, type: dom.attr('data-type')});
                     };
                     var refreshSortable = function () {
-                       // angular.forEach(sConf, function (v) {
-                         //   v.element.sortable('destroy');
-                      //  });
-                        sConf = [];
-                        setSortable();
+                        return setSortable();
                     };
                     setSortable();
-                   // CONFIG.setData('sidebar', 'aaa');
-                   // CONFIG.getData('sidebar').then(function (data) {
-                   //     console.log(data ,'========');
-                   // });
-                    scope.$on('Sortable:updateEvent', function (event, data) {
+                    destroyList[destroyList.length - 1] = scope.$on('Sortable:updateEvent', function (event, data) {
                         if (!!data) {
-                          //  console.log(data);
                             refreshSortable();
                         }
                     });
+                    scope.$on('$destroy', function () {
+                        //destroyList[destroyList.length - 1]
+                        angular.forEach(destroyList, function (/** Function */unwatch) {
+                            (typeof unwatch === 'function') && unwatch();
+                        });
+                    });
+                   /* element.on('$destroy', function () {
+                      scope.$destroy();
+                    });*/
                 });
             }
         }

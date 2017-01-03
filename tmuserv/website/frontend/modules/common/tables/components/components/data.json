@@ -1,0 +1,54 @@
+{
+    "searchs": [
+        {
+            "type": "dateTime",
+            "title": "日期",
+            "resolve": [
+                "modules/common/daterangepicker/daterangepicker.css",
+                "modules/common/daterangepicker/daterangepicker.min.js"
+            ],
+            "cols": 3
+
+        },
+        {
+            "type": "dateTimeRange",
+            "title": "日期范围",
+            "resolve": [
+                "modules/common/daterangepicker/daterangepicker.css",
+                "modules/common/daterangepicker/daterangepicker.min.js"
+            ],
+            "cols": 4
+        },
+        {
+            "type": "singleSelect",
+            "title": "单选下拉框",
+            "cols": 4
+        }
+    ],
+    "tables": [
+        {
+            "type": "table",
+            "api": "",
+            "apiRate": 0,
+            "cols": 12,
+            "showpage": false,
+            "headers": [],
+            "title": "数据报表"
+        },
+        {
+            "type": "line",
+            "api": "",
+            "apiRate": 0,
+            "cols": 12,
+            "title": "折线图"
+        },
+        {
+            "type": "scotter",
+            "api": "",
+            "apiRate": 0,
+            "cols": 12,
+            "title": "飞行图"
+        }
+    ]
+}
+

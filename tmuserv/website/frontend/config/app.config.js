@@ -34,51 +34,54 @@ angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.laz
         });
         return flag;
     },
-    bindData: function (act, data, fn) {
-        var _this = this;
-        return this.$scope.$on('Data:' + act, function (event, args) {
-            if (!!fn) {
-                if (!_this._setData) {
-                    _this._setData = {};
-                }
-                _this._setData[act] = fn;
-            }
-            if (args && args.data) {
-             // data.pop();
-            }
-            (args.callback) && args.callback(data);
-        });
-    },
-    getData: function (act) {
-        var me = this;
-        var fn = function () {
-            var args = {};
-            var _this = this;
-            this._data = {};
-            this.then = function (a) {
-                // 可以复制给一个变量然后delete _this._data[act];
-                var _ret = _this._data[act];
-               // delete _this._data[act];
-                return a(_ret);
-            };
-            args.callback = function (data) {
-                _this._data[act] = data;
-            };
-            me.$scope.$emit('Data:' + act, args);
-        };
-        var ret = new fn();
-        return ret;
-    },
-    setData: function (act, data) {
-        if (!this._setData || !this._setData[act]) {
+    /**
+        根据id获取对应的数据对象
+        @params
+            id  string 数据对象的唯一key
+            source   object 数据对象的源数据
+            destroy  boolean 是否清除空源数据中空对象, 空数组
+        @return
+            source   整个儿menu对象
+            parent   对应数据对象的父对象
+            item  对应的数据对象
+            index 对应数据对象在当前层级的序号
+            siblings  对应数据对象的同级对象个数
+    */
+    getDataById: function (id, source, destroy) {
+        if (!id || !source) {
             return null;
+        };
+        var result = {};
+        function getDataObj(data) {
+            angular.forEach(data, function (v, k) {
+                if (v.id - 0 === id - 0 || v.key === id || (v.key === id)) {
+                    return result = {
+                        source: source,
+                        parent: data,
+                        item: v,
+                        index: k,
+                        siblings: data.length
+                    };
+                } else {
+                    if (angular.isArray(v) && !v.length && !!destroy) {
+                        data.splice(k, 1);
+                        // continue;
+                    }
+                    if (!angular.isArray(v) && !v instanceof Object) {
+                        return v;
+                    }
+                    getDataObj(v.tables || v.headers || v.subs || (!angular.isArray(v) ? [] : v));
+                }
+            });
+            return result;
         }
-        return this._setData[act](data);
+        var node = getDataObj(source);
+        return node;
     },
     getToken: function () {
-        var date = new Date().getMilliseconds();
-        var hash = Math.floor(Math.random() * 100000 + 1);
-        var code = date + hash - 0;
+        var date = '';//new Date().getMilliseconds();
+        var hash = 'skyfall';// Math.floor(Math.random() * 100000 + 1);
+        var code = date + hash;
         code = hex_md5(code);
         return code;
     },
@@ -111,6 +114,9 @@ angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.laz
         },
         index: { //首页
             list: 'api/list'
+        },
+        tables: { // 数据报表
+            getTablesConfig: 'api/tmu/tables/getTablesConfig'
         },
         monitor: { //实时监控(RTA)
             sceneConf: 'api/monitorData'
@@ -205,9 +211,9 @@ angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.laz
     var html = $('html');
     var isLocal = !!(/((kent|tianbin|liuyaqian)\.baidu\.com|\d{0,3}\.\d{0,3}\.\d{0,3}\.\d{0,3})/i
         .test(location.hostname));
-    var api = isLocal ? './frontend/api/permission.json' : '/searchboxbi/api/login';
-
-    function loadJsCss(items, fn) {
+    var api = isLocal ? '/login' : './frontend/api/permission.json';
+    var loadCache = {};
+    angular.loadJsCss = function (items, fn) {
         if (!angular.isArray(items)) {
             items = [items];
         }
@@ -215,34 +221,44 @@ angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.laz
         var oBody = document.getElementsByTagName('body')[0];
         // var fragment = document.craeteDocumentFragment();
         (function runLoad() {
-            var callback = function () {
-                if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") {
-                    this.onload = this.onreadystatechange = null;
-                    (!items.length) ? fn(): runLoad();
-                }
-            };
             var file = items.shift();
-            var ext = file.toLowerCase().match(/\.(\w+)$/);
-            ext = !!ext ? ext[1] : 'js';
-            switch (ext) {
-                case 'css':
-                    var oDom = document.createElement('link');
-                    oDom.onload = oDom.onreadystatechange = callback;
-                    oDom.type = 'text/css';
-                    oDom.rel = 'stylesheet';
-                    oDom.href = file;
-                    break;
-                case 'js':
-                    var oDom = document.createElement('script');
-                    oDom.onload = oDom.onreadystatechange = callback;
-                    oDom.type = 'text/javascript';
-                    oDom.src = file;
-                    break;
+        //    console.log(file, loadCache[file], items.length);
+            if (!file) {
+                return;
             }
-            oBody.appendChild(oDom);
+            if (!loadCache[file]) {
+                loadCache[file] = true;
+                var callback = function (res) {
+                    if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") {
+                        if (res.type === 'error') {
+                            delete loadCache[file];
+                        }
+                        this.onload = this.onreadystatechange = oDom.onerror = null;
+                        (!items.length) ? fn(res): runLoad();
+                    }
+                };
+                var ext = file.toLowerCase().match(/\.(\w+)$/);
+                ext = !!ext ? ext[1] : 'js';
+                switch (ext) {
+                    case 'css':
+                        var oDom = document.createElement('link');
+                        oDom.onload = oDom.onreadystatechange = oDom.onerror = callback;
+                        oDom.type = 'text/css';
+                        oDom.rel = 'stylesheet';
+                        oDom.href = file;
+                        break;
+                    case 'js':
+                        var oDom = document.createElement('script');
+                        oDom.onload = oDom.onreadystatechange = oDom.onerror = callback;
+                        oDom.type = 'text/javascript';
+                        oDom.src = file;
+                        break;
+                }
+                oBody.appendChild(oDom);
+            }
         })();
     }
-    if (!isLocal) {
+    if (!!isLocal) {
         try {
             var ajax = $.ajax({
                 url: api,
@@ -254,17 +270,18 @@ angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.laz
                 }
             });
             return ajax.always(function (ret, status) {
-                if (status === 'error') {
-                    return prjstart();
+                if (ret && ret.status - 0 === -1 && typeof ret.data === 'string') {
+                  //  return prjstart();
+                  return location.replace(ret.data);
                 } else {
                     if (typeof ret === 'string') {
                         ret = $.parseJSON(ret);
                     }
-                    return ((ret.errorCode - 0) === 0 || (ret.errorno - 0) === 0) ? prjstart(ret) : prjstart();
+                    return ((ret.errorCode - 0) === 0 || (ret.status - 0) === 0) ? prjstart(ret) : prjstart();
                 }
             });
         } catch (err) {
-            return prjstart();
+           // return prjstart();
         }
     } else {
         return prjstart();
@@ -272,10 +289,11 @@ angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.laz
 
   //      <script type="text/javascript" src="./frontend/lib/js/ui-bootstrap-tpls-0.11.0.min.js"></script>
     function prjstart(args) {
-        return loadJsCss([
+        return angular.loadJsCss([
             './frontend/modules/common/loading/loading.css',
             './frontend/modules/common/loading/loading.js',
             './frontend/service/fetch.js',
+            './frontend/service/firstPY.min.js',
             './frontend/lib/js/echarts3.js',
             './frontend/lib/js/ui-bootstrap-tpls-0.11.0.min.js'
         ], function () {

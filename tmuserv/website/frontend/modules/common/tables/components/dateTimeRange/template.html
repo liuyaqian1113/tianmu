@@ -1,0 +1,14 @@
+<div class="input-group input-group-sm" style="width: 100%;" ng-model="search.type">
+    <span class="input-group-addon">{{search.title}}:</span>
+    <input type="text" date-range-picker class="form-control" readonly  ng-model="searchsData.dateTimeRange">
+    <span class="input-group-addon"><i class="icon-calendar"></i></span>
+    <!-- /btn-group -->
+</div>
+<!-- /input-group -->
+<ul class="panel-headers-tools" ng-if="tablesConf.model == 'edit'" ng-click="toolsCtrl($event, search, tablesDataSource.searchsPanel)">
+    <li class="btn btn-xs btn-nonebg colsTools-drag" title="排序" data-data="search" style="cursor:move;"><i class="icon-move"></i></li>
+    <li class="btn btn-xs btn-nonebg" data-id="setProps" title="查询组件属性配置"><i class="icon-cog"></i></li>
+    <li class="btn btn-xs btn-nonebg" data-id="addWidth" title="增加宽度"><i class="icon-resize-horizontal"></i></li>
+    <li class="btn btn-xs btn-nonebg" data-id="minusWidth" title="减少宽度"><i class="icon-resize-small"></i></li>
+    <li class="btn btn-xs btn-nonebg" data-id="removeComponents" title="删除组件"><i class="icon-trash"></i></li>
+</ul>

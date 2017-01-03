@@ -1,0 +1,17 @@
+<!-- begin col-6 -->
+<div class="col-md-12">
+    <!-- begin panel -->
+    <div class="panel panel-inverse">
+        <div class="panel-heading">
+            <ul class="panel-heading-btn" ng-click="toolsCtrl($event, search, tablesDataSource.searchsPanel)">
+                <li class="btn btn-xs btn-nonebg" data-id="addDashboard" title="添加到聚合页"><i class="icon-share"></i></li>
+            </ul>
+            <h4 class="panel-title">查询组件</h4>
+        </div>
+        <div class="panel-body form-inline" ng-class="tablesModel">
+            <sf-components-tmpl-proxy options="search" data-id="{{search.key}}" ng-repeat="search in tablesDataSource.searchsPanel" class="col-sm-{{search.cols || 4}} components"></sf-components-tmpl-proxy>
+        </div>
+    </div>
+    <!-- end panel; -->
+</div>
+<!-- end col-6 -->

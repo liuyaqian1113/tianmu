@@ -2,71 +2,125 @@
  * @file tables_controller the file
  */
 'use strict';
-angular.module(window.ProjectName).controller('tables_controller',
-    function ($rootScope, $scope, $state, $log, $stateParams, $timeout, CONFIG, fetchService) {
+angular.module(window.ProjectName)
+    .controller('tables_controller', function ($rootScope, $scope, $state, $stateParams, $timeout, CONFIG, fetchService) {
         var api = CONFIG.api[$state.current.name];
-        $scope.sortableConf = {
+        $scope.destroyList = [];
+        $scope.sortableSearchConf = {
             config: [
-                {dom: 'this', items: '.sortable-row', handle: '.panel-heading', connectWith: '.sortable-row', cancel: '.panel-heading-btn'},
-                {dom: '.table', items: '.thead', handle: '.rowsTools-drag', connectWith: ''},
-                {dom: '.table .tr', items: '.th', handle: '.colsTools-drag', connectWith: ''}
+                {
+                    dom: 'this',
+                    items: '.components',
+                    handle: '.colsTools-drag',
+                    connectWith: '.components',
+                    cancel: 'input,select'
+                }
+            ]
+        };
+        $scope.sortableTableConf = {
+            config: [
+                {
+                    dom: 'this',
+                    items: '.sortable-row',
+                    handle: '.panel-heading',
+                    connectWith: '.sortable-row',
+                    cancel: '.panel-heading-btn'
+                },
+                {
+                    dom: '.table',
+                    items: '.thead',
+                    handle: '.rowsTools-drag',
+                    connectWith: ''
+                },
+                {
+                    dom: '.table .tr',
+                    items: '.th',
+                    handle: '.colsTools-drag',
+                    connectWith: ''
+                }
                // {dom: '.sortable-row', items: '.panel', handle: '.panel-heading', connectWith: '.sortable-row'}
             ]
         };
         $scope.tablesConf = {
             model: 'edit'
         };
-        var tablesFactory = {
-            table: function () {
-                var type = 'table';
-                var key = type + '_' + Math.floor(Math.random() * 1000000 + 1);
-                return {
-                    id: 1,
-                    key: key,
-                    type: type,
-                    cols: 12,
-                    order: $scope.tablesPanel.length + 1,
-                    api: 'api://',
-                    title: '表格名称',
-                    tables: {
-                        headers: [
-                            /*[
-                                {text: 'id', cols: 1, rows: 1, hasOrder: false, hasdrag: false, key: key + '_0_0'},
-                                {text: 'name', cols: 1, rows: 1, hasOrder: false, hasdrag: false, key: key + '_0_1'},
-                                {text: 'email', cols: 1, rows: 1, hasOrder: false, hasdrag: false, key: key + '_0_2'}
-                            ]*/
-                        ]/*,
-                        bodys: [
-                            [
-                                {text: 1, cols: 1, rows: 1},
-                                {text: 'Nicky Almera', cols: 1, rows: 1},
-                                {text: 'nicky@hotamil', cols: 1, rows: 1}
-                            ],
-                            [
-                                {text: 2, cols: 1, rows: 1},
-                                {text: 'Edmund Wong', cols: 1, rows: 1},
-                                {text: 'edmund@hotamil', cols: 1, rows: 1}
-                            ],
-                            [
-                                {text: 3, cols: 1, rows: 1},
-                                {text: 'Harvinder Singh', cols: 1, rows: 1},
-                                {text: 'harvinder@hotamil', cols: 1, rows: 1}
-                            ]
-                        ]*/
-                    },
-                    showpage: 0,
-                    perpage: 10,
-                  //  total: 3,
-                    currentpage: 1,
-                };
+        $scope.editTablesName = function (e, data) {
+            var el = $(e.target || e.srcElement)
+                .closest('.tables-name-editor, .tables-name');
+            var type = e.type;
+            switch (type) {
+                case 'click':
+                    var oInput = el.siblings('.tables-name') || el;
+                    (oInput.length) && oInput.attr('contenteditable', true);
+                    oInput.css('background-color', '#FFE793');
+                    oInput[0].focus();
+                    break;
+                case 'blur':
+                    (el.length) && el.removeAttr('contenteditable');
+                    var text = $.trim(el.text());
+                    if (text !== '') {
+                        text = text.replace(/(<[^>]*>)|(javascript)/ig, '');
+                        data = text;
+                        el.text(text);
+                    }
+                    el.css('background-color', '');
+                    console.log($scope.tablesDataSource);
+                    break;
             }
+        };
+        $scope.saveTables = function () {
+            console.log($scope.tablesDataSource, JSON.stringify($scope.tablesDataSource));
+        };
+        $scope.destroyList[$scope.destroyList.length - 1] = $scope.$on('Tables:createSearchs', function (event, data) {
+            if (!!data) {
+                return $scope.tablesDataSource.searchsPanel.push(data);
+            }
+        });
+        $scope.destroyList[$scope.destroyList.length - 1] = $scope.$on('Tables:createTables', function (event, data) {
+            if (!!data) {
+                return $scope.tablesDataSource.tablesPanel.push(data);
+            }
+        });
+        $scope.tablesDataSource = {};
+        $scope.tablesDataSource.tablesName = '新建数据报表';
+        $scope.tablesDataSource.searchsPanel = [];
+        $scope.tablesDataSource.tablesPanel = [];
+        $scope.previewData = {};
+        $scope.sourceData = {};
 
-        };
-        $scope.createTables = function (category) {
-            var factory = tablesFactory[category];
-            if (factory) {
-                $scope.tablesPanel.push(factory());
+        fetchService.get({
+            url: api.getTablesConfig,
+            type: 'get',
+            data: {}
+        }).then(function (ret) {
+            ret = !!ret.length ? ret[0].data : ret.data;
+            if (ret.status - 0 === 0 || ret.errno - 0 === 0) {
+                angular.forEach(ret.data.searchsPanel, function (v) {
+                    if (v.dataOrigin === 'static' && v.source.length) {
+                        if (!$scope.previewData[v.key]) {
+                            $scope.previewData[v.key] = {};
+                        }
+                        $scope.previewData[v.key].source = v.source;
+                    }
+                    if (v.dataOrigin === 'remote' && v.api !== '') {
+                        $scope.$root.$broadcast('Props:getRemoteApi', v);
+                    }
+                });
+                angular.forEach(ret.data.tablesPanel, function (v) {
+                    if (v.api !== '') {
+                        $scope.$root.$broadcast('Props:getRemoteApi', v);
+                    }
+                });
+                $scope.tablesDataSource.tablesName = ret.data.tablesName;
+                $scope.tablesDataSource.searchsPanel = ret.data.searchsPanel;
+                $scope.tablesDataSource.tablesPanel = ret.data.tablesPanel;
             }
-        };
-        $scope.tablesPanel = [];
+        });
+        $scope.$on('$destroy', function () {
+            //destroyList[destroyList.length - 1]
+            angular.forEach($scope.destroyList, function (/** Function */unwatch) {
+                (typeof unwatch === 'function') && unwatch();
+            });
+        });
     });
+

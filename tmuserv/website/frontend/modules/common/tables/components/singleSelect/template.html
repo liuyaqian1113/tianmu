@@ -1,0 +1,20 @@
+<div class="input-group input-group-sm" style="width: 100%;" ng-model="search.type">
+    <span class="input-group-addon">{{search.title}}:</span>
+    <input type="text" class="form-control" ng-model="search[search.type].val" readonly>
+    <input type="hidden" name="{{search.varname || 'singleSelect-key'}}" ng-model="search[search.type].key" readonly>
+    <div class="input-group-btn">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">请选择<span class="caret"></span> </button>
+        <ul class="dropdown-menu pull-right" ng-if="previewData[search.key].source && previewData[search.key].source.length">
+            <li ng-repeat="source in (previewData[search.key].source||search.source)"><a href="javascript:;" key="{{source.key}}" ng-click="putSelect(source.key, source.val, search)">{{source.val}}</a></li>
+        </ul>
+    </div>
+    <!-- /btn-group -->
+</div>
+<!-- /input-group -->
+<ul class="panel-headers-tools" ng-if="tablesConf.model == 'edit'" ng-click="toolsCtrl($event, search, tablesDataSource.searchsPanel)">
+    <li class="btn btn-xs btn-nonebg colsTools-drag" title="排序" data-data="search" style="cursor:move;"><i class="icon-move"></i></li>
+    <li class="btn btn-xs btn-nonebg" data-id="setProps" title="查询组件属性配置"><i class="icon-cog"></i></li>
+    <li class="btn btn-xs btn-nonebg" data-id="addWidth" title="增加宽度"><i class="icon-resize-horizontal"></i></li>
+    <li class="btn btn-xs btn-nonebg" data-id="minusWidth" title="减少宽度"><i class="icon-resize-small"></i></li>
+    <li class="btn btn-xs btn-nonebg" data-id="removeComponents" title="删除组件"><i class="icon-trash"></i></li>
+</ul>

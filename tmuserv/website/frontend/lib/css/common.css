@@ -2711,7 +2711,7 @@ Animate.css - http://daneden.me/animate
 body {
     background: #d9e0e7;
     font-size: 12px;
-    font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif, Microsoft Yahei;
+    font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, Microsoft Yahei, sans-serif;
     color: #707478;
     overflow-x: hidden;
 }
@@ -2961,10 +2961,12 @@ label {
     padding: 10px;
     border: none
 }
+
 .tables .navbar-toggle {
     display: block !important;
     background-color: #2D353C;
 }
+
 .tables .navbar-default .navbar-toggle .icon-bar {
     background: #fff;
 }
@@ -2984,6 +2986,7 @@ label {
     opacity: 1 !important;
     filter: alpha(opacity=1) !important;
 }
+
 .navbar-toggle:hover {
     /*background: 0 0!important;*/
     background: #2D353C !important;
@@ -3145,6 +3148,7 @@ label {
     -webkit-transition: left ease-in-out .3s;
     transition: left ease-in-out .3s;
 }
+
 .tables.page-sidebar-toggled .sidebar,
 .tables.page-sidebar-toggled .sidebar-bg {
     left: 0;
@@ -3163,7 +3167,7 @@ label {
     padding: 8px 20px;
     line-height: 20px;
     color: #a8acb1;
-   /* background: #232a2f;*/
+    /* background: #232a2f;*/
 }
 
 .sidebar.sidebar-grid .nav>li>a {
@@ -3198,6 +3202,7 @@ label {
     background: #00acac;
     padding: 10px 20px;
 }
+
 .nav>li.active>a,
 .nav>li.active>a:focus,
 .nav>li.active>a:hover {
@@ -3253,11 +3258,13 @@ label {
     float: right;
     margin-top: 9px
 }
+
 .nav .root-menu .expand>a .caret {
     content: "";
     border-top: 0;
     border-bottom: 4px solid
 }
+
 .nav .root-menu a i {
     float: left;
     margin-right: 15px;
@@ -3266,6 +3273,7 @@ label {
     line-height: 20px;
     font-size: 14px
 }
+
 .nav .sub-menu {
     list-style-type: none;
     padding: 10px 0 10px 30px;
@@ -3290,14 +3298,15 @@ label {
     padding: 0 0 0 30px;
     background: 0 0
 }
+
 .nav .root-menu>li>a {
     position: relative;
     display: block;
     padding: 8px 20px;
     line-height: 20px;
     color: #6e7179;
-    background: #232a2f;
 }
+
 .nav .sub-menu>li>a {
     padding: 5px 20px;
     display: block;
@@ -3318,12 +3327,15 @@ label {
     margin-top: -10px;
     margin-left: -8px
 }
+
 .nav .sub-menu>li:not(.has-sub)>a:before {
     content: '\f10c';
 }
+
 .nav .sub-menu>li.expand.has-sub>a:before {
     content: '\f068';
 }
+
 .nav .sub-menu>li>a:hover::before {
     color: #fff;
 }
@@ -3362,17 +3374,25 @@ label {
     font-size: 12px;
     color: #6d7983
 }
+
 .nav>li.nav-group>span {
     display: inline-block;
     padding: 0 20px;
     font-size: 13px;
 }
+
 #content-body .nav .sort-handle {
     cursor: move;
+    float: left;
+    padding: 7px;
+    margin-left: 10px;
+    width: 56px;
+    font-family: "微软雅黑";
 }
+
 .nav>li.nav-header {
     margin: 0;
-    padding: 10px 20px;
+    padding: 0px 0px;
     line-height: 20px;
     font-size: 11px;
     color: #6d7983
@@ -3381,7 +3401,8 @@ label {
 .nav>li.nav-header a {
     padding: 0;
     margin: 0;
-    display: inline
+    width: 50px;
+    text-align: center;
 }
 
 .nav>li.nav-header a:focus,
@@ -3611,6 +3632,8 @@ label {
     -webkit-transition: margin ease-in-out .3s;
     transition: margin ease-in-out .3s;
 }
+
+
 /*.dashboard .content {
     margin-left: 0;
 }
@@ -3618,6 +3641,7 @@ label {
     margin-left: 220px;
 }
 */
+
 .content.content-full-width {
     padding: 0
 }
@@ -4615,8 +4639,10 @@ legend {
 }
 
 .panel-heading-btn {
-    float: right;
     cursor: default;
+    position: absolute;
+    right: 10px;
+    top: 10px;
 }
 
 .panel-heading-btn>a {
@@ -5019,7 +5045,7 @@ legend {
 .table>thead>tr>th {
     color: #242a30;
     font-weight: 600;
-    border-bottom: 2px solid #e2e7eb!important
+    border-bottom: 1px solid #e2e7eb!important
 }
 
 .table>tbody>tr>td,
@@ -6484,7 +6510,8 @@ a.text-white:hover {
 }
 
 .ui-sortable .panel-heading {
-    cursor: move
+    cursor: move;
+    position: relative;
 }
 
 .ui-sortable.ui-sortable-disabled .panel-heading {
@@ -11263,7 +11290,6 @@ Website: http://www.seantheme.com/color-admin-v1.8/admin/
 }
 
 
-
 /* Common */
 
 .clearfix {
@@ -11280,6 +11306,8 @@ Website: http://www.seantheme.com/color-admin-v1.8/admin/
 
 .dropdown-menu {
     margin: 0;
+    max-height: 200px;
+    overflow-y: auto;
 }
 
 .dropdown:hover .dropdown-menu,
@@ -11402,9 +11430,129 @@ Website: http://www.seantheme.com/color-admin-v1.8/admin/
     font-weight: bold;
 }
 
-.ui-sortable .col-md-12,
-.ui-sortable .col-md-6,
-.ui-sortable .col-md-4,
-.ui-sortable .col-md-3 {
+.table-panel.ui-sortable .col-md-12,
+.table-panel.ui-sortable .col-md-6,
+.table-panel.ui-sortable .col-md-4,
+.table-panel.ui-sortable .col-md-3 {
     min-height: 100px;
+}
+
+
+/*==========滑动开关===========*/
+
+.form-group .checkbox {
+    position: relative;
+    display: inline-block;
+    margin: 0;
+    text-align: center;
+}
+
+.form-group .checkbox:after,
+.form-group .checkbox:before {
+    font-family: FontAwesome;
+    -webkit-font-feature-settings: normal;
+    -moz-font-feature-settings: normal;
+    font-feature-settings: normal;
+    -webkit-font-kerning: auto;
+    -moz-font-kerning: auto;
+    font-kerning: auto;
+    -webkit-font-language-override: normal;
+    -moz-font-language-override: normal;
+    font-language-override: normal;
+    font-stretch: normal;
+    font-style: normal;
+    font-synthesis: weight style;
+    font-variant: normal;
+    font-weight: normal;
+    text-rendering: auto;
+}
+
+.form-group .checkbox label {
+    width: 80px;
+    height: 42px;
+    background: #ccc;
+    position: relative;
+    display: inline-block;
+    border-radius: 46px;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+}
+
+.form-group .checkbox label:after {
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    left: 0;
+    top: -5px;
+    z-index: 2;
+    background: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+}
+
+.form-group .checkbox input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 0 !important;
+    width: 100%;
+    height: 92%;
+    z-index: 5;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.form-group .checkbox input:hover + label:after {
+    box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.2), 0 3px 8px 0 rgba(0, 0, 0, 0.15);
+}
+
+.form-group .checkbox input:checked + label:after {
+    left: 40px;
+}
+
+.form-group .model-14 .checkbox:after,
+.form-group .model-14 .checkbox:before {
+    content: '关闭';
+    position: absolute;
+    right: 8px;
+    top: 4px;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 12px;
+    color: #90201F;
+}
+
+.form-group .model-14 .checkbox:before {
+    content: '开启';
+    left: -28px;
+    z-index: 1;
+    color: #256c32;
+}
+
+.form-group .model-14 .checkbox label {
+    background: #fff;
+    height: 22px;
+    border-radius: 0;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+.form-group .model-14 .checkbox label:after {
+    background: #90201F;
+    border-radius: 0;
+    box-shadow: none !important;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+    top: 0;
+    width: 50%;
+    height: 100%;
+}
+
+.form-group .model-14 .checkbox input:checked + label:after {
+    background: #4BD865;
+    left: 50%;
+}
+.input-group-btn:hover .dropdown-menu {
+    display: block;
 }

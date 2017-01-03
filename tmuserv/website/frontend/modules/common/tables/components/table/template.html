@@ -1,0 +1,55 @@
+<!-- begin panel -->
+<div class="panel panel-inverse">
+    <div class="panel-heading">
+        <ul class="panel-heading-btn" ng-click="toolsCtrl($event, panel, tablesDataSource.tablesPanel)">
+            <li class="btn btn-xs btn-nonebg" data-id="preview" title="预览模式">
+                <i class="icon-eye-open"></i>
+            </li>
+            <li class="btn btn-xs btn-nonebg" ng-if="!isEditModel" data-id="addDashboard" title="添加到聚合页"><i class="icon-share"></i></li>
+            <li class="btn btn-xs btn-nonebg" ng-if="isEditModel" data-id="addHeaderRows" title="新增表格行">
+                <i class="icon-table"></i>
+            </li>
+            <li class="btn btn-xs btn-nonebg" ng-if="isEditModel" data-id="setProps" title="表格属性配置"><i class="icon-cog"></i></li>
+            <li class="btn btn-xs btn-nonebg" ng-if="isEditModel" data-id="addWidth" title="增加宽度"><i class="icon-resize-horizontal"></i></li>
+            <li class="btn btn-xs btn-nonebg" ng-if="isEditModel" data-id="minusWidth" title="减少宽度"><i class="icon-resize-small"></i></li>
+            <li class="btn btn-xs btn-nonebg" ng-if="isEditModel" data-id="removeTable" title="移除表格"><i class="icon-trash"></i></li>
+        </ul>
+        <h4 class="panel-title">{{panel.title}}</h4>
+    </div>
+    <div class="panel-body" ng-class="tablesConf.model">
+        <div class="table table-striped">
+            <div class="thead" data-id="{{header.key}}" ng-repeat="header in panel.headers">
+                <div class="tr">
+                    <div class="th" ng-repeat="head in header.subs" data-id="{{head.key}}" rows="{{head.rows}}" cols="{{head.cols}}" style="-webkit-box-flex: {{head.cols||1}}">
+                        <span class="context" ng-dblclick="editRowsContent($event, head)" ng-blur="editRowsContent($event, head)" title="双击修改列名">{{head.text}}</span>
+                        <ul class="panel-headers-tools" ng-if="isEditModel" ng-click="toolsCtrl($event, head, panel)">
+                            <!--<li class="btn btn-xs btn-nonebg" data-id="splitCols" title="拆分表格项"><i class="icon-cut"></i></li>
+                                    <li class="btn btn-xs btn-nonebg" data-id="mergeCols" title="合并表格项"><i class="icon-link"></i></li>-->
+                            <li class="btn btn-xs btn-nonebg colsTools-drag" title="排序" data-data="head" style="cursor:move;"><i class="icon-move"></i></li>
+                            <li class="btn btn-xs btn-nonebg" data-id="addFlex" title="增加宽度"><i class="icon-resize-horizontal"></i></li>
+                            <li class="btn btn-xs btn-nonebg" data-id="minusFlex" title="减少宽度"><i class="icon-resize-small"></i></li>
+                            <li class="btn btn-xs btn-nonebg" data-id="removeCols" title="删除表格项"><i class="icon-trash"></i></li>
+                        </ul>
+                    </div>
+                </div>
+                <ul class="thead-tools" ng-if="isEditModel" ng-click="toolsCtrl($event, header, panel, panel.headers)">
+                    <li class="btn btn-xs btn-circle btn-default rowsTools-drag" data-id="sortHandle" data-data="header" title="排序" style="cursor:move;"><i class="icon-move"></i></li>
+                    <li class="btn btn-xs btn-circle btn-success" data-id="addHeaderCols" title="新增表格列"><i class="icon-plus"></i></li>
+                    <li class="btn btn-xs btn-circle btn-danger" data-id="removeRows" title="删除行"><i class="icon-remove"></i></li>
+                </ul>
+            </div>
+            <div class="tbody" ng-if="previewData[panel.key].bodys && previewData[panel.key].bodys.length" ng-class="{'loading': sourceData.api && !previewData[panel.key].bodys}">
+                <div class="tr" ng-repeat="fields in previewData[panel.key].bodys">
+                    <div class="td" ng-repeat="field in fields | limitTo: (panel.headers[panel.headers.length - 1].subs.length) track by $index" rows="{{panel.headers[panel.headers.length - 1].subs[$index].rows}}" cols="{{panel.headers[panel.headers.length - 1].subs[$index].cols}}" style="-webkit-box-flex: {{panel.headers[panel.headers.length - 1].subs[$index].cols||1}}">
+                        <span class="context">{{field}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer" ng-if="panel.showpage && previewData[panel.key].bodys && previewData[panel.key].bodys.length">
+        <ng-pages totalitems="{{previewData[panel.key].total}}" listsizes="5" itemsperpage="{{previewData[panel.key].perpage}}" source="{{previewData[panel.key].bodys}}">
+        </ng-pages>
+    </div>
+</div>
+<!-- end panel; -->

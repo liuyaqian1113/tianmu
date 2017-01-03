@@ -1,179 +1,25 @@
 <!-- begin page-header -->
-<h1 class="page-header">数据报表 <small>创建配置数据报表</small></h1>
+<h1 class="page-header">
+    <span class="tables-name" ng-blur="editTablesName($event, tablesDataSource.tablesName)" ng-bind="tablesDataSource.tablesName"></span>
+     <small>创建配置数据报表</small>
+     <a class="btn btn-xs btn-circle btn-success tables-name-editor" href="javascript:" ng-click="editTablesName($event, tablesDataSource.tablesName)" title="编辑数据报表名称"><i class="icon-pencil"></i></a>
+     <a class="btn btn-sm btn-success save-tables" ng-click="saveTables()">保存数据报表</a>
+</h1>
 <!-- end page-header -->
-<script type="text/ng-template" id="tmpl/tables.html">
-    <!-- begin col-6 -->
-    <div class="sortable-row col-md-{{panel.cols}}" ng-repeat="panel in tablesPanel">
-        <!-- begin panel -->
-        <div class="panel panel-inverse">
-            <div class="panel-heading">
-                <ul class="panel-heading-btn" ng-if="tablesModel == 'edit'">
-                    <li class="btn btn-xs btn-nonebg" ng-click="tablesAddHeader(panel, 'rows')" title="新增表格头">
-                        <i class="icon-table"></i>
-                    </li>
-                    <li class="btn btn-xs btn-nonebg" ng-click="tablesProps(panel)" title="表格属性配置"><i class="icon-cog"></i></li>
-                    <li class="btn btn-xs btn-nonebg" ng-click="tablesAddCols(panel)" title="增加宽度"><i class="icon-resize-horizontal"></i></li>
-                    <li class="btn btn-xs btn-nonebg" ng-click="tablesMinusCols(panel)" title="减少宽度"><i class="icon-resize-small"></i></li>
-                    <li class="btn btn-xs btn-nonebg" ng-click="tablesRemove(panel)" title="移除表格"><i class="icon-trash"></i></li>
-                </ul>
-                <h4 class="panel-title">{{panel.title}}</h4>
-            </div>
-            <div class="panel-body">
-                <div class="table table-striped">
-                    <div class="thead" ng-repeat="header in panel.tables.headers">
-                        <div class="tr">
-                            <div class="th" ng-repeat="head in header" rows="{{head.rows}}" cols="{{head.cols}}" style="-webkit-box-flex: {{head.cols||1}}">
-                                <span class="context">{{head.text}}</span>
-                                <ul class="panel-headers-tools" ng-if="tablesModel == 'edit'" ng-click="toolsCtrl($event, head, panel)">
-                                    <!--<li class="btn btn-xs btn-nonebg" data-id="splitCols" title="拆分表格项"><i class="icon-cut"></i></li>
-                                    <li class="btn btn-xs btn-nonebg" data-id="mergeCols" title="合并表格项"><i class="icon-link"></i></li>-->
-                                    <li class="btn btn-xs btn-nonebg colsTools-drag" title="排序" style="cursor:move;"><i class="icon-move"></i></li>
-                                    <li class="btn btn-xs btn-nonebg" data-id="addFlex" title="增加宽度"><i class="icon-resize-horizontal"></i></li>
-                                    <li class="btn btn-xs btn-nonebg" data-id="minusFlex" title="减少宽度"><i class="icon-resize-small"></i></li>
-                                    <li class="btn btn-xs btn-nonebg" data-id="deleteCols" title="删除表格项"><i class="icon-trash"></i></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <ul class="thead-tools" ng-if="tablesModel == 'edit'">
-                            <li class="btn btn-xs btn-circle btn-default rowsTools-drag" title="排序" style="cursor:move;"><i class="icon-move"></i></li>
-                            <li class="btn btn-xs btn-circle btn-success" data-id="addCols" ng-click="addHeaderCols($event, header, panel)" title="新增表格项"><i class="icon-plus"></i></li>
-                            <li class="btn btn-xs btn-circle btn-danger" data-id="deleteRows" ng-click="deleteHeaderCols($event, panel.tables.headers, panel)" title="删除行"><i class="icon-remove"></i></li>
-                        </ul>
-                    </div>
-                    <div class="tbody">
-                        <ul class="tr" ng-repeat="bodys in panel.tables.bodys">
-                            <li class="td" ng-repeat="body in bodys" rows="{{body.rows}}" cols="{{body.cols}}">
-                                <span>{{body.text}}</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="panel-footer" ng-if="panel.showpage == 1">
-                <ng-pages totalitems="{{panel.total}}" listsizes="5" itemsperpage="{{panel.perpage}}">
-                </ng-pages>
-            </div>
-        </div>
-        <!-- end panel; -->
-    </div>
-    <!-- end col-6 -->
-</script>
+
 <!-- begin row -->
-<div class="row" ng-sortable="sortableConf" ng-tables="tablesConf"></div>
+<div class="row tables" sf-tables="tablesConf">
+    <sf-components-tmpl-proxy class="searchs-panel ui-sortable-disabled clearfix" data-type="search" ng-sortable="sortableSearchConf"></sf-components-tmpl-proxy>
+    <div class="tables-panel clearfix" ng-sortable="sortableTableConf">
+        <sf-components-tmpl-proxy class="sortable-row col-md-{{panel.cols}}" data-type="{{panel.type}}" ng-repeat="panel in tablesDataSource.tablesPanel"></sf-components-tmpl-proxy>
+    </div>
+</div>
 <!-- end row -->
-<div id="tables-manager">
-    <ul class="nav-tables">
-        <li class="nav-header-tables">
-            <h5>查询组件</h5>
-            <ul class="root-menu-tables">
-                <li class="sort-handle-tables">
-                    <a href="javascript:;" class="source"> 
-                    <img src="./frontend/theme/default/images/1.jpg" height="31" width="29">
-                    <h6>时间</h6> 
-                    </a>
-                </li>
-                <li class="sort-handle-tables">
-                    <a href="javascript:;" class="source"> 
-                    <img src="./frontend/theme/default/images/1.jpg" height="31" width="29">
-                    <h6>时间</h6> 
-                    </a>
-                </li>
-                <li class="sort-handle-tables">
-                    <a href="javascript:;" class="source"> 
-                    <img src="./frontend/theme/default/images/1.jpg" height="31" width="29">
-                    <h6>时间</h6> 
-                    </a>
-                </li>
-                <li class="sort-handle-tables">
-                    <a href="javascript:;" class="source"> 
-                    <img src="./frontend/theme/default/images/1.jpg" height="31" width="29">
-                    <h6>时间</h6> 
-                    </a>
-                </li>
-                <li class="sort-handle-tables">
-                    <a href="javascript:;" class="source"> 
-                    <img src="./frontend/theme/default/images/1.jpg" height="31" width="29">
-                    <h6>时间</h6> 
-                    </a>
-                </li>
-                <li class="sort-handle-tables">
-                    <a href="javascript:;" class="source"> 
-                    <img src="./frontend/theme/default/images/1.jpg" height="31" width="29">
-                    <h6>时间</h6> 
-                    </a>
-                </li>
-                <li class="sort-handle-tables">
-                    <a href="javascript:;" class="source"> 
-                    <img src="./frontend/theme/default/images/1.jpg" height="31" width="29">
-                    <h6>时间</h6> 
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="nav-header-tables">
-            <h5>图表组件</h5>
-            <ul class="root-menu-tables">
-                <li class="sort-handle-tables">
-                    <a href="javascript:;" class="source" ng-click="createTables('table')">
-                    <img src="./frontend/theme/default/images/1.jpg" height="31" width="29">
-                    <h6>万能表格</h6> 
-                    </a>
-                </li>
-                <li class="sort-handle-tables">
-                    <a href="javascript:;" class="source" ng-click="createEcharts('line')">
-                    <img src="./frontend/theme/default/images/1.jpg" height="31" width="29">
-                    <h6>折线图</h6>
-                    </a>
-                </li>
-                <li class="sort-handle-tables">
-                    <a href="javascript:;" class="source" ng-click="createEcharts('scotter')">
-                    <img src="./frontend/theme/default/images/1.jpg" height="31" width="29">
-                    <h6> 飞行图 </h6>
-                    </a>
-                </li>
-            </ul>
-        </li>
-    </ul>
-</div>
-<div id="tables-props" ng-class="{'show': tablePropsStatus == true}">
-    <form class="" name="tablesForm">
-        <div class="form-group">
-            <div class="col-sm-12">
-                <button class="btn btn-success" ng-disabled="tablesForm.$invalid" ng-click="ok()">更新</button>
-                <button class="btn btn-warning" ng-click="cancel()">退出</button>
-                <input type="hidden" class="form-control" ng-model="dataConfig.id">
-                <input type="hidden" class="form-control" ng-model="dataConfig.key">
-                <input type="hidden" class="form-control" ng-model="dataConfig.order">
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-12 control-label">表格名称</label>
-            <div class="col-sm-12">
-                <input type="text" class="form-control" placeholder="表格名称" required ng-model="dataConfig.title">
-                <p class="help-block"></p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-12 control-label">表格分页</label>
-            <div class="col-sm-12">
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="showpage" value="1" ng-model="dataConfig.showpage" ng-checked="dataConfig.showpage"> 有分页
-                    </label>
-                </div>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="showpage" value="0" ng-model="dataConfig.showpage" ng-checked="!dataConfig.showpage"> 无分页
-                    </label>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-12 control-label">表格数据API</label>
-            <div class="col-sm-12">
-                <input type="text" class="form-control" placeholder="表格数据的API URL" ng-model="dataConfig.api">
-                <p class="help-block"></p>
-            </div>
-        </div>
-    </form>
-</div>
+
+<!-- begin components-panel -->
+<sf-components-panel options="componentsConf"></sf-components-panel>
+<!-- end components-panel -->
+
+<!-- begin props-panel -->
+<sf-props options="propsConf"></sf-props>
+<!-- end props-panel -->

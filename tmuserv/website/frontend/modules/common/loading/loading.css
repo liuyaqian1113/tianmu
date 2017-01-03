@@ -1,4 +1,5 @@
 /*poplayer*/
+
 #lightboss_poplayer {
     position: fixed;
     left: 0;
@@ -14,7 +15,9 @@
     z-index: 99999;
 }
 
-#lightboss_poplayer.loading, #lightboss_poplayer.succ, #lightboss_poplayer.error {
+#lightboss_poplayer.loading,
+#lightboss_poplayer.succ,
+#lightboss_poplayer.error {
     display: block;
 }
 
@@ -34,7 +37,7 @@
     left: 50%;
     margin-top: -72px;
     margin-left: -72px;
-    border:1px solid #bdeace;
+    border: 1px solid #bdeace;
 }
 
 #lightboss_poplayer hgroup header {
@@ -83,51 +86,60 @@
     margin: 3px 0 0 -12px;
 }
 
-#lightboss_poplayer.succ hgroup header .loader, #lightboss_poplayer.error hgroup header .loader {
+#lightboss_poplayer.succ hgroup header .loader,
+#lightboss_poplayer.error hgroup header .loader {
     display: none;
 }
 
 #lightboss_poplayer.loading hgroup header .loader {
-        width: 150px;
-        height: 15px;
-        margin: 0 auto;
-        text-align: center;
-}
-#lightboss_poplayer.loading hgroup header .loader span{
-        display: inline-block;
-        width: 10px;
-        height: 10px;
-        margin-right: 5px;
-        background: lightgreen;
-        -webkit-animation: load 1.04s ease infinite;
+    width: 150px;
+    height: 15px;
+    margin: 0 auto;
+    text-align: center;
 }
 
-#lightboss_poplayer.loading hgroup header .loader span:last-child{
-        margin-right: 0px; 
+#lightboss_poplayer.loading hgroup header .loader span {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
+    background: lightgreen;
+    -webkit-animation: load 1.04s ease infinite;
+}
+
+#lightboss_poplayer.loading hgroup header .loader span:last-child {
+    margin-right: 0px;
+}
+
+@-webkit-keyframes load {
+    0% {
+        opacity: 1;
     }
-    @-webkit-keyframes load{
-        0%{
-            opacity: 1;
-        }
-        100%{
-            opacity: 0;
-        }
+    100% {
+        opacity: 0;
     }
-#lightboss_poplayer.loading hgroup header .loader span:nth-child(1){
-        -webkit-animation-delay:0.13s;
-    }
-#lightboss_poplayer.loading hgroup header .loader span:nth-child(2){
-        -webkit-animation-delay:0.26s;
-    }
-#lightboss_poplayer.loading hgroup header .loader span:nth-child(3){
-        -webkit-animation-delay:0.39s;
-    }
-#lightboss_poplayer.loading hgroup header .loader span:nth-child(4){
-        -webkit-animation-delay:0.52s;
-    }
-#lightboss_poplayer.loading hgroup header .loader span:nth-child(5){
-        -webkit-animation-delay:0.65s;
-    }
+}
+
+#lightboss_poplayer.loading hgroup header .loader span:nth-child(1) {
+    -webkit-animation-delay: 0.13s;
+}
+
+#lightboss_poplayer.loading hgroup header .loader span:nth-child(2) {
+    -webkit-animation-delay: 0.26s;
+}
+
+#lightboss_poplayer.loading hgroup header .loader span:nth-child(3) {
+    -webkit-animation-delay: 0.39s;
+}
+
+#lightboss_poplayer.loading hgroup header .loader span:nth-child(4) {
+    -webkit-animation-delay: 0.52s;
+}
+
+#lightboss_poplayer.loading hgroup header .loader span:nth-child(5) {
+    -webkit-animation-delay: 0.65s;
+}
+
 
 /*#lightboss_poplayer.loading hgroup header .loader:after {
     width: 40px;
@@ -183,7 +195,9 @@
     margin: 0;
 }
 
+
 /*loading*/
+
 .showEcharts {
     transition: all 1s;
     -moz-transition: all 1s;
@@ -191,45 +205,52 @@
 }
 
 .busy {
-        position: relative;
-        top: 50%;
-        width: 150px;
-        height: 15px;
-        margin: 0 auto;
-        text-align: center;
-}
-.busy span{
-        display: inline-block;
-        width: 10px;
-        height: 10px;
-        margin-right: 5px;
-        background: lightgreen;
-        -webkit-animation: load 1.04s ease infinite;
+    position: relative;
+    top: 50%;
+    width: 150px;
+    height: 15px;
+    margin: 0 auto;
+    text-align: center;
 }
 
-.busy span:last-child{
-        margin-right: 0px; 
+.busy span {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
+    background: lightgreen;
+    -webkit-animation: load 1.04s ease infinite;
+}
+
+.busy span:last-child {
+    margin-right: 0px;
+}
+
+@-webkit-keyframes load {
+    0% {
+        opacity: 1;
     }
-    @-webkit-keyframes load{
-        0%{
-            opacity: 1;
-        }
-        100%{
-            opacity: 0;
-        }
+    100% {
+        opacity: 0;
     }
- .busy span:nth-child(1){
-        -webkit-animation-delay:0.13s;
-    }
- .busy span:nth-child(2){
-        -webkit-animation-delay:0.26s;
-    }
- .busy span:nth-child(3){
-        -webkit-animation-delay:0.39s;
-    }
- .busy span:nth-child(4){
-        -webkit-animation-delay:0.52s;
-    }
- .busy span:nth-child(5){
-        -webkit-animation-delay:0.65s;
-    }
+}
+
+.busy span:nth-child(1) {
+    -webkit-animation-delay: 0.13s;
+}
+
+.busy span:nth-child(2) {
+    -webkit-animation-delay: 0.26s;
+}
+
+.busy span:nth-child(3) {
+    -webkit-animation-delay: 0.39s;
+}
+
+.busy span:nth-child(4) {
+    -webkit-animation-delay: 0.52s;
+}
+
+.busy span:nth-child(5) {
+    -webkit-animation-delay: 0.65s;
+}

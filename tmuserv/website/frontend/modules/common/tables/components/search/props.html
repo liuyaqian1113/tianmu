@@ -1,0 +1,45 @@
+<form class="" name="propsForm">
+    <div class="form-group">
+        <div class="col-sm-12">
+            <button class="btn btn-sm btn-success" ng-disabled="!propsForm.$dirty&&!propsForm.$valid" ng-click="ok()">应用</button>
+            <button class="btn btn-sm btn-warning" ng-click="cancel()">退出</button>
+            <input type="hidden" class="form-control" ng-model="propsData.id">
+            <input type="hidden" class="form-control" ng-model="propsData.key">
+            <input type="hidden" class="form-control" ng-model="propsData.order">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-12 control-label">表格名称</label>
+        <div class="col-sm-12">
+            <input type="text" class="form-control" placeholder="表格名称" required ng-model="propsData.title">
+            <p class="help-block"></p>
+        </div>
+    </div>
+    <div class="form-group clearfix">
+        <label class="col-sm-12 control-label">表格分页</label>
+        <div class="col-sm-12">
+            <section class="model-14">
+                <div class="checkbox">
+                    <input type="checkbox" ng-model="propsData.showpage" ng-checked="propsData.showpage">
+                    <label></label>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-12 control-label">表格数据API</label>
+        <div class="col-sm-12">
+            <input type="url" class="form-control" placeholder="数据API(http://)" ng-model="propsData.api">
+            <p class="help-block"></p>
+        </div>
+    </div>
+    <div class="form-group" ng-if="propsData.api != ''">
+        <label class="col-sm-12 control-label">API刷新频率<span>（0为不自动刷新）</span></label>
+        <div class="col-sm-12">
+            <div class="input-group input-group-sm">
+                <input type="number" class="form-control" ng-model="propsData.apiRate" maxlength="8" ng-pattern="/^\d+$/">
+                <span class="input-group-addon">秒</span>
+            </div>
+        </div>
+    </div>
+</form>

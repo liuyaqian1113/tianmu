@@ -363,10 +363,13 @@ route_module.factory('permissionService', function ($q, $rootScope, CONFIG) {
                     deps: ['$rootScope', '$ocLazyLoad', function ($rootScope, $ocLazyLoad) {
                         return $ocLazyLoad.load([
                             'theme/default/css/tables.css',
+                          //  'modules/common/daterangepicker/daterangepicker.css',
                             'controller/tables_controller.js',
-                            'directives/ng-pages.js',
-                            'directives/ng-tables.js',
+                            'modules/common/tables/skyfall.components.js',
                             'directives/ng-sortable.js',
+                         //   'modules/common/daterangepicker/daterangepicker.min.js',
+                            'modules/common/tables/pages.js',
+                            'modules/common/tables/tables.js',
                             'directives/ng-echarts.js'
                         ]);
                     }]
