@@ -30,7 +30,7 @@ angular.module(window.ProjectName)
                                 factory.order = scope.tablesDataSource.searchsPanel.length + 1;
                                 var newSource = angular.copy(factory);
                                 // scope.$emit('Tables:createSearchs', newSource);
-                               // scope.$root.$broadcast('Sortable:updateEvent', true);
+                                // scope.$root.$broadcast('Sortable:updateEvent', true);
                                 scope.tablesDataSource.searchsPanel.push(newSource);
                             }
                         }
@@ -244,19 +244,20 @@ angular.module(window.ProjectName)
                 scope.tablesModel = tableConf.model || 'edit';
                 scope.isEditModel = (tableConf.model === 'edit');
                 var pScope = scope.$parent;
+                var skeyfallCtrl;
                 scope.destroyList[scope.destroyList.length - 1] = scope.$on('Tables:setController', function (event, data) {
                     if (!!data) {
                         if (!!sfController && typeof sfController === 'function') {
-                            sfController = new data.fn({
+                            skeyfallCtrl = new data.fn({
                                 scope: scope,
                                 $timeout: $timeout,
                                 py: py,
                                 CONFIG: CONFIG
                             });
-                            if (sfController.bind) {
-                                sfController.bind('toolsCtrl');
-                                sfController.bind('pickerOptions');
-                                sfController.bind('pickerConf');
+                            if (skeyfallCtrl.bind) {
+                                skeyfallCtrl.bind('toolsCtrl');
+                                skeyfallCtrl.bind('pickerOptions');
+                                skeyfallCtrl.bind('pickerConf');
                             }
                         }
                         scope.$root.$broadcast('Sortable:updateEvent', true);
@@ -315,7 +316,7 @@ angular.module(window.ProjectName)
                     if (!!data) {
                         switch (data.source.type) {
                             case 'table':
-                                sfController.render(data.data, data.source);
+                                skeyfallCtrl.render(data.data, data.source);
                                 break;
                         }
                     }

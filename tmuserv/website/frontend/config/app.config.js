@@ -255,6 +255,8 @@ angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.laz
                         break;
                 }
                 oBody.appendChild(oDom);
+            } else {
+                (!items.length) ? fn({type: 'cache'}): runLoad();
             }
         })();
     }

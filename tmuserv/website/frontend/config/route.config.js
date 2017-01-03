@@ -362,20 +362,15 @@ route_module.factory('permissionService', function ($q, $rootScope, CONFIG) {
                 resolve: {
                     deps: ['$rootScope', '$ocLazyLoad', function ($rootScope, $ocLazyLoad) {
                         return $ocLazyLoad.load([
-                          //  'modules/common/daterangepicker/moment.min.js',
                             'theme/default/css/tables.css',
                           //  'modules/common/daterangepicker/daterangepicker.css',
                             'controller/tables_controller.js',
                             'modules/common/tables/skyfall.components.js',
                             'directives/ng-sortable.js',
                          //   'modules/common/daterangepicker/daterangepicker.min.js',
-                            'modules/common/tables/tb-pages.js',
-                           // 'modules/common/tables/tb-components.js',
-                          //  'modules/common/tables/tb-props.js',
-                          //  'modules/common/tables/tb-table.js',
-                          //  'modules/common/tables/tb-search.js',
+                            'modules/common/tables/sf-pages.js',
                             'modules/common/tables/tables.js',
-                          //  'directives/ng-echarts.js'
+                            'directives/ng-echarts.js'
                         ]);
                     }]
                 },

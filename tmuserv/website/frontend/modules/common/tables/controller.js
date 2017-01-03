@@ -77,7 +77,7 @@ window.sfController.prototype = {
                 });
                 break;
             case 'removeCols': // 删除表格列
-                dataMap = this.CONFIG.getDataById(source.key, oSource);
+                dataMap = this.CONFIG.getDataById(data.key, oSource);
                 if (!!confirm('确定删除表格项【' + dataMap.item.text + '】? ')) {
                     $timeout(function () {
                         angular.isArray(dataMap.parent) && dataMap.parent.splice(dataMap.index, 1);
