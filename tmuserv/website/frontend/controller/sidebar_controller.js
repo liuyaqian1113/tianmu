@@ -5,7 +5,6 @@ angular.module(window.ProjectName)
     .controller('sidebar_controller', function ($rootScope, $scope, $state, CONFIG, fetchService, $timeout) {
         var api = CONFIG.api[$state.current.name];
         $rootScope.menuItems = [];
-        
         var updateItems = function (list, item) {
             if (!list || !item) {
                 return null;

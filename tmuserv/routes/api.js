@@ -115,7 +115,7 @@ router.post('/tmu/menu/updateMenu', function (req, res, next) {
     });
 });
 
-//用户管理
+// 用户管理
 router.get('/tmu/menu/getUser', function (req, res, next) {
     var args = req.body || req.query || req.params;
     args = obj2Arr(args, 'get');
@@ -124,11 +124,11 @@ router.get('/tmu/menu/getUser', function (req, res, next) {
         if (!!status) {
             return json(res, 1, result || '数据库操作失败');
         }
-       return json(res, 0, result);
+        return json(res, 0, result);
     });
 });
 
-//删除用户
+// 删除用户
 router.post('/tmu/menu/deleteUser', function (req, res, next) {
     var args = req.body || req.query || req.params;
     args = obj2Arr(args, 'post');
@@ -137,11 +137,11 @@ router.post('/tmu/menu/deleteUser', function (req, res, next) {
         if (!!status) {
             return json(res, 1, result || '数据库操作失败');
         }
-       return json(res, 0, result);
+        return json(res, 0, result);
     });
 });
 
-//修改用户权限
+// 修改用户权限
 router.post('/tmu/menu/updateUser', function (req, res, next) {
     var args = req.body || req.query || req.params;
     args = obj2Arr(args, 'post');
@@ -150,7 +150,7 @@ router.post('/tmu/menu/updateUser', function (req, res, next) {
         if (!!status) {
             return json(res, 1, result || '数据库操作失败');
         }
-       return json(res, 0, result);
+        return json(res, 0, result);
     });
 });
 

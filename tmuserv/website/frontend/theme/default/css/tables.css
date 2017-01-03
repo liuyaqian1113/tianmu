@@ -10,8 +10,8 @@
     -webkit-transform: translateZ(0);
 }
 #tables-manager .nav-tables {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
 }
 #tables-manager .nav-tables .nav-header-tables {
     list-style: none;
@@ -26,13 +26,13 @@
     font-family: "微软雅黑";
 }
 #tables-manager .nav-tables .nav-header-tables
-.root-menu-tables{
-    margin: 0px;
-    padding: 0px;
+.root-menu-tables {
+    margin: 0;
+    padding: 0;
 }
 #tables-manager .nav-tables .nav-header-tables
 .root-menu-tables li {
-    list-style:none;
+    list-style: none;
     float: left;
     width: 62px;
     padding: 7px;

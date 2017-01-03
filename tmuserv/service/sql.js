@@ -16,11 +16,11 @@ var sql = {
     updateMenu: 'UPDATE tmu_sys_menus SET name=?, url=?, icons=? WHERE id=?',
     deleteMenu: 'DELETE FROM tmu_sys_menus WHERE id=?',
     getUser: 'SELECT * FROM tmu_sys_user',
-    deleteUser:'DELETE FROM tmu_sys_user WHERE id=?',
-    updateUser: function (key, val,ret) {
-        return "UPDATE tmu_sys_user SET level='"+ret[1]+"' WHERE id="+ret[0]
-    }
-};  
+    deleteUser: 'DELETE FROM tmu_sys_user WHERE id=?',
+    updateUser: function (key, val, ret) {
+        return 'UPDATE tmu_sys_user SET level='+ ret[1] +' WHERE id='+ret[0];
+    },
+};
 var keyOrder = {
     updateMenu: ['name', 'url', 'icons', 'id'],
     deleteMenu: ['id']
@@ -65,10 +65,9 @@ var controller = {
             for(var i = 0, l = val.length; i < l; i++) {
                 dummy.push('?');
             }
-            var act = typeof sql[action] === 'string' ?  sql[action] : sql[action](key, dummy,val);
+            var act = typeof sql[action] === 'string' ?  sql[action] : sql[action](key, dummy, val);
             console.log(act, key.join(','), val.join(','), '====准备入库');
             connection.query(act, val, function (status, result) {
-                console.log(status)
                 if (status) {
                     console.log(status, result, '====数据库写入失败');
                     return cb(true, '数据库写入失败');

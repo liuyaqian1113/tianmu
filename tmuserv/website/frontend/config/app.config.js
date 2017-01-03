@@ -137,10 +137,10 @@ angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.laz
             delete: 'api/tmu/menu/deleteMenu',
             update: 'api/tmu/menu/updateMenu'
         },
-        user:{
-            getUser:'api/tmu/menu/getUser',
-            deleteUser:'api/tmu/menu/deleteUser',
-            updateUser:'api/tmu/menu/updateUser'
+        user: {
+            getUser: 'api/tmu/menu/getUser',
+            deleteUser: 'api/tmu/menu/deleteUser',
+            updateUser: 'api/tmu/menu/updateUser'
         }
     }
 }).filter('transferHtml', function ($sce) {
