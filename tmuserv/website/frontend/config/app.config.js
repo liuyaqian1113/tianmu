@@ -300,7 +300,7 @@ angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.laz
             window.USERINFOS = {
                 user: args.uname || 'user01',
                 level: args.uinfo ? args.uinfo.level - 0 : 0,
-                bussiness: args.uinfo ? args.uinfo.bussinessname : ''
+                bussiness: args.uinfo ? args.uinfo.bussiness : ''
             };
             angular.bootstrap(html[0], [ProjectName]);
         });

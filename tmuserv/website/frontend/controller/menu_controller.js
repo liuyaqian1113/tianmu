@@ -6,6 +6,10 @@ angular.module(window.ProjectName)
     .controller('menu_controller', function ($rootScope, $scope, $state, CONFIG, $timeout) {
         var api = CONFIG.api[$state.current.name];
         $scope.menus = {};
+        $scope.userInfo = {
+            level: CONFIG.USERINFOS.level,
+            bussiness: CONFIG.USERINFOS.bussiness
+        };
         $scope.menus.menuConfig = {
             save: api.save,
             update: api.update,

@@ -7,6 +7,7 @@ angular.module(window.ProjectName)
         $scope.selected = {
             item: $scope.items[0]
         };
+        $scope.userInfo = opts.userInfo;
         var data = angular.copy(opts.data);
         var type = opts.type;
         var level = data.type;
@@ -228,7 +229,7 @@ angular.module(window.ProjectName)
                                 pid: 0,
                                 type: 'nav-group',
                                 url: '',
-                                permission: 1,
+                                permission: 20,
                                 editable: 2
                             };
                         }
@@ -247,6 +248,7 @@ angular.module(window.ProjectName)
                             case 'child': // 子菜单
                             case 'edit': // 编辑菜单
                                 modalOpen({
+                                    userInfo: scope.userInfo,
                                     data: currentData,
                                     title: btn.attr('title'),
                                     type: toolsType,
@@ -304,7 +306,8 @@ angular.module(window.ProjectName)
                 }
                 $timeout(setHover);
                 scope.$watch(function () {
-                    return oDom.find('a').length;
+                    return oDom.find('a')
+                        .length;
                 }, function (newValue, oldValue) {
                     (newValue !== oldValue) && setHover();
                 });
