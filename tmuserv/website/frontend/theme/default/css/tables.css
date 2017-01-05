@@ -36,6 +36,39 @@
     overflow-y: auto;
     -webkit-transform: translateZ(0);
 }
+.components-panel .nav .nav-header{
+    margin: 0;
+    padding: 0;
+}
+.components-panel .nav .nav-header h5{
+    text-align: center;
+    background: #EFF3F4;
+    height: 40px;
+    line-height: 40px;
+    margin-top: 2px;
+    font-family: "微软雅黑";
+}
+.components-panel .nav .nav-header
+.root-menu li {
+    list-style: none;
+    float: left;
+    width: 62px;
+    padding: 7px;
+    margin-left: 5px;
+}
+.components-panel .nav .nav-header
+.root-menu li a{
+    background: #fff;
+}
+.components-panel .nav .nav-header
+.root-menu li a img {
+    margin-left: 16px;
+}
+.components-panel .nav .nav-header
+.root-menu li a h6 {
+    width: 60px;
+    text-align: center;
+}
 
 .tables-props {
     width: 220px;
