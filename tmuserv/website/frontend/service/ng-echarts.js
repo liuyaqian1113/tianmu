@@ -1,5 +1,6 @@
 /**
  * Created by liekkas.zeng on 2015/1/7.
+ * 数据报表中使用
  */
 angular.module('ng-echarts', [])
     .directive('echarts', function ($timeout, CONFIG) {

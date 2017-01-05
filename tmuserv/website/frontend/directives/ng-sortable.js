@@ -1,5 +1,6 @@
 /**
- * Created by liekkas.zeng on 2015/1/7.
+ * Created by panjian01 on 2017/1/3.
+ * 仅供canvas中使用
  */
 angular.module(window.ProjectName)
     .directive('ngSortable', function ($timeout, CONFIG) {

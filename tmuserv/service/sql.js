@@ -1,5 +1,6 @@
 var db = require('../service/db');
 var mysql = db.mysql();
+var session = require('express-session');
 var sql = {
     saveCategory: 'INSERT INTO tmu_theme_category(name,updatetime) SELECT `name` FROM DUAL WHERE NOT EXISTS(SELECT `name` FROM tmu_theme_category WHERE name=?) VALUES(?,?)',
     getCategory: 'SELECT id,name FROM tmu_theme_category ORDER BY id',
@@ -15,7 +16,8 @@ var sql = {
     },
     updateMenu: 'UPDATE tmu_sys_menus SET name=?, url=?, icons=? WHERE id=?',
     deleteMenu: 'DELETE FROM tmu_sys_menus WHERE id=?',
-    getUser: 'SELECT * FROM tmu_sys_user',
+    getUserList: 'SELECT * FROM tmu_sys_user',
+    getInfoByName: 'SELECT * FROM tmu_sys_user WHERE name = ?',
     deleteUser: 'DELETE FROM tmu_sys_user WHERE id=?',
     updateUser: function (key, val, ret) {
         return 'UPDATE tmu_sys_user SET level = ' + ret[1] + ' WHERE id = ' + ret[0];
@@ -207,48 +209,4 @@ var controller = {
         });
     }
 };
-/*var controller = {
-    set: function (action, args, cb) {
-        var args = arguments;
-        var thisObj = args.callee;
-        return mysql.getConnection(function (err, connection) {
-            if (err) {
-                // 如果是连接断开，自动重新连接
-                if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-                    mysql = db.mysql();
-                    thisObj(args.apply([].slice.apply(0)));
-                } else {
-                    return callback('数据库连接失败');
-                }
-            }
-            if (!args.length) {
-                return cb('参数为空', {});
-            }
-            connection.query(sql[action], args, function (status, result) {
-                if (err) {
-                    return callback('数据库操作失败');
-                }
-                return connection.release(), cb(false, result);
-            })
-        });
-    },
-    get: function (action, args, cb) {
-        return mysql.getConnection(function (err, connection) {
-            if (err) {
-                // 如果是连接断开，自动重新连接
-                if(err.code === 'PROTOCOL_CONNECTION_LOST') {
-                    db.mysql();
-                } else {
-                    return callback('数据库连接失败');
-                }
-            }
-            connection.query(sql[action], args, function (status, result) {
-                if (err) {
-                    return callback('数据库操作失败');
-                }
-                return connection.release(), cb(false, result);
-            })
-        });
-    }
-};*/
 module.exports = controller;

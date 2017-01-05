@@ -65,32 +65,35 @@ router.all('*', function (req, res, next) {
             key: ['name'],
             val: [views.userName]
         };
-        sql.get('getUser', args, function (status, result) {
+        sql.get('getInfoByName', args, function (status, result) {
             if (!!status) {
                 return json(res, 1, result || '数据库操作失败');
             }
             result = result[0];
             if (!result) {
-                return res.json({
-                    status: 1,
-                    uname: views.userName,
-                    msg: '请先申请接入平台'
-                });
-            }
-            req.session.views.userInfo = {
-                level: result.level,
-                bussinessname: result.level == 100 ? 'all' : result.bussinessname
-            };
-            console.log('==========logined============', pathname);
-            if (!!redirType) {
-                var redirecturl = {
-                    status: 0,
-                    uname: views.userName,
-                    uinfo: req.session.views.userInfo,
-                    msg: 'success'
+                if (!!redirType) {
+                    return res.json({
+                        status: 0,
+                        uname: views.userName,
+                        msg: '请先申请接入平台'
+                    });
+                }
+            } else {
+                req.session.views.userInfo = {
+                    level: result.level,
+                    bussinessname: result.level == 100 ? 'all' : result.bussinessname
                 };
-                return res.json(redirecturl);
+                if (!!redirType) {
+                    var redirecturl = {
+                        status: 0,
+                        uname: views.userName,
+                        uinfo: req.session.views.userInfo,
+                        msg: 'success'
+                    };
+                    return res.json(redirecturl);
+                }
             }
+            console.log('==========logined============', pathname);
             if (pathname === '/login') {
                 return res.redirect('/');
             }
