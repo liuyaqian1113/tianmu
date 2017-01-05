@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50611
 File Encoding         : 65001
 
-Date: 2017-01-05 19:04:19
+Date: 2017-01-05 22:38:57
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -153,31 +153,31 @@ CREATE TABLE `tmu_sys_menus` (
   `updatetime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
   `editor` varchar(50) DEFAULT NULL COMMENT '操作人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tmu_sys_menus
 -- ----------------------------
-INSERT INTO `tmu_sys_menus` VALUES ('1', '0', '配置管理', 'nav-group', '', '', '1', '2', '2016-12-19 03:22:22', null);
-INSERT INTO `tmu_sys_menus` VALUES ('2', '0', '数据监控', 'nav-group', '', '', '1', '2', '2016-12-19 03:22:29', null);
-INSERT INTO `tmu_sys_menus` VALUES ('3', '0', '平台管理', 'nav-group', '', '', '1', '1', '2016-12-19 00:32:23', null);
-INSERT INTO `tmu_sys_menus` VALUES ('4', '3', '组件管理', 'has-sub', '', 'icon-cogs', '1', null, '2016-12-19 14:35:46', null);
-INSERT INTO `tmu_sys_menus` VALUES ('5', '4', '查询组件', 'last-sub', '#/manager/modules/search', '', '1', null, '2016-12-19 02:33:40', null);
-INSERT INTO `tmu_sys_menus` VALUES ('6', '4', '图表组件', 'last-sub', '#/manager/modules/echarts', '', '1', null, '2016-12-19 02:42:04', null);
-INSERT INTO `tmu_sys_menus` VALUES ('7', '4', '大屏组件', 'last-sub', '#/manager/modules/canvas', '', '1', null, '2016-12-19 02:37:06', null);
-INSERT INTO `tmu_sys_menus` VALUES ('9', '3', '通知管理', 'last-sub', '#/manager/notify', 'icon-comment', '1', '0', '2016-12-19 11:17:17', null);
-INSERT INTO `tmu_sys_menus` VALUES ('10', '3', '菜单管理', 'last-sub', '#/manager/menu', 'icon-align-justify', '1', '0', '2016-12-27 18:58:46', null);
-INSERT INTO `tmu_sys_menus` VALUES ('11', '1', '业务管理', 'has-sub', '', 'icon-star', '1', null, '2016-12-19 11:17:26', null);
-INSERT INTO `tmu_sys_menus` VALUES ('12', '1', '用户权限管理', 'has-sub', '', 'icon-key', '1', '0', '2016-12-19 11:17:31', null);
-INSERT INTO `tmu_sys_menus` VALUES ('13', '11', '我的业务线', 'last-sub', '#/business', '', '1', null, '2016-12-19 03:29:25', null);
-INSERT INTO `tmu_sys_menus` VALUES ('14', '11', '我的产品', 'last-sub', '#/product', '', '1', '0', '2016-12-18 19:29:25', null);
-INSERT INTO `tmu_sys_menus` VALUES ('15', '12', '用户管理', 'last-sub', '#/power/user', '', '1', null, '2016-12-18 19:27:41', null);
-INSERT INTO `tmu_sys_menus` VALUES ('16', '12', '用户组配置', 'last-sub', '#/power/group', '', '1', null, '2016-12-19 03:34:23', null);
-INSERT INTO `tmu_sys_menus` VALUES ('17', '12', '权限配置', 'last-sub', '#/power/author', '', '1', '0', '2016-12-19 03:36:50', null);
-INSERT INTO `tmu_sys_menus` VALUES ('18', '2', '监控管理', 'last-sub', '', 'icon-th', '1', null, '2016-12-19 11:17:35', null);
-INSERT INTO `tmu_sys_menus` VALUES ('19', '18', '我的报表', 'last-sub', '#/report/tables', '', '1', null, '2016-12-20 14:22:19', null);
-INSERT INTO `tmu_sys_menus` VALUES ('20', '18', '聚合监控', 'last-sub', '#/report/dashboard', '', '1', null, '2016-12-19 03:38:57', null);
-INSERT INTO `tmu_sys_menus` VALUES ('21', '18', '大屏监控', 'last-sub', '#/report/theme', '', '1', null, '2016-12-19 03:39:20', null);
+INSERT INTO `tmu_sys_menus` VALUES ('1', '0', '配置管理', 'nav-group', '', '', '100', '2', '2017-01-05 22:11:58', null);
+INSERT INTO `tmu_sys_menus` VALUES ('2', '0', '数据监控', 'nav-group', '', '', '100', '2', '2017-01-05 22:11:59', null);
+INSERT INTO `tmu_sys_menus` VALUES ('3', '0', '平台管理', 'nav-group', '', '', '100', '1', '2017-01-05 22:12:00', null);
+INSERT INTO `tmu_sys_menus` VALUES ('4', '3', '组件管理', 'has-sub', '', 'icon-cogs', '100', null, '2017-01-05 22:12:02', null);
+INSERT INTO `tmu_sys_menus` VALUES ('5', '4', '查询组件', 'last-sub', '#/manager/modules/search', '', '100', null, '2017-01-05 22:12:03', null);
+INSERT INTO `tmu_sys_menus` VALUES ('6', '4', '图表组件', 'last-sub', '#/manager/modules/echarts', '', '100', null, '2017-01-05 22:12:04', null);
+INSERT INTO `tmu_sys_menus` VALUES ('7', '4', '大屏组件', 'last-sub', '#/manager/modules/canvas', '', '100', null, '2017-01-05 22:12:05', null);
+INSERT INTO `tmu_sys_menus` VALUES ('9', '3', '通知管理', 'last-sub', '#/manager/notify', 'icon-comment', '100', '0', '2017-01-05 22:12:06', null);
+INSERT INTO `tmu_sys_menus` VALUES ('10', '3', '菜单管理', 'last-sub', '#/manager/menu', 'icon-align-justify', '100', '0', '2017-01-05 22:12:07', null);
+INSERT INTO `tmu_sys_menus` VALUES ('11', '1', '业务管理', 'has-sub', '', 'icon-star', '100', null, '2017-01-05 22:12:08', null);
+INSERT INTO `tmu_sys_menus` VALUES ('12', '1', '用户权限管理', 'has-sub', '', 'icon-key', '100', '0', '2017-01-05 22:12:09', null);
+INSERT INTO `tmu_sys_menus` VALUES ('13', '11', '我的业务线', 'last-sub', '#/business', '', '100', null, '2017-01-05 22:12:09', null);
+INSERT INTO `tmu_sys_menus` VALUES ('14', '11', '我的产品', 'last-sub', '#/product', '', '100', '0', '2017-01-05 22:12:10', null);
+INSERT INTO `tmu_sys_menus` VALUES ('15', '12', '用户管理', 'last-sub', '#/power/user', '', '100', null, '2017-01-05 22:12:11', null);
+INSERT INTO `tmu_sys_menus` VALUES ('16', '12', '用户组配置', 'last-sub', '#/power/group', '', '100', null, '2017-01-05 22:12:12', null);
+INSERT INTO `tmu_sys_menus` VALUES ('17', '12', '权限配置', 'last-sub', '#/power/author', '', '100', '0', '2017-01-05 22:12:13', null);
+INSERT INTO `tmu_sys_menus` VALUES ('18', '2', '监控管理', 'last-sub', '', 'icon-th', '100', null, '2017-01-05 22:12:14', null);
+INSERT INTO `tmu_sys_menus` VALUES ('19', '18', '我的报表', 'last-sub', '#/report/tables', '', '100', null, '2017-01-05 22:12:16', null);
+INSERT INTO `tmu_sys_menus` VALUES ('20', '18', '聚合监控', 'last-sub', '#/report/dashboard', '', '100', null, '2017-01-05 22:12:17', null);
+INSERT INTO `tmu_sys_menus` VALUES ('21', '18', '大屏监控', 'last-sub', '#/report/theme', '', '100', null, '2017-01-05 22:12:21', null);
 
 -- ----------------------------
 -- Table structure for `tmu_sys_user`
