@@ -7,36 +7,39 @@ angular.module(window.ProjectName)
             scope: true,
             restrict: 'A',
             template: '\
-                <li ng-repeat="item in $root.menuItems" ng-class="item.type" ng-if="item.permission">\
-                    <a ng-href="{{item.href}}" ng-if="item.permission" data-id="{{item.id}}" class="sort-handle nav-header source">{{item.name}}</a>\
-                    <ul ng-if="(item.subs && item.subs.length > 0) && item.permission" class="root-menu">\
-                        <li ng-repeat="tm in item.subs" ng-class="{\'has-sub active\': (tm.subs && tm.subs.length > 0) && tm.active, \'has-sub\': (tm.subs && tm.subs.length > 0) && tm.active != true, \'active\': tm.active}" ng-if="tm.permission" class="sort-handle">\
-                            <a ng-if="(!tm.subs || (!!tm.subs && !tm.subs.length)) && tm.permission" ng-href="{{tm.url}}" data-id="{{tm.id}}" class="source">\
+                <li ng-repeat="item in $root.menuItems" ng-class="item.type" ng-if="item.permission <= bar.userInfo.level">\
+                    <a ng-href="{{item.href}}" ng-if="item.permission <= bar.userInfo.level" data-id="{{item.id}}" class="sort-handle nav-header source">{{item.name}}</a>\
+                    <ul ng-if="(item.subs && item.subs.length > 0) && item.permission <= bar.userInfo.level" class="root-menu">\
+                        <li ng-repeat="tm in item.subs" ng-class="{\'has-sub active\': (tm.subs && tm.subs.length > 0) && tm.active, \'has-sub\': (tm.subs && tm.subs.length > 0) && tm.active != true, \'active\': tm.active}" ng-if="tm.permission <= bar.userInfo.level" class="sort-handle">\
+                            <a ng-if="(!tm.subs || (!!tm.subs && !tm.subs.length)) && tm.permission <= bar.userInfo.level" ng-href="{{tm.url}}" data-id="{{tm.id}}" class="source">\
                                 <i class="{{tm.icons}}"></i>\
                                 <span ng-bind="tm.name"></span>\
                             </a>\
-                            <a ng-if="(tm.subs && tm.subs.length > 0) && tm.permission" href="javascript:;" data-id="{{tm.id}}" class="source">\
+                            <a ng-if="(tm.subs && tm.subs.length > 0) && tm.permission <= bar.userInfo.level" href="javascript:;" data-id="{{tm.id}}" class="source">\
                                 <b class="caret pull-right"></b>\
                                 <i class="{{tm.icons}}"></i>\
                                 <span>{{tm.name}}</span>\
                             </a>\
-                            <ul ng-if="(tm.subs && tm.subs.length > 0) && tm.permission" class="sub-menu" ng-style="{\'display\': status == \'sortable\' ? \'block\': \'none\'}" ng-include="\'sidebarTree\'">\
+                            <ul ng-if="(tm.subs && tm.subs.length > 0) && tm.permission <= bar.userInfo.level" class="sub-menu" ng-style="{\'display\': status == \'sortable\' ? \'block\': \'none\'}" ng-include="\'sidebarTree\'">\
                             </ul>\
                         </li>\
                     </ul>\
                 </li>\
             ',
             controller: function ($scope) {
+                this.userInfo = {
+                    level: CONFIG.USERINFOS.level,
+                    bussiness: CONFIG.USERINFOS.bussiness
+                };
                 $templateCache.put('sidebarTree', '\
-                    <li ng-repeat="sub in tm.subs" ng-class="{\'has-sub active\': (sub.subs && sub.subs.length > 0) && sub.active, \'has-sub\': (sub.subs && sub.subs.length > 0) && sub.active != true, \'active\': (!sub.subs || (sub.subs && sub.subs.length == 0)) && sub.active, \'expand\': status == \'sortable\'}" ng-if="sub.permission" class="sort-handle ">\
-                        <a ng-if="(!sub.subs || (sub.subs && sub.subs.length == 0)) && sub.permission" data-id="{{sub.id}}" href="{{sub.url}}" class="source">{{sub.name}}</a>\
-                        <a ng-if="(sub.subs && sub.subs.length > 0) && sub.permission" href="javascript:;" data-id="{{sub.id}}" class="source">\
+                    <li ng-repeat="sub in tm.subs" ng-class="{\'has-sub active\': (sub.subs && sub.subs.length > 0) && sub.active, \'has-sub\': (sub.subs && sub.subs.length > 0) && sub.active != true, \'active\': (!sub.subs || (sub.subs && sub.subs.length == 0)) && sub.active, \'expand\': status == \'sortable\'}" ng-if="sub.permission <= bar.userInfo.level" class="sort-handle ">\
+                        <a ng-if="(!sub.subs || (sub.subs && sub.subs.length == 0)) && sub.permission <= bar.userInfo.level" data-id="{{sub.id}}" href="{{sub.url}}" class="source">{{sub.name}}</a>\
+                        <a ng-if="(sub.subs && sub.subs.length > 0) && sub.permission <= bar.userInfo.level" href="javascript:;" data-id="{{sub.id}}" class="source">\
                             <span>{{sub.name}}</span>\
                         </a>\
-                        <ul ng-if="(sub.subs && sub.subs.length > 0)" class="sub-menu" ng-if="sub.permission" ng-style="{\'display\': status == \'sortable\' ? \'block\': \'none\'}" ng-include="\'sidebarTree\'"  ng-init="tm=sub"></ul>\
+                        <ul ng-if="(sub.subs && sub.subs.length > 0)" class="sub-menu" ng-if="sub.permission <= bar.userInfo.level" ng-style="{\'display\': status == \'sortable\' ? \'block\': \'none\'}" ng-include="\'sidebarTree\'"  ng-init="tm=sub"></ul>\
                     </li>\
                 ');
-                var _this = this;
                 /*$scope.$root.menuItems = [
                     {type: 'nav-group', id: 1, pid: 1, name: '配置管理', url: 'javascript:;', editable: 2, permission: true, hasSub: true, subs: [
                             {type: 'has-sub', id: 4, pid: 1, name: '业务管理', icons: 'fa fa-star', url: 'javascript:;', hasSub: true, active: false, permission: true, subs: [
@@ -72,12 +75,16 @@ angular.module(window.ProjectName)
                         ]
                     }
                 ]
-                */;
+                */
             },
             controllerAs: 'bar',
             link: function (scope, element, attrs) {
                 // $scope.setActive($state.current.url);
                 scope.status = attrs.sidebar;
+                scope.userInfo = {
+                    level: CONFIG.USERINFOS.level,
+                    bussiness: CONFIG.USERINFOS.bussiness
+                };
                 if (scope.status !== 'sortable') {
                     element = $(element);
                     element.on('click', function (evt) {
