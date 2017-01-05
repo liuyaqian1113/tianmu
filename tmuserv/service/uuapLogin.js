@@ -126,10 +126,7 @@ router.all('*', function (req, res, next) {
     console.log('service: ' + decodeURIComponent(service));
     // session 验证
     if (views && views.userName) {
-        var pathname = url.parse(req.originalUrl)
-            .pathname;
-        console.log('----------session longin--------------', pathname);
-        // next();
+      /*  var pathname = url.parse(req.originalUrl).pathname;
         if (!!redirType && pathname === '/login') {
             var redirecturl = {
                 status: 0,
@@ -138,15 +135,11 @@ router.all('*', function (req, res, next) {
             };
             res.json(redirecturl);
         } else {
-            // UUAPTGC: ticket
-            console.log(ticket, req.headers.cookie, '=================================ticket');
             if (pathname === '/login') {
                 return res.redirect('/');
-                // return res.redirect(uuapConfig.protocol + '//' + uuapConfig.hostname + (uuapConfig.port - 0 !== 80 && (':' + uuapConfig.port)) + uuapConfig.login);
-              //  req.body.ticket = ticket;
             }
-            next();
-        }
+        }*/
+        next();
     } else if (ticket) {
         // ticket 验证
         !views && (req.session.views = {});
@@ -199,8 +192,6 @@ router.all('*', function (req, res, next) {
                 appKey: uuapConfig.appKey
             }
         });
-        console.log('-----------redirect uuap-------------------', redirecturl);
-        // res.redirect(redirecturl);
         if (!!redirType) {
             var result = {
                 status: -1,

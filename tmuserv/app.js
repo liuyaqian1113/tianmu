@@ -31,9 +31,12 @@ app.use(session({
     saveUninitialized: true
 }));
 /********登录 控制*********/
-var loginFilter = require('./service/login');
+var loginFilter = require('./service/uuapLogin');
 // 登录控制
 app.use('*', loginFilter);
+var userLogin = require('./service/userLogin');
+//获取用户信息
+app.use('/login', userLogin);
 // 退出
 var logout = require('./service/logout.js');
 app.use('/logout', function (req, res, next) {

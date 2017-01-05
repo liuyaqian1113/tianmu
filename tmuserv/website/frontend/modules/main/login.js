@@ -9,7 +9,7 @@ skyfall.controller('LoginCtrl', function ($rootScope, $scope) {
     // $scope.uuap_callback_url = "http://" + location.host + path + 'run.html#/index';
     $scope.uuap_callback_url = "http://" + location.host + '/searchboxbi/api/login';
     $scope.goRun = function ($event) {
-        if (!!/(kent|tianbin|qiuzhiqun|luoaihua)\.baidu\.com/i.test(location.host)) {
+        if (!!window.isLocal) {
             $event.preventDefault();
             $event.stopPropagation();
             location.replace('./run.html#/index');

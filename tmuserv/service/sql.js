@@ -139,7 +139,7 @@ var controller = {
                     return cb(true, '数据库连接失败');
                 }
             }
-            if (!args) {
+            if (!args || !sql[action]) {
                 return cb(true, '参数为空');
             }
             var key = [],
@@ -155,7 +155,7 @@ var controller = {
             for(var i = 0, l = val.length; i < l; i++) {
                 dummy.push('?');
             }
-            var act = typeof sql[action] === 'string' ?  sql[action] : sql[action](key, dummy, val);
+            var act = typeof sql[action] === 'function' ?  sql[action](key, dummy, val) : sql[action];
             console.log(act, key.join(','), val.join(','), '====准备入库');
             connection.query(act, val, function (status, result) {
                 if (status) {
@@ -178,13 +178,23 @@ var controller = {
                     return cb(true, '数据库连接失败');
                 }
             }
+            if (!args || !sql[action]) {
+                return cb(true, '参数为空');
+            }
             var key = [],
-                val = [];
-            if (args instanceof Object) {
+                val = [],
+                dummy = [];
+            if (!!keyOrder[action]) {
+                key = keyOrder[action];
+                val = filterData(args.source, key);
+            } else if (args instanceof Object) {
                 key = args.key;
                 val = args.val;
             }
-            var act = typeof sql[action] === 'string' ?  sql[action] : sql[action](key);
+            for(var i = 0, l = val.length; i < l; i++) {
+                dummy.push('?');
+            }
+            var act = typeof sql[action] === 'function' ?  sql[action](key, dummy, val) : sql[action];
             console.log(act, args, '====准备读取数据');
             connection.query(act, val, function (status, result) {
                 if (err) {

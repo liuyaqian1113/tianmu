@@ -1,5 +1,7 @@
 '@file: app.config';
 'use strict';
+var isLocal = !!(/((kent|tianbin|liuyaqian|localhost)\.baidu\.com|\d{0,3}\.\d{0,3}\.\d{0,3}\.\d{0,3})/i
+            .test(location.hostname)) && location.port === 80;
 angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.lazyLoad', 'ui.bootstrap']).constant('CONFIG', {
     debuger: false, // 是否开启debugger模式
     noCache: true,
@@ -7,8 +9,6 @@ angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.laz
     webRoot: './frontend/',
     pixelRatio: 2, //window.devicePixelRatio || 2, //canvas分辨率
     getApi: function (online) {
-        var isLocal = !!(/((kent|tianbin|liuyaqian|localhost)\.baidu\.com|\d{0,3}\.\d{0,3}\.\d{0,3}\.\d{0,3})/i
-            .test(location.hostname)) && location.port === 80;
         var uri = online.match(/[^\/]+$/);
         uri = (!!isLocal) ? this.webRoot + '/api/api_' + uri[0] + '.json' : online;
         return uri;
@@ -157,8 +157,9 @@ angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.laz
 }).run(function ($rootScope, $ocLazyLoad, $state, CONFIG) {
     CONFIG.$scope = $rootScope;
     CONFIG.USERINFOS = {
-        uname: typeof USERINFOS !== 'undefined' ? USERINFOS.user : 'user01',
-        permission: ['all']
+        uname: USERINFOS.user,
+        level: USERINFOS.level,
+        bussiness: USERINFOS.bussiness
     };
     $rootScope.poplayer = {};
     $ocLazyLoad.__load = $ocLazyLoad.load;
@@ -210,8 +211,6 @@ angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.laz
 
 (function () {
     var html = $('html');
-    var isLocal = !!(/((kent|tianbin|liuyaqian)\.baidu\.com|\d{0,3}\.\d{0,3}\.\d{0,3}\.\d{0,3})/i
-        .test(location.hostname));
     var api = isLocal ? '/login' : './frontend/api/permission.json';
     var loadCache = {};
     angular.loadJsCss = function (items, fn) {
@@ -280,7 +279,7 @@ angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.laz
                     if (typeof ret === 'string') {
                         ret = $.parseJSON(ret);
                     }
-                    return ((ret.errorCode - 0) === 0 || (ret.status - 0) === 0) ? prjstart(ret) : prjstart();
+                    return ((ret.errorCode - 0) === 0 || (ret.status - 0) === 0 || (ret.status - 0) === 1) ? prjstart(ret) : prjstart();
                 }
             });
         } catch (err) {
@@ -303,8 +302,8 @@ angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.laz
             args = args || {};
             window.USERINFOS = {
                 user: args.uname || 'user01',
-                permission: args.data || ['all']
-
+                level: args.uinfo ? args.uinfo.level : 0,
+                bussiness: args.uinfo ? args.uinfo.bussiness : ''
             };
             angular.bootstrap(html[0], [ProjectName]);
         });
