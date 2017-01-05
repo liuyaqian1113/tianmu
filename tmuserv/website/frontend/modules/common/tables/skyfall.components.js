@@ -54,22 +54,17 @@ angular.module("skyfall.components", [])
                 },
                 view: function () {},
                 controller: function () {},
-                model: function (mod) {
+                model: function () {
+                    var that = this;
                     var def = $q.defer();
-                    if (!mod) {
-                        fetchService.get({
-                                url: this.path + '/data.json'
-                            })
-                            .then(function (ret) {
-                                ret = !!ret.length ? ret[0].data : ret.data;
-                                if (typeof ret === 'string') {
-                                    ret = $.parseJSON(ret);
-                                }
-                                modelCache[this.hash] = ret;
-                                def.resolve(ret);
-                            });
-                    } else if (mod instanceof Array) {
-                        fetchService.get(mod)
+                    var beforeData = this.options.beforeData;
+                    if (!beforeData) {
+                        def.resolve({});
+                    } else if (beforeData instanceof Array) {
+                        beforeData = beforeData.map(function (item) {
+                            return /^http(s)?\:\/\//i.test(item) ? {url: item} : {url: that.path + item};
+                        });
+                        fetchService.get(beforeData)
                             .then(function (ret) {
                                 ret = !!ret.length ? ret[0].data : ret.data;
                                 if (typeof ret === 'string') {
@@ -82,9 +77,9 @@ angular.module("skyfall.components", [])
                                 modelCache[this.hash] = ret;
                                 def.resolve(ret);
                             });
-                    } else if (typeof mod === 'object') {
-                        modelCache[this.hash] = mod;
-                        def.resolve(mod);
+                    } else if (typeof beforeData === 'object') {
+                        modelCache[this.hash] = beforeData;
+                        def.resolve(beforeData);
                     }
                     return def.promise;
                 },
@@ -97,9 +92,10 @@ angular.module("skyfall.components", [])
                 return new Tables([].slice.call(arguments, 0));
             }
 */
-            function Tables(scope, act) {
+            function Tables(scope, act, opts) {
                 this.scope = scope;
                 this.hashKey = act;
+                this.options = opts || {};
                 this.path = CONFIG.webRoot + 'modules/common/tables/components/' + this.hashKey + '/';
             }
             Tables.prototype = new base();

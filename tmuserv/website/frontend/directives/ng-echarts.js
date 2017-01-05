@@ -6,8 +6,14 @@ angular.module(window.ProjectName)
         return {
             link: function (scope, element, attrs) {
                 var runOnce = false;
-                var config = scope.CONFIG.config;
-                var option = scope.CONFIG.option;
+                var config = scope.CONFIG.config || {
+                    type: 'skyfall',
+                    size: {
+                        width: 500,
+                        height: 200
+                    }
+                };
+                var option = scope.CONFIG.option || scope.CONFIG.options || {};
                 if (config.pixelRatio) {
                     config.size.width = config.size.width / CONFIG.pixelRatio;
                     config.size.height = config.size.height / CONFIG.pixelRatio;
@@ -19,7 +25,7 @@ angular.module(window.ProjectName)
                 var backingStorePixelRatio = ctx.dpr || ctx.webkitBackingStorePixelRatio || ctx.mozBackingStorePixelRatio || ctx.msBackingStorePixelRatio || ctx.oBackingStorePixelRatio || ctx.backingStorePixelRatio || 2;
                 var ratio = devicePixelRatio / backingStorePixelRatio;
                 */
-                var chart = echarts.init(oCanvas, theme, {
+                var chart = echarts.init(element.parent()[0] || oCanvas, theme, {
                     width: config.size.width,
                     height: config.size.height,
                     devicePixelRatio: CONFIG.pixelRatio
@@ -78,6 +84,7 @@ angular.module(window.ProjectName)
             scope: {
                 CONFIG: '=ecConfig'
             },
+            replace: true,
             restrict: 'EA'
         }
     });

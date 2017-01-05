@@ -11,7 +11,7 @@
 <div class="row tables" sf-tables="tablesConf">
     <sf-components-tmpl-proxy class="searchs-panel ui-sortable-disabled clearfix" data-type="search" ng-sortable="sortableSearchConf"></sf-components-tmpl-proxy>
     <div class="tables-panel clearfix" ng-sortable="sortableTableConf">
-        <sf-components-tmpl-proxy class="sortable-row col-md-{{panel.cols}}" data-type="{{panel.type}}" ng-repeat="panel in tablesDataSource.tablesPanel"></sf-components-tmpl-proxy>
+        <sf-components-tmpl-proxy class="sortable-row col-md-{{panel.cols}}" data-type="{{panel.type}}" ng-repeat="panel in tablesDataSource.tablesPanel" options="panel"></sf-components-tmpl-proxy>
     </div>
 </div>
 <!-- end row -->

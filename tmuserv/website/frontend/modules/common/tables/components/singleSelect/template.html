@@ -1,7 +1,7 @@
 <div class="input-group input-group-sm" style="width: 100%;" ng-model="search.type">
     <span class="input-group-addon">{{search.title}}:</span>
-    <input type="text" class="form-control" ng-model="search[search.type].val" readonly>
-    <input type="hidden" name="{{search.varname || 'singleSelect-key'}}" ng-model="search[search.type].key" readonly>
+    <input type="text" class="form-control" ng-model="tablesSearchParams[search.key].value" readonly>
+    <input type="hidden" name="{{search.keyword}}" ng-model="tablesSearchParams[search.key].key" readonly>
     <div class="input-group-btn">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">请选择<span class="caret"></span> </button>
         <ul class="dropdown-menu pull-right" ng-if="previewData[search.key].source && previewData[search.key].source.length">

@@ -41,6 +41,14 @@ angular.module(window.ProjectName)
                // {dom: '.sortable-row', items: '.panel', handle: '.panel-heading', connectWith: '.sortable-row'}
             ]
         };
+        $scope.echartsConfig = {
+            theme: 'default',
+            event: [],
+            dataLoaded: false,
+            size: {
+                height: 300
+            }
+        };
         $scope.tablesConf = {
             model: 'edit'
         };
@@ -69,7 +77,14 @@ angular.module(window.ProjectName)
             }
         };
         $scope.saveTables = function () {
-            console.log($scope.tablesDataSource, JSON.stringify($scope.tablesDataSource));
+            console.log($scope.tablesDataSource/*, JSON.stringify($scope.tablesDataSource)*/);
+            fetchService.get({
+                url: api.saveTablesConfig,
+                type: 'post',
+                data: $scope.tablesDataSource
+            }).then(function (ret) {
+                console.log(ret);
+            });
         };
         $scope.destroyList[$scope.destroyList.length - 1] = $scope.$on('Tables:createSearchs', function (event, data) {
             if (!!data) {
@@ -83,8 +98,12 @@ angular.module(window.ProjectName)
         });
         $scope.tablesDataSource = {};
         $scope.tablesDataSource.tablesName = '新建数据报表';
+        $scope.tablesDataSource.editor = CONFIG.USERINFOS.uname;
+        $scope.tablesDataSource.businessId = 0;
+        $scope.tablesDataSource.productId = 0;
         $scope.tablesDataSource.searchsPanel = [];
         $scope.tablesDataSource.tablesPanel = [];
+        $scope.tablesSearchParams = {};
         $scope.previewData = {};
         $scope.sourceData = {};
 
@@ -111,9 +130,9 @@ angular.module(window.ProjectName)
                         $scope.$root.$broadcast('Props:getRemoteApi', v);
                     }
                 });
-                $scope.tablesDataSource.tablesName = ret.data.tablesName;
-                $scope.tablesDataSource.searchsPanel = ret.data.searchsPanel;
-                $scope.tablesDataSource.tablesPanel = ret.data.tablesPanel;
+             //   $scope.tablesDataSource.tablesName = ret.data.tablesName;
+             //   $scope.tablesDataSource.searchsPanel = ret.data.searchsPanel;
+              //  $scope.tablesDataSource.tablesPanel = ret.data.tablesPanel;
             }
         });
         $scope.$on('$destroy', function () {

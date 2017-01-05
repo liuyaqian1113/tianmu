@@ -1,0 +1,20 @@
+<!-- begin panel -->
+<div class="panel panel-inverse">
+    <div class="panel-heading">
+        <ul class="panel-heading-btn" ng-click="toolsCtrl($event, panel, tablesDataSource.tablesPanel)">
+            <li class="btn btn-xs btn-nonebg" data-id="preview" title="预览模式">
+                <i class="icon-eye-open"></i>
+            </li>
+            <li class="btn btn-xs btn-nonebg" ng-if="!isEditModel" data-id="addDashboard" title="添加到聚合页"><i class="icon-share"></i></li>
+            <li class="btn btn-xs btn-nonebg" ng-if="isEditModel" data-id="setProps" title="图表属性配置"><i class="icon-cog"></i></li>
+            <li class="btn btn-xs btn-nonebg" ng-if="isEditModel" data-id="addWidth" title="增加宽度"><i class="icon-resize-horizontal"></i></li>
+            <li class="btn btn-xs btn-nonebg" ng-if="isEditModel" data-id="minusWidth" title="减少宽度"><i class="icon-resize-small"></i></li>
+            <li class="btn btn-xs btn-nonebg" ng-if="isEditModel" data-id="removeTable" title="移除图表"><i class="icon-trash"></i></li>
+        </ul>
+        <h4 class="panel-title">{{panel.title}}</h4>
+    </div>
+    <div class="panel-body" ng-class="tablesConf.model">
+        <div echarts ec-config="echartsConfig" ec-option="panel"></div>
+    </div>
+</div>
+<!-- end panel; -->

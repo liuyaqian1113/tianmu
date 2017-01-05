@@ -370,7 +370,7 @@ route_module.factory('permissionService', function ($q, $rootScope, CONFIG) {
                          //   'modules/common/daterangepicker/daterangepicker.min.js',
                             'modules/common/tables/sf-pages.js',
                             'modules/common/tables/tables.js',
-                            'directives/ng-echarts.js'
+                            'service/ng-echarts.js'
                         ]);
                     }]
                 },

@@ -43,20 +43,20 @@ window.sfController.prototype = {
         var el = $(e.target || e.srcElement).closest('li.btn');
         var oHead = el.closest('.thead');
         var oSource = source || this.scope.tablesPanel;
-        var dataMap = this.CONFIG.getDataById(data.key, oSource);
+        var dataMap = data ? this.CONFIG.getDataById(data.key, oSource) : {};
         var $timeout = this.$timeout;
         var that = this;
         switch (el.attr('data-id')) {
             case 'addHeaderRows': // 新增表格行
-                if (!data.headers) {
-                    data.headers = [];
+                if (!data.options) {
+                    data.options = [];
                 }
                 var rowsData = {
                     key: data.key + '_' + oSource.length,
-                    order: data.headers.length + 1,
+                    order: data.options.length + 1,
                     subs: []
                 };
-                data.headers.push(rowsData);
+                data.options.push(rowsData);
                 this.scope.$root.$broadcast('Sortable:updateEvent', true);
                 break;
             case 'addHeaderCols': // 新增表格列
@@ -150,10 +150,9 @@ window.sfController.prototype = {
                         .removeClass('icon-pencil')
                         .addClass('icon-eye-open');
                 }
-                console.log(this.scope);
                 break;
             case 'addDashboard': // 添加到聚合页
-                if (!data.headers.length || !this.scope.previewData[source.key]) {
+                if (!data.options.length || !this.scope.previewData[source.key]) {
                     return this.scope.$root.poplayer = {
                         type: 'error',
                         content: '请先完善数据报表'

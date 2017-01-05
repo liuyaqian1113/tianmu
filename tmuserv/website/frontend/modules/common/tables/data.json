@@ -37,7 +37,7 @@
         "apiRate": 0,
         "cols": 12,
         "showpage": false,
-        "headers": [{
+        "options": [{
             "key": "table_761869_1",
             "order": 1,
             "subs": [{

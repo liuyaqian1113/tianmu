@@ -18,7 +18,7 @@
     </div>
     <div class="panel-body" ng-class="tablesConf.model">
         <div class="table table-striped">
-            <div class="thead" data-id="{{header.key}}" ng-repeat="header in panel.headers">
+            <div class="thead" data-id="{{header.key}}" ng-repeat="header in panel.options">
                 <div class="tr">
                     <div class="th" ng-repeat="head in header.subs" data-id="{{head.key}}" rows="{{head.rows}}" cols="{{head.cols}}" style="-webkit-box-flex: {{head.cols||1}}">
                         <span class="context" ng-dblclick="editRowsContent($event, head)" ng-blur="editRowsContent($event, head)" title="双击修改列名">{{head.text}}</span>
@@ -32,7 +32,7 @@
                         </ul>
                     </div>
                 </div>
-                <ul class="thead-tools" ng-if="isEditModel" ng-click="toolsCtrl($event, header, panel, panel.headers)">
+                <ul class="thead-tools" ng-if="isEditModel" ng-click="toolsCtrl($event, header, panel, panel.options)">
                     <li class="btn btn-xs btn-circle btn-default rowsTools-drag" data-id="sortHandle" data-data="header" title="排序" style="cursor:move;"><i class="icon-move"></i></li>
                     <li class="btn btn-xs btn-circle btn-success" data-id="addHeaderCols" title="新增表格列"><i class="icon-plus"></i></li>
                     <li class="btn btn-xs btn-circle btn-danger" data-id="removeRows" title="删除行"><i class="icon-remove"></i></li>
@@ -40,7 +40,7 @@
             </div>
             <div class="tbody" ng-if="previewData[panel.key].bodys && previewData[panel.key].bodys.length" ng-class="{'loading': sourceData.api && !previewData[panel.key].bodys}">
                 <div class="tr" ng-repeat="fields in previewData[panel.key].bodys">
-                    <div class="td" ng-repeat="field in fields | limitTo: (panel.headers[panel.headers.length - 1].subs.length) track by $index" rows="{{panel.headers[panel.headers.length - 1].subs[$index].rows}}" cols="{{panel.headers[panel.headers.length - 1].subs[$index].cols}}" style="-webkit-box-flex: {{panel.headers[panel.headers.length - 1].subs[$index].cols||1}}">
+                    <div class="td" ng-repeat="field in fields | limitTo: (panel.options[panel.options.length - 1].subs.length) track by $index" rows="{{panel.options[panel.options.length - 1].subs[$index].rows}}" cols="{{panel.options[panel.options.length - 1].subs[$index].cols}}" style="-webkit-box-flex: {{panel.options[panel.options.length - 1].subs[$index].cols||1}}">
                         <span class="context">{{field}}</span>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
         </div>
     </div>
     <div class="panel-footer" ng-if="panel.showpage && previewData[panel.key].bodys && previewData[panel.key].bodys.length">
-        <ng-pages totalitems="{{previewData[panel.key].total}}" listsizes="5" itemsperpage="{{previewData[panel.key].perpage}}" source="{{previewData[panel.key].bodys}}">
+        <ng-pages totalitems="{{previewData[panel.key].total}}" listsizes="5" itemsperpage="{{previewData[panel.key].perpage}}" source="previewData[panel.key].bodys">
         </ng-pages>
     </div>
 </div>

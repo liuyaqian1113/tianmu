@@ -273,6 +273,10 @@
 .tables .panel-body .components {
     margin-bottom: 10px;
 }
+.tables .edit .components .input-group {
+    border: 1px dashed #ccc;
+    padding: 5px;
+}
 
 .tables .panel-body .components .panel-headers-tools {
     display: none;
@@ -326,4 +330,23 @@
 
 .form-inline .input-group .input-group-btn {
     width: 1%;
+}
+.edit.form-inline .singleItem,
+.edit.form-inline .multiItem{
+    width: 100%;
+    border: 1px dashed #ccc;
+    padding: 5px;
+}
+.edit.form-inline .singleItem .input-group-addon,
+.edit.form-inline .multiItem .input-group-addon {
+    width: 1%;
+    padding: 0 20px;
+}
+.list-items {
+    border-bottom: 2px solid transparent;
+    margin-right: 5px;
+}
+.list-items.active {
+    border-bottom: 2px solid #00ACAC;
+    box-shadow: none;
 }

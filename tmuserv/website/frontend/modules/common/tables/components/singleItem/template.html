@@ -1,8 +1,13 @@
-<div class="input-group input-group-sm" style="width: 100%;" ng-model="search.type">
+<div class="input-group input-group-sm {{search.type}}">
     <span class="input-group-addon">{{search.title}}:</span>
-    <input type="text" date-range-picker class="form-control" name="{{search.keyword}}" readonly date-type="{{search.type}}" ng-model="tablesSearchParams[search.key].value">
-    <span class="input-group-addon"><i class="icon-calendar"></i></span>
+    <div class="btn-group" data-toggle="buttons">
+        <label class="btn list-items" ng-repeat="source in (previewData[search.key].source||search.source)" ng-class="{'active': tablesSearchParams[search.key].value == source.key}">
+            <input type="radio" name="{{search.key}}" value="{{source.key}}" ng-checked="source.key == tablesSearchParams[search.key].value" ng-model="tablesSearchParams[search.key].value"> {{source.val}}
+        </label>
+    </div>
+    <!-- /btn-group -->
 </div>
+<!-- /input-group -->
 <ul class="panel-headers-tools" ng-if="tablesConf.model == 'edit'" ng-click="toolsCtrl($event, search, tablesDataSource.searchsPanel)">
     <li class="btn btn-xs btn-nonebg colsTools-drag" title="排序" data-data="search" style="cursor:move;"><i class="icon-move"></i></li>
     <li class="btn btn-xs btn-nonebg" data-id="setProps" title="查询组件属性配置"><i class="icon-cog"></i></li>

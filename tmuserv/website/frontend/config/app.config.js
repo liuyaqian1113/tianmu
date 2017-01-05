@@ -116,7 +116,8 @@ angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.laz
             list: 'api/list'
         },
         tables: { // 数据报表
-            getTablesConfig: 'api/tmu/tables/getTablesConfig'
+            getTablesConfig: 'api/tmu/tables/getTablesConfig',
+            saveTablesConfig: 'api/tmu/tables/saveTablesConfig'
         },
         monitor: { //实时监控(RTA)
             sceneConf: 'api/monitorData'

@@ -1,65 +1,69 @@
 /**
  * Created by liekkas.zeng on 2015/1/7.
  */
-angular.module(window.ProjectName)
-    .directive('echarts', function ($timeout) {
+angular.module('ng-echarts', [])
+    .directive('echarts', function ($timeout, CONFIG) {
         return {
-            link: function (scope, element, attrs) {
-                //var runOnce = false;
-                var config = scope.CONFIG.config;
-                var option = scope.CONFIG.option;
-                var theme = (config && config.theme) ? config.theme : 'default';
-                if (config.pixelRatio) {
-                    config.size.width = config.size.width / 2;
-                    config.size.height = config.size.height / 2;
-                }
-                var oCanvas = document.createElement('canvas');
-                var chart = {};
-                chart[scope.CONFIG.id] = echarts.init(element[0], theme, {
-                    width: config.size.width,
-                    height: config.size.height,
-                    devicePixelRatio: 2
-                });
-                var refreshChart = function (val) {
-                    if (!val) {
-                        return;
+            link: function (scope, element, attrs, ctrl) {
+                var options = scope.option;
+                var echartsCache = null;
+                function refreshChart() {
+                    var theme = (scope.config && scope.config.theme) ? scope.config.theme : 'default';
+                    var chart = echarts.init(element[0], theme, scope.config.size);
+                    if (scope.config && scope.config.dataLoaded === false) {
+                        chart.showLoading();
                     }
-                    (config && !config.dataLoaded) && chart[scope.CONFIG.id].showLoading();
-                    if (config && !!config.dataLoaded) {
-                        chart[scope.CONFIG.id].setOption(option);
-                        /*if (!!val.size) {
-                            chart.resize(attrs.size);
-                        } else {
-                          //  chart.resize();
-                        }*/
-                        chart[scope.CONFIG.id].hideLoading();
-                        scope.CONFIG.echarts = chart[scope.CONFIG.id];
-                        scope.$emit('Monitor:rtEcharts', scope.CONFIG);
-                        $timeout(function () {
-                           //  chart[scope.CONFIG.id].clear();
-                        });
+                    if (scope.config && scope.config.dataLoaded) {
+                        chart.setOption(options.options || options);
+                        chart.resize();
+                        chart.hideLoading();
                     }
-                    if (config && config.event) {
-                        if (angular.isArray(config.event)) {
-                            angular.forEach(config.event, function (value, key) {
+                    if (scope.config && scope.config.event) {
+                        if (angular.isArray(scope.config.event)) {
+                            angular.forEach(scope.config.event, function (value, key) {
                                 for (var e in value) {
-                                    chart[scope.CONFIG.id].on(e, value[e]);
+                                    chart.on(e, value[e]);
                                 }
                             });
                         }
                     }
-                    return this;
                 };
                 //自定义参数 - config
                 // event 定义事件
                 // theme 主题名称
                 // dataLoaded 数据是否加载
-                scope.$watch('CONFIG.option', refreshChart, true);
-                // scope.$on('Monitor:renewEcharts', refreshChart);
+                scope.$watch(function () {
+                    return scope.config;
+                }, function (value, old) {
+                    if (value && !!old) {
+                        refreshChart();
+                    }
+                }, true);
+                $timeout(function () {
+                    //图表原生option
+                    scope.$watch(function () {
+                        return options.options;
+                    }, function (value, old) {
+                        if (value && !!old) {
+                            refreshChart();
+                        }
+                    }, true);
+                    scope.$watch(function () {
+                        return options.cols;
+                    }, function (value, old) {
+                        if (value && !!old) {
+                            $timeout.cancel(echartsCache);
+                            echartsCache = $timeout(refreshChart);
+                        }
+                    });
+                    scope.config.dataLoaded = true;
+                }, 500);
             },
             scope: {
-                CONFIG: '=ecConfig'
+                option: '=ecOption',
+                config: '=ecConfig'
             },
+            replace: true,
             restrict: 'EA'
         }
     });

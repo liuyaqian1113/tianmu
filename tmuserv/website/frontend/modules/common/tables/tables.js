@@ -46,7 +46,7 @@ angular.module(window.ProjectName)
                                 scope.tablesDataSource.tablesPanel.push(newSource);
                             }
                         }
-                        var oDir = new skyfall(scope, hash);
+                        var oDir = new skyfall(scope, hash,{beforeData: ['data.json']});
                         oDir.loadView('directiveContainer')
                             .then(function (data) {
                                 scope.componentsFactory = data;
@@ -94,8 +94,11 @@ angular.module(window.ProjectName)
                         });
                     return defer.promise;
                 };
+                scope.transferRangeDate = function (date) {
+                    return date.replace(' - ', ',');
+                };
                 scope.ok = function (source) {
-                    if (scope.propsData.type === 'table' && (!scope.propsData.headers.length || !scope.propsData.headers[scope.propsData.headers.length - 1].subs.length)) {
+                    if (scope.propsData.type === 'table' && (!scope.propsData.options.length || !scope.propsData.options[scope.propsData.options.length - 1].subs.length)) {
                         return scope.$root.poplayer = {
                             type: 'error',
                             content: '请先添加表头'
@@ -165,7 +168,7 @@ angular.module(window.ProjectName)
                         key: key,
                         val: val
                     });
-                    if (scope.propsData.dataOrigin === 'static') {
+                    if (scope.propsData.dataOrigin === 'static' || !scope.propsData.dataOrigin) {
                         scope.propsData.source = scope.previewData[token].source;
                         scope.inputSource.key = '';
                         scope.inputSource.val = '';
@@ -194,6 +197,7 @@ angular.module(window.ProjectName)
                         if (scope.templateUrl !== url) {
                             scope.templateUrl = url;
                         }
+                        scope.echartsConfig.dataLoaded = false;
                         $timeout(function () {
                             var cls = 'showprops';
                             if (!scope.previewData[data.data.key]) {
@@ -215,10 +219,8 @@ angular.module(window.ProjectName)
                                             data.data[k] = v;
                                         }
                                     });
-                                    scope.propsData = data.data;
-                                } else {
-                                    scope.propsData = data.data;
                                 }
+                                scope.propsData = data.data;
                                 if (sourceCache[scope.propsData.key] && sourceCache[scope.propsData.key][scope.propsData.dataOrigin]) {
                                     scope.previewData[scope.propsData.key].source = sourceCache[scope.propsData.key][scope.propsData.dataOrigin];
                                 }
@@ -226,6 +228,9 @@ angular.module(window.ProjectName)
                                     scope.testApi();
                                 }
                             }
+                            $timeout(function () {
+                                scope.echartsConfig.dataLoaded = true;
+                            }, 500);
                         }, 100);
                     }
                 });
@@ -269,6 +274,45 @@ angular.module(window.ProjectName)
                         scope.isEditModel = (newVal === 'edit');
                     }
                 }, true);
+                scope.searchTables = function (oSearch) {
+                    var flag = true;
+                    angular.forEach(oSearch, function (v, k) {
+                        if (scope.tablesSearchParams[v.key]) {
+                            if (!v.keyword) {
+                                return (scope.$root.poplayer = {
+                                    type: 'error',
+                                    content: v.title + ' 组件缺少参数名称!'
+                                }, flag = false);
+                            }
+                            if (!!scope.tablesSearchParams[v.key].items) {
+                                if (!scope.tablesSearchParams[v.key].value) {
+                                    scope.tablesSearchParams[v.key].value = [];
+                                }
+                                angular.forEach(scope.tablesSearchParams[v.key].items, function (item, i) {
+                                    !!item && scope.tablesSearchParams[v.key].value.push(i);
+                                });
+                            }
+                            if (!!scope.tablesSearchParams[v.key].value) {
+                                scope.tablesSearchParams[v.key].key = v.keyword;
+                            }
+                        }
+                    });
+                    if (!flag) {
+                        return;
+                    }
+                    var args = {};
+                    angular.forEach(scope.tablesSearchParams, function (v, k) {
+                        args[v.key] = v.value;
+                    });
+                    if (CONFIG.isEmptyObj(args)) {
+                        return scope.$root.poplayer = {
+                            type: 'error',
+                            content: '请设置查询条件'
+                        };
+                    }
+                    console.log(scope.tablesSearchParams, args);
+                    return args;
+                };
                 scope.editRowsContent = function (e, rowData) {
                     var el = $(e.target || e.srcElement);
                     var type = e.type;
@@ -299,11 +343,12 @@ angular.module(window.ProjectName)
                     }
                 };
                 scope.putSelect = function (key, val, oSource) {
-                    if (!oSource[oSource.type]) {
-                        oSource[oSource.type] = {};
+                    if (!scope.tablesSearchParams[oSource.key]) {
+                        scope.tablesSearchParams[oSource.key] = {};
                     }
-                    oSource[oSource.type].key = key;
-                    oSource[oSource.type].val = val;
+                    scope.tablesSearchParams[oSource.key].key = key;
+                    scope.tablesSearchParams[oSource.key].value = val;
+                    oSource.value = key;
                 };
 
                 function setTableOrder(key, order, type) {
@@ -335,7 +380,7 @@ angular.module(window.ProjectName)
         }
     }])
     // 组件模板代理
-    .directive('sfComponentsTmplProxy', ['$timeout', 'CONFIG', function ($timeout, CONFIG) {
+    .directive('sfComponentsTmplProxy', ['$timeout', 'CONFIG', 'skyfallController', function ($timeout, CONFIG, sf) {
         return {
             scope: true,
             restrict: 'AE',
@@ -353,22 +398,41 @@ angular.module(window.ProjectName)
                     ];
                 if (data.resolve && !!data.resolve.length) {
                     var resolve = data.resolve.map(function (item) {
-                        return CONFIG.webRoot + item;
+                        return !/^http(s)?\:\/\//i.test(item) ? CONFIG.webRoot + item : item;
                     })
                     urls = resolve.concat(urls);
                 }
-                scope.templateUrl = CONFIG.webRoot + 'modules/common/tables/components/' + data.type + '/template.html';
-                angular.loadJsCss(urls, function (res) {
-                    if (!!window.sfController && res.type !== 'error') {
-                        return $timeout(function () {
-                            scope.$root.$broadcast('Tables:setController', {
-                                type: data.type,
-                                fn: window.sfController
-                            });
+              //  scope.templateUrl = CONFIG.webRoot + 'modules/common/tables/components/' + data.type + '/template.html';
+
+                var oTmpl = new sf(scope, data.type, data);
+                oTmpl.loadView('templateUrl')
+                    .then(function (ret) {
+                        switch (data.type) {
+                            case 'scotter':
+                                data.options.series[0].data = ret.city;
+                                data.options.series[1].color = new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                        offset: 0, color: '#58B3CC'
+                                    }, {
+                                        offset: 1, color: '#F58158'
+                                    }], false);
+                                data.options.series[1].data = ret.moveLines;
+                                break;
+                        }
+                        return data;
+                    })
+                    .then(function (ret) {
+                        angular.loadJsCss(urls, function (res) {
+                            if (!!window.sfController && res.type !== 'error') {
+                                return $timeout(function () {
+                                    scope.$root.$broadcast('Tables:setController', {
+                                        type: data.type,
+                                        fn: window.sfController
+                                    });
+                                });
+                            }
+                            console.log('请添加' + data.type + '控制器!');
                         });
-                    }
-                    console.log('请添加' + data.type + '控制器!');
-                });
+                    });
             }
         };
     }])
@@ -447,7 +511,7 @@ angular.module(window.ProjectName)
                                 },
                             }, cb);
                         cb(start, end);
-                    }, 300);
+                    }, 500);
                 };
             }
         };
