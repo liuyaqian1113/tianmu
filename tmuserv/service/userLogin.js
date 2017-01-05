@@ -23,6 +23,7 @@ router.all('*', function (req, res, next) {
     var query = req.query;
     var views = req.session && req.session.views;
     var redirType = (req.headers['x-requested-with'] && req.headers['x-requested-with'] === 'xmlhttprequest');
+    var pathname = url.parse(req.originalUrl).pathname;
     console.log(views, '=================== userInfo session');
     if (!views || !views.userName) {
         var redirecturl = url.format({
@@ -45,38 +46,57 @@ router.all('*', function (req, res, next) {
             return res.redirect(redirecturl);
         }
     }
-    var args = {
-        key: ['name'],
-        val: [views.userName]
-    };
-    sql.get('getUser', args, function (status, result) {
-        if (!!status) {
-            return json(res, 1, result || '数据库操作失败');
-        }
-        result = result[0];
-        if (!result) {
-            return res.json({
-                status: 1,
-                uname: views.userName
-                msg: '请先申请接入平台'
-            });
-        }
-        req.session.views.userInfo = {
-            level: result.level,
-            bussinessname: result.level == 100 ? 'all' : result.bussinessname
-        };
-        var pathname = url.parse(req.originalUrl).pathname;
-        if (!!redirType && pathname === '/login') {
+    if (views && views.userName && views.userInfo) {
+        if (!!redirType) {
             var redirecturl = {
                 status: 0,
                 uname: views.userName,
-                uinfo: req.session.views.userInfo,
+                uinfo: views.userInfo,
                 msg: 'success'
             };
             return res.json(redirecturl);
         }
+        if (pathname === '/login') {
+            return res.redirect('/');
+        }
         next();
-    });
+    } else {
+        var args = {
+            key: ['name'],
+            val: [views.userName]
+        };
+        sql.get('getUser', args, function (status, result) {
+            if (!!status) {
+                return json(res, 1, result || '数据库操作失败');
+            }
+            result = result[0];
+            if (!result) {
+                return res.json({
+                    status: 1,
+                    uname: views.userName,
+                    msg: '请先申请接入平台'
+                });
+            }
+            req.session.views.userInfo = {
+                level: result.level,
+                bussinessname: result.level == 100 ? 'all' : result.bussinessname
+            };
+            console.log('==========logined============', pathname);
+            if (!!redirType) {
+                var redirecturl = {
+                    status: 0,
+                    uname: views.userName,
+                    uinfo: req.session.views.userInfo,
+                    msg: 'success'
+                };
+                return res.json(redirecturl);
+            }
+            if (pathname === '/login') {
+                return res.redirect('/');
+            }
+            next();
+        });
+    }
 });
 module.exports = router;
 

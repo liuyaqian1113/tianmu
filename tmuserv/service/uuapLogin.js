@@ -70,8 +70,6 @@ function validateTicket(req, res, next, uuapRes) {
                 if (error) {
                     res.send(error.message);
                 } else {
-                    console.log('--------login info-------------login');
-                    console.log(data);
                     // 解析UUAP用户名
                     var oSucc = data['cas:serviceResponse']['cas:authenticationSuccess'];
                     if (!!oSucc) {
@@ -86,7 +84,6 @@ function validateTicket(req, res, next, uuapRes) {
                     var query = params.query;
                   //  global_ticket = query.ticket;
                     // delete query.ticket;
-                    console.log('--------user info-------------', userName);
                     if (!!redirType) { // ajax访问
                         var redirecturl = {
                             status: 0,

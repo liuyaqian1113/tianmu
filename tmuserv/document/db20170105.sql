@@ -10,10 +10,34 @@ Target Server Type    : MYSQL
 Target Server Version : 50611
 File Encoding         : 65001
 
-Date: 2017-01-05 16:55:55
+Date: 2017-01-05 19:04:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for `tmu_business_list`
+-- ----------------------------
+DROP TABLE IF EXISTS `tmu_business_list`;
+CREATE TABLE `tmu_business_list` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `businessname` varchar(50) DEFAULT NULL COMMENT '产品线名称',
+  `updatetime` datetime DEFAULT NULL COMMENT '最后更新时间',
+  `editor` varchar(50) DEFAULT NULL COMMENT '操作人',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tmu_business_list
+-- ----------------------------
+INSERT INTO `tmu_business_list` VALUES ('1', '百度糯米', null, null);
+INSERT INTO `tmu_business_list` VALUES ('2', '百度hi', null, null);
+INSERT INTO `tmu_business_list` VALUES ('3', '手机百度', null, null);
+INSERT INTO `tmu_business_list` VALUES ('4', '百度贴吧', null, null);
+INSERT INTO `tmu_business_list` VALUES ('5', '百度地图', null, null);
+INSERT INTO `tmu_business_list` VALUES ('6', '百度新闻', null, null);
+INSERT INTO `tmu_business_list` VALUES ('7', '百度外卖', null, null);
+INSERT INTO `tmu_business_list` VALUES ('8', '百度搜索', null, null);
 
 -- ----------------------------
 -- Table structure for `tmu_echarts`
@@ -162,16 +186,26 @@ DROP TABLE IF EXISTS `tmu_sys_user`;
 CREATE TABLE `tmu_sys_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL COMMENT '用户名称',
-  `nick` varchar(50) DEFAULT NULL COMMENT '用户昵称',
-  `email` varchar(50) DEFAULT NULL COMMENT '用户邮箱',
   `level` varchar(50) DEFAULT NULL COMMENT '用户级别(1: 超级管理员, 3: 产品线管理员, 5: 普通用户)',
-  `author` varchar(255) DEFAULT NULL,
+  `parth` int(11) DEFAULT NULL COMMENT '父ID',
+  `businessname` varchar(50) DEFAULT NULL COMMENT '产品线名称',
+  `updatetime` datetime DEFAULT NULL COMMENT '最后更新时间',
+  `editor` varchar(255) DEFAULT NULL COMMENT '操作人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tmu_sys_user
 -- ----------------------------
+INSERT INTO `tmu_sys_user` VALUES ('1', 'panjian01', '100', '0', '', '2016-12-04 01:29:15', null);
+INSERT INTO `tmu_sys_user` VALUES ('2', 'v_tianbin', '10', '0', '', '2016-12-04 01:29:15', null);
+INSERT INTO `tmu_sys_user` VALUES ('3', 'v_liuyanqian', '20', '0', '', '2016-12-04 01:29:15', null);
+INSERT INTO `tmu_sys_user` VALUES ('4', 'v_jiangzewen', '10', '0', '', '2016-12-04 01:29:15', null);
+INSERT INTO `tmu_sys_user` VALUES ('5', 'v_liting', '10', '0', '', '2016-12-04 01:29:15', null);
+INSERT INTO `tmu_sys_user` VALUES ('6', 'v_xinhao', '20', '0', '', '2016-12-04 01:29:15', null);
+INSERT INTO `tmu_sys_user` VALUES ('7', 'v_wanghu', '10', '0', '', '2016-12-04 01:29:15', null);
+INSERT INTO `tmu_sys_user` VALUES ('8', 'jiaojiao', '100', '0', '', '2016-12-04 01:29:15', null);
+INSERT INTO `tmu_sys_user` VALUES ('9', 'baoge', '100', '0', '', '2016-12-04 01:29:15', null);
 
 -- ----------------------------
 -- Table structure for `tmu_tables`

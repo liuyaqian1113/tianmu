@@ -161,6 +161,7 @@ angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.laz
         level: USERINFOS.level,
         bussiness: USERINFOS.bussiness
     };
+    console.log(CONFIG.USERINFOS);
     $rootScope.poplayer = {};
     $ocLazyLoad.__load = $ocLazyLoad.load;
     $ocLazyLoad.load = function (files) {
@@ -211,7 +212,7 @@ angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.laz
 
 (function () {
     var html = $('html');
-    var api = isLocal ? '/login' : './frontend/api/permission.json';
+    var api = '/login';
     var loadCache = {};
     angular.loadJsCss = function (items, fn) {
         if (!angular.isArray(items)) {
@@ -260,7 +261,6 @@ angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.laz
             }
         })();
     }
-    if (!!isLocal) {
         try {
             var ajax = $.ajax({
                 url: api,
@@ -285,9 +285,6 @@ angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.laz
         } catch (err) {
            // return prjstart();
         }
-    } else {
-        return prjstart();
-    }
 
   //      <script type="text/javascript" src="./frontend/lib/js/ui-bootstrap-tpls-0.11.0.min.js"></script>
     function prjstart(args) {
@@ -302,8 +299,8 @@ angular.module(window.ProjectName, ['ngRoute', 'ui.router', 'ngCookies', 'oc.laz
             args = args || {};
             window.USERINFOS = {
                 user: args.uname || 'user01',
-                level: args.uinfo ? args.uinfo.level : 0,
-                bussiness: args.uinfo ? args.uinfo.bussiness : ''
+                level: args.uinfo ? args.uinfo.level - 0 : 0,
+                bussiness: args.uinfo ? args.uinfo.bussinessname : ''
             };
             angular.bootstrap(html[0], [ProjectName]);
         });

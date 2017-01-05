@@ -9,10 +9,8 @@ skyfall.controller('LoginCtrl', function ($rootScope, $scope) {
     // $scope.uuap_callback_url = "http://" + location.host + path + 'run.html#/index';
     $scope.uuap_callback_url = "http://" + location.host + '/searchboxbi/api/login';
     $scope.goRun = function ($event) {
-        if (!!window.isLocal) {
             $event.preventDefault();
             $event.stopPropagation();
             location.replace('./run.html#/index');
-        }
     };
 });

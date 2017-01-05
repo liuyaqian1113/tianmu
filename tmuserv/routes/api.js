@@ -6,7 +6,7 @@ var formidable = require('formidable');
 var remote = require('../service/remote.js');
 var session = require('express-session');
 console.log('api service start with /api/tmu!!!');
-var obj2Arr = function (obj, type) {
+var obj2Arr = function (obj, type, uname) {
     if (!!obj instanceof Array) {
         return obj;
     }
@@ -31,6 +31,7 @@ var obj2Arr = function (obj, type) {
     if (type === 'post' && !obj.updatetime) {
         arr.key.push('updatetime');
         arr.val.push(new Date());
+        uname && (arr.key.push('editor'), arr.val.push(uname));
     }
     return arr;
 };
@@ -47,7 +48,7 @@ var json = function (res, status, ret) {
  */
 router.post('/tmu/theme/saveCategory', function (req, res, next) {
     var args = req.body || req.query || req.params;
-    args = obj2Arr(args, 'post');
+    args = obj2Arr(args, 'post', req.session.views.userName);
     sql.set('saveCategory', args, function (status, result) {
         if (!!status) {
             return json(res, 1, result || '数据库操作失败');
@@ -67,7 +68,7 @@ router.get('/tmu/theme/getCategory', function (req, res, next) {
 });
 router.post('/tmu/theme/saveTheme', function (req, res, next) {
     var args = req.body || req.query || req.params;
-    args = obj2Arr(args, 'post');
+    args = obj2Arr(args, 'post', req.session.views.userName);
     console.log(args, '========');
     sql.set('saveTheme', args, function (status, result) {
         if (!!status) {
@@ -95,7 +96,7 @@ router.post('/tmu/menu/saveMenu', function (req, res, next) {
     if (!!args && args.id === '') {
         delete args.id;
     }
-    args = obj2Arr(args, 'post');
+    args = obj2Arr(args, 'post', req.session.views.userName);
     console.log(args, '========save');
     sql.set('saveMenu', args, function (status, result) {
         if (!!status) {
@@ -116,7 +117,7 @@ router.post('/tmu/menu/saveMenu', function (req, res, next) {
 });
 router.post('/tmu/menu/updateMenu', function (req, res, next) {
     var args = req.body || req.query || req.params;
-    args = obj2Arr(args, 'post');
+    args = obj2Arr(args, 'post', req.session.views.userName);
     console.log(args, '========update');
     sql.set('updateMenu', args, function (status, result) {
         if (!!status) {
@@ -140,7 +141,7 @@ router.get('/tmu/menu/getUser', function (req, res, next) {
 // 删除用户
 router.post('/tmu/menu/deleteUser', function (req, res, next) {
     var args = req.body || req.query || req.params;
-    args = obj2Arr(args, 'post');
+    args = obj2Arr(args, 'post', req.session.views.userName);
     console.log(args, '========deleteUser');
     sql.set('deleteUser', args, function (status, result) {
         if (!!status) {
@@ -152,7 +153,7 @@ router.post('/tmu/menu/deleteUser', function (req, res, next) {
 // 修改用户权限
 router.post('/tmu/menu/updateUser', function (req, res, next) {
     var args = req.body || req.query || req.params;
-    args = obj2Arr(args, 'post');
+    args = obj2Arr(args, 'post', req.session.views.userName);
     console.log(args, '========updateUserupdateUser');
     sql.set('updateUser', args, function (status, result) {
         if (!!status) {
@@ -164,7 +165,7 @@ router.post('/tmu/menu/updateUser', function (req, res, next) {
 // 删除菜单, 假如为系统菜单则需要超级管理员权限认证
 router.post('/tmu/menu/deleteMenu', function (req, res, next) {
     var args = req.body || req.query || req.params;
-    args = obj2Arr(args, 'post');
+    args = obj2Arr(args, 'post', req.session.views.userName);
     console.log(args, '========delete\n');
     sql.set('deleteMenu', args, function (status, result) {
         if (!!status) {
@@ -321,7 +322,7 @@ router.post('/tmu/tables/saveTablesConfig', function (req, res, next) {
         productId: args.productId
     };
     var responseData = {};
-    master_val = obj2Arr(master_val, 'post');
+    master_val = obj2Arr(master_val, 'post', req.session.views.userName);
     console.log(master_val, '============主数据入库开始');
     sql.set('saveTablesConfig', master_val, function (status, result) {
         if (!!status) {
@@ -336,7 +337,7 @@ router.post('/tmu/tables/saveTablesConfig', function (req, res, next) {
             var keys = searchs_val.key;
             searchs_val.editor = args.editor;
             searchs_val.tablesId = lastId;
-            searchs_val = obj2Arr(searchs_val, 'post');
+            searchs_val = obj2Arr(searchs_val, 'post', req.session.views.userName);
             console.log(searchs_val, '============查询条件' + i + '准备入库');
             sql.set('saveSearchs', searchs_val, function (status, result) {
                 if (!!status) {
@@ -352,7 +353,7 @@ router.post('/tmu/tables/saveTablesConfig', function (req, res, next) {
             var keys = tables_val.key;
             tables_val.editor = args.editor;
             tables_val.tablesId = lastId;
-            tables_val = obj2Arr(tables_val, 'post');
+            tables_val = obj2Arr(tables_val, 'post', req.session.views.userName);
             console.log(tables_val, '============数据报表' + j + '准备入库');
             sql.set('saveTables', tables_val, function (status, result) {
                 if (!!status) {
